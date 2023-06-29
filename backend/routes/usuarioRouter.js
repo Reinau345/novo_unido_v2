@@ -8,16 +8,20 @@ const {
     perfil, 
     olvidePassword, 
     comprobarToken, 
-    nuevoPassword 
+    nuevoPassword,
+    actualizarPerfil,
+    actualizarPassword
 } = require('../controllers/usuarioController.js');
-const checkAuth = require('../middleware/authMiddleware.js');
+const checkAuth = require('../middlewares/authMiddleware.js');
 
-router.post("/", registrar);
 router.get("/confirmar/:token", confirmar);
 router.post("/login", autenticar);
-// area prvado
-router.get("/perfil", checkAuth, perfil)
 router.post("/olvide-password", olvidePassword)
 router.route("/olvide-password/:token").get(comprobarToken).post(nuevoPassword);
+// area prvado
+router.post("/", registrar);
+router.get("/perfil", checkAuth, perfil)
+router.put("/perfil/:id", checkAuth, actualizarPerfil)
+router.put("/actualizar-password", checkAuth, actualizarPassword)
 
 module.exports = router;

@@ -1,4 +1,3 @@
-
 const Usuario = require('../models/usuarioModel.js');
 const generarId = require('../helpers/generarId.js');
 const generarJWT = require('../helpers/generarJWT.js')
@@ -7,7 +6,7 @@ const emailOlvidePassword = require('../helpers/emailOlvidePassword.js')
 
 const registrar = async (req, res) =>{
 
-    const {email,estado} = req.body
+    const {email,estado,nombre,apellido} = req.body
 
     // prevenir usuarios duplicados
     const existeUsuario = await Usuario.findOne({email})
@@ -24,6 +23,8 @@ const registrar = async (req, res) =>{
 
         emailRegistro({
             email,
+            nombre,
+            apellido,
             estado,
             token: usuarioGuardado.token
         })
@@ -86,6 +87,8 @@ const autenticar = async (req, res) =>{
     //  usuario.token = 
      res.json({
         _id: usuario._id,
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
         estado: usuario.estado, // cambiar por nombre
         email: usuario.email,
         token: generarJWT(usuario.id)
@@ -116,7 +119,8 @@ const autenticar = async (req, res) =>{
         //enviar email con instrucciones
         emailOlvidePassword({
             email,
-            nombre: existeUsuario.estado,
+            nombre: existeUsuario.nombre,
+            apellido: existeUsuario.apellido,
             token: existeUsuario.token
 
         })
@@ -163,7 +167,58 @@ const nuevoPassword = async (req, res)=>{
     }
 }
 
+const actualizarPerfil = async (req, res) => {
+    const usuario = await Usuario.findById(req.params.id)
+    if(!usuario){
+        const error = new Error('Hubo un error')
+        return res.status(400).json({msg: error.message})
+    }
 
+    const { email } = req.body
+    if(usuario.email !== req.body.email){
+        const existeEmail = await Usuario.findOne({email})
+        if(existeEmail){
+            const error = new Error('Ese email ya esta en uso')
+            return res.status(400).json({msg: error.message})
+        }
+    }
+
+    try {
+        usuario.nombre = req.body.nombre || usuario.nombre;
+        usuario.apellido = req.body.apellido || usuario.apellido;
+        usuario.email = req.body.email || usuario.email;
+
+        const usuarioActualizado = await usuario.save()
+        res.json(usuarioActualizado)
+    } catch (error) {
+        console.log(error)
+    }
+
+}
+
+const actualizarPassword = async (req, res) => {
+    // leer datos 
+    const { id } = req.usuario;
+    const { passwordActual, passwordNuevo } = req.body;
+    // comprobar usuario existe
+    const usuario = await Usuario.findById(id)
+    if(!usuario){
+        const error = new Error("Hubo un error")
+        return res.status(400).json({msg: error.message});
+    }
+    // comprobar password
+    if(await usuario.comprobarPassword(passwordActual)){
+        usuario.password = passwordNuevo
+        await usuario.save()
+        res.json({msg: 'Password Almacenado Correctamente'})
+    }else{
+        const error = new Error("El password actual es incorrecto")
+        return res.status(400).json({msg: error.message});
+    }
+    //almacenar el nuevos pwd
+
+
+}
 
 
 module.exports = {
@@ -173,5 +228,7 @@ module.exports = {
     perfil,
     olvidePassword,
     comprobarToken,
-    nuevoPassword
+    nuevoPassword,
+    actualizarPerfil,
+    actualizarPassword
 }

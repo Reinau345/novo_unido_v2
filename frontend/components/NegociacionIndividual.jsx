@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 const NegociacionIndividual = ({ negociacion }) => {
   const { _id } = negociacion; // Obtén el _id del objeto cliente
   const { id } = useParams();
+  // const { auth } = useAuth()
 
   //Función para eliminar la negociacion
   const navegar = useNavigate()

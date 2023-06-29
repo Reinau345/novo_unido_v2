@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import useAuth from '../hooks/useAuth'
 
 const Editarplandepago = () => {
     const { id } = useParams();
@@ -7,6 +8,7 @@ const Editarplandepago = () => {
     const [fechaPago, setFechaPago] = useState('');
     const [valorPago, setValorPago] = useState('');
     const [cumplioPago, setCumplioPago] = useState('');
+    const { auth } = useAuth()
 
     useEffect(() => {
         fetch(`http://localhost:4000/api/plandepago/obtenerdataplandepago/${id}`)
@@ -72,9 +74,9 @@ const Editarplandepago = () => {
                             <i className="py-3">
                                 <img className="rounded-circle" src="https://e7.pngegg.com/pngimages/164/153/png-clipart-donut-the-simpsons-tapped-out-doughnut-homer-simpson-bart-simpson-krusty-the-clown-donut-food-bagel.png" alt="batman " title="batman" width="40" height="40" />
                             </i>
-                            <p className="mb-0 mx-3 text-icon-menu">Nombre</p>
+                            <p className="mb-0 mx-3 text-icon-menu">{auth.nombre} {auth.apellido}</p>
                         </div>
-                        <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="listarClientes.html">
+                        <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/usuarios">
                             <div className="d-flex align-items-center">
                                 <i className="icon-menu fa-solid fa-user-tie mx-4" title="Usuarios"></i>
                                 <p className="text-icon-menu my-0">Usuarios</p>
@@ -114,7 +116,7 @@ const Editarplandepago = () => {
                 </aside>
                 <main className="d-flex flex-column">
                     <h1 className="text-center py-0 pt-5 my-0">EDITAR PLAN DE PAGO</h1>
-                    <Link to="/listaplandepago" style={{ color: 'black', textDecoration: 'none' }}>
+                    <Link to="/admin/listaplandepago" style={{ color: 'black', textDecoration: 'none' }}>
                         <div className="controles d-flex align-items-center">
                             <i className="icon-menu fa-solid fa-angles-left"> Volver </i>
                         </div>

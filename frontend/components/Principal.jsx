@@ -7,7 +7,7 @@ const Principal = () => {
 
         <main className="d-flex   flex-column">
 
-            <h1 className="text-center  py-0 pt-5 my-0">CREAR PRODUCTO</h1>
+            <h1 className="text-center  py-0 pt-5 my-0">CREAR PRODUCTO 22</h1>
 
             <div className="controles d-flex align-items-center">
                 <i className="icon-menu fa-solid fa-angles-left"> volver </i> 

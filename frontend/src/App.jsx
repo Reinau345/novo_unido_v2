@@ -20,6 +20,10 @@ import ConfirmarCuenta from '../paginas/ConfirmarCuenta'
 import OlvidePassword from '../paginas/OlvidePassword'
 import Admin from '../paginas/Admin'
 import NuevoPassword from '../paginas/NuevoPassword'
+import EditarPerfil from '../paginas/perfil/EditarPerfilCarga'
+import CambiarPasswordCarga from '../paginas/usuarios/CambiarPasswordCarga'
+import UsuariosBotones from '../paginas/usuarios/UsuariosBotones'
+
 
 import { AuthProvider } from '../context/AuthProvider'
 
@@ -54,7 +58,12 @@ function App() {
 
           <Route path='/admin' element={<AdminLayout />}>
             <Route index element={<Admin />} />
+            <Route path='perfil' element={<EditarPerfil/>}/>
             <Route path='registrar' element={<Registrar />} />
+            <Route path='cambiar-password' element={<CambiarPasswordCarga/>}/>
+            <Route path='usuarios' element={<UsuariosBotones/>}/>
+
+            
 
             {/* Clientes */}
             <Route path="listaclientes" element={<ListarClientes />}></Route>

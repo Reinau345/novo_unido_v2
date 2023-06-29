@@ -1,13 +1,9 @@
 
 import { Link } from 'react-router-dom'
-import Principal  from './Principal'
-import useAuth from '../hooks/useAuth'
-
-const MenuLateral = ({componentePrincipal}) => {
-    const { auth } = useAuth()
+import Principal  from '../components/Principal'
 
 
-
+const MenuLateral = () => {
   return (
    
     <>
@@ -26,16 +22,9 @@ const MenuLateral = ({componentePrincipal}) => {
                         <img className="rounded-circle"  src="https://e7.pngegg.com/pngimages/164/153/png-clipart-donut-the-simpsons-tapped-out-doughnut-homer-simpson-bart-simpson-krusty-the-clown-donut-food-bagel.png" alt="batman " title="batman" width="40" height="40" />
                     </i>
 
-                    <p className="mb-0 mx-3 text-icon-menu">{auth.nombre} {auth.apellido}</p>
+                    <p className="mb-0 mx-3 text-icon-menu">Nombre</p>
                 </div>
 
-                
-                {/* <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/perfil">
-                    <div className="d-flex  align-items-center ">
-                        <i className="icon-menu fa-solid fa-address-card mx-4" title="Perfil"></i>
-                        <p className="text-icon-menu my-0">Perfil</p>
-                    </div>
-                </Link> */}
                 
                 <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/usuarios">
                     <div className="d-flex  align-items-center ">
@@ -72,16 +61,16 @@ const MenuLateral = ({componentePrincipal}) => {
                     </div>
                 </Link>
 
-                <Link className="d-flex justify-content-between  py-2 border-bottom border-dark" href="listarClientes.html">
+                <a className="d-flex justify-content-between  py-2 border-bottom border-dark" href="listarClientes.html">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-book-open mx-4" title="Planes de pago"></i>
                         <p className="text-icon-menu my-0">Catálogo de productos</p>
                     </div>
-                </Link>
+                </a>
 
 
 
-                {/* <hr></hr>
+                <hr></hr>
                 <a className="d-flex justify-content-between  py-2 border-bottom border-dark" href="login.html">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-clipboard-user mx-4" title="Login"></i>
@@ -103,15 +92,13 @@ const MenuLateral = ({componentePrincipal}) => {
                         <i className="icon-menu fa-solid fa-user-lock mx-4" title="Planes de pago"></i>
                         <p className="text-icon-menu my-0">Nuevo pass</p>
                     </div>
-                </a> */}
+                </a>
             
             </ul>
         </aside>
 
 
-        {/* <Principal></Principal> */}
-
-       {componentePrincipal}
+        <Principal></Principal>
 
 
     </section>

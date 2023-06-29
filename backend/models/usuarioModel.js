@@ -7,7 +7,6 @@ const generarId = require('../helpers/generarId.js');
   email
   clave
   estado
-
   nombre
  
 */
@@ -26,6 +25,18 @@ const usuarioSchema = mongoose.Schema({
     required: true,
     min: 8,
     max: 20,
+    trim: true
+  },
+  nombre:{
+    type: String,
+    required: true,
+    max: 60,
+    trim: true
+  },
+  apellido:{
+    type: String,
+    required: true,
+    max: 60,
     trim: true
   },
   estado: {

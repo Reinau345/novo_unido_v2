@@ -78,40 +78,40 @@ const Registrar = () => {
                 </div>
 
                 
-                <a className="d-flex justify-content-start py-2 border-bottom border-dark" href="listarClientes.html">
+                <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/usuarios">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-user-tie mx-4" title="Clientes"></i>
                         <p className="text-icon-menu my-0">Usuario</p>
                     </div>
-                </a>
+                </Link>
 
-                <a className="d-flex justify-content-start py-2 border-bottom border-dark" href="listarClientes.html">
+                <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/listaclientes">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-user mx-4" title="Clientes"></i>
                         <p className="text-icon-menu my-0">Clientes</p>
                     </div>
-                </a>
+                </Link>
 
-                <a className="d-flex justify-content-start py-2 border-bottom border-dark" href="formu.html">
+                <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/listaproductos">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-box-open mx-4" title="Clientes"></i>
                         <p className="text-icon-menu my-0">Productos</p>
                     </div>
-                </a>
+                </Link>
 
-                <a className="d-flex justify-content-start py-2 border-bottom border-dark" href="listarClientes.html">
+                <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/listanegociaciones">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-sack-dollar mx-4" title="Clientes"></i>
                         <p className="text-icon-menu my-0">Ventas</p>
                     </div>
-                </a>
+                </Link>
 
-                <a className="d-flex justify-content-between  py-2 border-bottom border-dark" href="listarClientes.html">
+                <Link className="d-flex justify-content-between  py-2 border-bottom border-dark" to="/admin/listaplandepago">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-money-bill-1-wave mx-4" title="Planes de pago"></i>
                         <p className="text-icon-menu my-0">Planes de pago</p>
                     </div>
-                </a>
+                </Link>
 
                 <a className="d-flex justify-content-between  py-2 border-bottom border-dark" href="listarClientes.html">
                     <div className="d-flex  align-items-center ">
