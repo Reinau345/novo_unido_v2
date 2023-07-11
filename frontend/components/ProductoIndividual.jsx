@@ -28,27 +28,24 @@ const ProductoIndividual = ({ producto }) => {
   if (!producto) {
     return <div>No se ha proporcionado un producto válido</div>;
   }
-    return (
-        <tr >
-            <td>{producto.referencia}</td>
-            <td>{producto.nombre}</td>
-            <td>{producto.precioBase}</td>
-            <td>{producto.imagen}</td>
-            <td>{producto.descripcion}</td>
-            <td>
-            <Link to={`/admin/editarproducto/${producto._id}`}>
-                    <img src={"https://cdn-icons-png.flaticon.com/128/565/565722.png"} alt="icono_editar" width="25px" height="25px" />
-                </Link>
-            </td>
-            <td>
-                <Link>
-                    <button onClick={eliminarproducto}>
-                        <img src={"https://cdn-icons-png.flaticon.com/128/565/565491.png"} alt="icono_editar" width="25px" height="25px" />
-                    </button>
-                </Link>
-            </td>
-        </tr>
-    );
+  return (
+    <tr >
+      <td>{producto.referencia}</td>
+      <td>{producto.nombre}</td>
+      <td>{producto.cantidad}</td>
+      <td>{producto.precioBase}</td>
+      <td>{producto.imagen}</td>
+      <td style={{ textAlign: 'center' }}>
+        <Link to={`/admin/editarproducto/${producto._id}`}>
+          <button className="btn btn-warning" style={{ marginRight: 10, color: 'white' }}><i className="fa fa-pencil" style={{ color: 'black' }}></i> | Editar</button>
+        </Link>
+
+        <Link onClick={eliminarproducto}>
+          <button className="btn btn-danger"><i className="fa fa-trash" style={{ color: 'black' }}></i> | Eliminar</button>
+        </Link>
+      </td>
+    </tr>
+  );
 };
 
 export default ProductoIndividual;

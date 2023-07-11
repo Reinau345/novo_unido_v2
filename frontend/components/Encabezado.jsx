@@ -11,7 +11,7 @@ const Encabezado = () => {
                 <div className="container-fluid mx-sm-1 mx-1 mx-lg-5">
 
                     <Link className="navbar-brand" to="index.html">
-                        <img id="imgLogo" src={"https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg"} alt="Bootstrap" width="45" height="45" />
+                        <h2 style={{color:'white'}}>NOVOMATIC</h2>
                     </Link>
                     <button className="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
@@ -21,7 +21,6 @@ const Encabezado = () => {
                             <li className="nav-item hover-header py-2 ">
                                 <Link className="text-decoration-none text-white " to="/" onClick={cerrarSesion}>
                                     <i className="demo-ico fa-solid fa-person-walking-dashed-line-arrow-right"></i>
-                                    Cerrar Sesión
                                 </Link>
                             </li>
                         </ul>

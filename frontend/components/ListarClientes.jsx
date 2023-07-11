@@ -34,23 +34,26 @@ const ListarClientes = () => {
     return (
       cliente.cedula.toString().includes(busqueda) ||
       cliente.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-      cliente.direccion.toLowerCase().includes(busqueda.toLowerCase()) ||
-      cliente.telefono.toString().includes(busqueda) ||
-      cliente.email.toLowerCase().includes(busqueda.toLowerCase()) ||
-      cliente.nombreCodeudor.toLowerCase().includes(busqueda.toLowerCase()) ||
-      cliente.cedulaCodeudor.toString().includes(busqueda) ||
-      cliente.telefonoCodeudor.toString().includes(busqueda) ||
-      cliente.direccionCodeudor.toLowerCase().includes(busqueda.toLowerCase()) ||
-      cliente.grupo.toLowerCase().includes(busqueda.toLowerCase()) ||
-      cliente.estado.toLowerCase().includes(busqueda.toLowerCase())
+      cliente.grupo.toLowerCase().includes(busqueda.toLowerCase())
     );
   });
 
-  const listaclientes = dataclientes && filteredClientes.map(cliente => {
-    return (
-      <ClienteIndividual key={cliente._id} cliente={cliente} />
+  let listaclientes;
+  if (filteredClientes.length === 0) {
+    listaclientes = (
+      <tr>
+        <td colSpan="12">
+          <div>
+            <h5 style={{ textAlign: 'center' }}>No se encontraron resultados</h5>
+          </div>
+        </td>
+      </tr>
     );
-  });
+  } else {
+    listaclientes = filteredClientes.map(cliente => (
+      <ClienteIndividual key={cliente._id} cliente={cliente} />
+    ));
+  }
 
   return (
     <>
@@ -59,7 +62,7 @@ const ListarClientes = () => {
           <ul className="d-flex flex-column justify-content-start w-100 px-0 my-0 mx-0">
             <div className="d-flex justify-content-start align-items-center px-3 py-2">
               <i className="py-3">
-                <img className="rounded-circle" src="https://e7.pngegg.com/pngimages/164/153/png-clipart-donut-the-simpsons-tapped-out-doughnut-homer-simpson-bart-simpson-krusty-the-clown-donut-food-bagel.png" alt="batman " title="batman" width="40" height="40" />
+                <img className="rounded-circle" src="https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg" alt="logo" title="logo" width="35" height="35" />
               </i>
               <p className="mb-0 mx-3 text-icon-menu">{auth.nombre} {auth.apellido}</p>
             </div>
@@ -93,56 +96,50 @@ const ListarClientes = () => {
                 <p className="text-icon-menu my-0">Planes de pago</p>
               </div>
             </Link>
-            {/* <Link className="d-flex justify-content-between py-2 border-bottom border-dark" to="listar.html">
-              <div className="d-flex align-items-center">
-                <i className="icon-menu fa-solid fa-book-open mx-4" title="Catálogo"></i>
-                <p className="text-icon-menu my-0">Catálogo de productos</p>
-              </div>
-            </Link> */}
           </ul>
         </aside>
 
         <main className="d-flex flex-column">
-          <h1 className="text-center py-0 pt-5 my-0">LISTADO CLIENTES</h1>
           <div className="contenedor-tabla mx-3">
+            <h2 className="py-0 pt-5 my-0">LISTADO CLIENTES</h2>
             <div className="contenerdor-boton-buscar my-4">
               <div className="row">
                 <div className="col-sm-12 col-md-6 blo1 my-1">
                   <Link className="text-center" to="/admin/crearcliente">
-                    <button type="submit" className="btn btn-dark px-5 btn-styles">Agregar nuevo cliente</button>
+                    <button type="submit" className="btn btn-dark px-3 btn-styles">Agregar nuevo cliente</button>
                   </Link>
                 </div>
 
                 <div className="col-sm-12 col-md-6 blo2 my-1">
                   <form action="" className="div-search">
-                    <input type="text" className="search-style form-control rounded-pill" value={busqueda} onChange={searchData}
-                      placeholder="Search" />
+                    <input type="text" className="search-style form-control rounded-pill" value={busqueda} onChange={searchData} placeholder="Buscar" />
                   </form>
                 </div>
               </div>
             </div>
-              <table className="table table-hover mb-5">
+
+            <div className="table-container">
+              <table className="table table-hover mb-5 border">
                 <thead className="table-secondary">
                   <tr>
                     <th scope="col">Cédula</th>
                     <th scope="col">Nombre</th>
-                    <th scope="col">Dirección</th>
                     <th scope="col">Tel</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Nombre Cod</th>
-                    <th scope="col">Cédula Cod</th>
-                    <th scope="col">Teléfono Cod</th>
-                    <th scope="col">Dirección Cod</th>
                     <th scope="col">Grupo</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Editar</th>
-                    <th scope="col">Eliminar</th>
+                    <th scope="col" style={{ textAlign: 'center' }}>
+                      Acciones
+                    </th>
                   </tr>
                 </thead>
-                <tbody>
-                  {listaclientes}
-                </tbody>
+                <tbody>{listaclientes}</tbody>
               </table>
+            </div>
+            {/* <nav className="d-flex justify-content-center">
+              <ul className="pagination">
+                {paginador}
+              </ul>
+            </nav> */}
           </div>
         </main>
       </section>

@@ -17,12 +17,16 @@ const schemaProducto = new Schema({
         required: [true, 'Este campo es obligatorio'],
         trim: true
     },
+    cantidad: {
+        type: Number,
+        required: [true, 'Este campo es obligatorio'],
+        trim: true
+    },
     precioBase: {
         type: Number,
         required: [true, 'Este campo es obligatorio'],
         trim: true
     },
-    
     imagen: {
         type: String,
         required: [true, 'Este campo es obligatorio'],
@@ -32,7 +36,7 @@ const schemaProducto = new Schema({
         type: String,
         required: [true, 'Este campo es obligatorio'],
         trim: true
-    },
+    }
 })
 
 const ModeloProducto = mongoose.model('Producto', schemaProducto)

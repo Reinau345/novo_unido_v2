@@ -12,7 +12,7 @@ const {
     actualizarPerfil,
     actualizarPassword
 } = require('../controllers/usuarioController.js');
-const checkAuth = require('../middlewares/authMiddleware.js');
+const checkAuth = require('../middleware/authMiddleware.js');
 
 router.get("/confirmar/:token", confirmar);
 router.post("/login", autenticar);
