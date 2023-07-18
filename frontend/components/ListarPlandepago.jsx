@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
-import PlandePagoIndividual from './PlandePagoIndividual';
+import PlandePagoIndividual from '../components/PlandepagoIndividual';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
 
@@ -39,11 +39,19 @@ const ListarPlandepago = () => {
         );
     });
 
-    const listaPlandePagos = dataplandePago && filteredPlandePago.map(plandePago => {
-        return (
+    const listaPlandePagos = filteredPlandePago.length > 0 ? (
+        filteredPlandePago.map(plandePago => (
             <PlandePagoIndividual key={plandePago._id} plandePago={plandePago} />
-        );
-    });
+        ))
+    ) : (
+        <tr>
+            <td colSpan="12">
+                <div>
+                    <h5 style={{ textAlign: 'center' }}>No se encontraron resultados</h5>
+                </div>
+            </td>
+        </tr>
+    );
 
     return (
         <>
@@ -52,7 +60,7 @@ const ListarPlandepago = () => {
                     <ul className="d-flex flex-column justify-content-start w-100 px-0 my-0 mx-0">
                         <div className="d-flex justify-content-start align-items-center px-3 py-2">
                             <i className="py-3">
-                                <img className="rounded-circle" src="https://e7.pngegg.com/pngimages/164/153/png-clipart-donut-the-simpsons-tapped-out-doughnut-homer-simpson-bart-simpson-krusty-the-clown-donut-food-bagel.png" alt="batman" title="batman" width="40" height="40" />
+                                <img className="rounded-circle" src="https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg" alt="logo" title="logo" width="35" height="35" />
                             </i>
                             <p className="mb-0 mx-3 text-icon-menu">{auth.nombre} {auth.apellido}</p>
                         </div>
@@ -91,7 +99,6 @@ const ListarPlandepago = () => {
                                 <p className="text-icon-menu my-0">Planes de pago</p>
                             </div>
                         </Link>
-
                     </ul>
                 </aside> */}
 
@@ -101,11 +108,12 @@ const ListarPlandepago = () => {
                 <main className="d-flex flex-column  border border-primary m-4 rounded">
                     <h1 className="text-center py-0 pt-5 my-0">LISTADO PLANES DE PAGO</h1>
                     <div className="contenedor-tabla mx-3">
+                        <h2 className="py-0 pt-5 my-0">LISTADO PLANES DE PAGO</h2>
                         <div className="contenerdor-boton-buscar my-4">
                             <div className="row">
                                 <div className="col-sm-12 col-md-6 blo1 my-1">
                                     <Link className="text-center" to="/admin/crearplandepago">
-                                        <button type="submit" className="btn btn-dark px-5 btn-styles">Agregar nuevo plan de pago</button>
+                                        <button type="submit" className="btn btn-dark px-3 btn-styles">Agregar nuevo plan de pago</button>
                                     </Link>
                                 </div>
 
@@ -118,14 +126,13 @@ const ListarPlandepago = () => {
                             </div>
                         </div>
 
-                        <table className="table table-hover mb-5">
+                        <table className="table table-hover mb-5 border">
                             <thead className="table-secondary">
                                 <tr>
                                     <th scope="col">Fecha Pago</th>
                                     <th scope="col">Valor</th>
                                     <th scope="col">Cumplió</th>
-                                    <th scope="col">Editar</th>
-                                    <th scope="col">Eliminar</th>
+                                    <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>

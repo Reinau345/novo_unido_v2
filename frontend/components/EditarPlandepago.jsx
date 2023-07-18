@@ -73,7 +73,7 @@ const Editarplandepago = () => {
                     <ul className="d-flex flex-column justify-content-start w-100 px-0 my-0 mx-0">
                         <div className="d-flex justify-content-start align-items-center px-3 py-2">
                             <i className="py-3">
-                                <img className="rounded-circle" src="https://e7.pngegg.com/pngimages/164/153/png-clipart-donut-the-simpsons-tapped-out-doughnut-homer-simpson-bart-simpson-krusty-the-clown-donut-food-bagel.png" alt="batman " title="batman" width="40" height="40" />
+                            <img className="rounded-circle" src="https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg" alt="logo" title="logo" width="35" height="35" />
                             </i>
                             <p className="mb-0 mx-3 text-icon-menu">{auth.nombre} {auth.apellido}</p>
                         </div>

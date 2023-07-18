@@ -63,8 +63,6 @@ function App() {
             <Route path='cambiar-password' element={<CambiarPasswordCarga/>}/>
             <Route path='usuarios' element={<UsuariosBotones/>}/>
 
-            
-
             {/* Clientes */}
             <Route path="listaclientes" element={<ListarClientes />}></Route>
             <Route path="crearcliente" element={<FormCrearCliente />}></Route>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import NegociacionIndividual from './NegociacionIndividual';
-// import useAuth from '../hooks/useAuth'
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
 
@@ -32,27 +31,27 @@ const ListarNegociaciones = () => {
         setBusqueda(event.target.value);
     }
 
-    const filteredNegociaciones = datanegociaciones.filter((negociacion) => {
-        const busquedaLowerCase = busqueda.toLowerCase();
 
+    const filteredNegociaciones = datanegociaciones.filter((negociacion) => {
         return (
-            (negociacion.anticipo !== null && negociacion.anticipo.toString().includes(busqueda)) ||
-            (negociacion.tasa !== null && negociacion.tasa.toString().includes(busqueda)) ||
-            (negociacion.interes !== null && negociacion.interes.toString().includes(busqueda)) ||
-            (negociacion.numCuotas !== null && negociacion.numCuotas.toString().includes(busqueda)) ||
-            (negociacion.numFactura !== null && negociacion.numFactura.toLowerCase().includes(busquedaLowerCase)) ||
-            (negociacion.tipoMaquina !== null && negociacion.tipoMaquina.toLowerCase().includes(busquedaLowerCase)) ||
-            (negociacion.cantidad !== null && negociacion.cantidad.toString().includes(busqueda)) ||
-            (negociacion.referencia !== null && negociacion.referencia.toLowerCase().includes(busquedaLowerCase)) ||
-            (negociacion.fechaFacturacion !== null && negociacion.fechaFacturacion.toString().includes(busqueda)) ||
-            (negociacion.cliente !== null && negociacion.cliente.toLowerCase().includes(busquedaLowerCase))
+            negociacion.numFactura && negociacion.numFactura.toLowerCase().includes(busqueda.toLowerCase()) ||
+            negociacion.cliente && negociacion.cliente.toString().includes(busqueda)
         );
-    });
-    const ListarNegociaciones = datanegociaciones && filteredNegociaciones.map((negociacion) => {
-        return (
+    })
+
+    const ListarNegociaciones = filteredNegociaciones.length > 0 ? (
+        filteredNegociaciones.map((negociacion) => (
             <NegociacionIndividual key={negociacion._id} negociacion={negociacion} setdatanegociacion={setdatanegociacion} />
-        );
-    });
+        ))
+    ) : (
+        <tr>
+            <td colSpan="12">
+                <div>
+                    <h5 style={{ textAlign: 'center' }}>No se encontraron resultados</h5>
+                </div>
+            </td>
+        </tr>
+    );
 
     return (
         <>
@@ -61,7 +60,7 @@ const ListarNegociaciones = () => {
                     <ul className="d-flex flex-column justify-content-start w-100 px-0 my-0 mx-0">
                         <div className="d-flex justify-content-start align-items-center px-3 py-2">
                             <i className="py-3">
-                                <img className="rounded-circle" src="https://e7.pngegg.com/pngimages/164/153/png-clipart-donut-the-simpsons-tapped-out-doughnut-homer-simpson-bart-simpson-krusty-the-clown-donut-food-bagel.png" alt="batman" title="batman" width="40" height="40" />
+                                <img className="rounded-circle" src="https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg" alt="logo" title="logo" width="35" height="35" />
                             </i>
                             <p className="mb-0 mx-3 text-icon-menu">{auth.nombre} {auth.apellido}</p>
                         </div>
@@ -110,44 +109,42 @@ const ListarNegociaciones = () => {
                 <main className="d-flex flex-column  border border-primary m-4 rounded">
                     <h1 className="text-center py-0 pt-5 my-0">LISTADO NEGOCIACIONES</h1>
                     <div className="contenedor-tabla mx-3">
+                        <h2 className="py-0 pt-5 my-0">LISTADO NEGOCIACIONES</h2>
+
                         <div className="contenerdor-boton-buscar my-4">
                             <div className="row">
                                 <div className="col-sm-12 col-md-6 blo1 my-1">
                                     <Link className="text-center" to="/admin/crearnegociacion">
-                                        <button type="submit" className="btn btn-dark px-5 btn-styles">Agregar nueva negociación</button>
+                                        <button type="submit" className="btn btn-dark px-3 btn-styles">Agregar nueva negociación</button>
                                     </Link>
                                 </div>
 
                                 <div className="col-sm-12 col-md-6 blo2 my-1">
                                     <form action="" className="div-search">
                                         <input type="text" className="search-style form-control rounded-pill" value={busqueda} onChange={searchData}
-                                            placeholder="Search" />
+                                            placeholder="Buscar" />
                                     </form>
                                 </div>
                             </div>
                         </div>
-
-                        <table className="table table-hover mb-5">
-                            <thead className="table-secondary">
-                                <tr>
-                                    <th scope="col">Anticipo</th>
-                                    <th scope="col">Tasa</th>
-                                    <th scope="col">Interes</th>
-                                    <th scope="col">Número de Cuotas</th>
-                                    <th scope="col">Número de Factura</th>
-                                    <th scope="col">Tipo de Maquina</th>
-                                    <th scope="col">Cantidad</th>
-                                    <th scope="col">Referencia</th>
-                                    <th scope="col">Fecha de Facturacion</th>
-                                    <th scope="col">Cliente</th>
-                                    <th scope="col">Editar</th>
-                                    <th scope="col">Eliminar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {ListarNegociaciones}
-                            </tbody>
-                        </table>
+                        <div className="table-container">
+                            <table className="table table-hover mb-5 border">
+                                <thead className="table-secondary">
+                                    <tr>
+                                        <th scope="col">Cliente</th>
+                                        <th scope="col">Factura</th>
+                                        <th scope="col">Productos</th>
+                                        <th scope="col">Cuotas</th>
+                                        <th scope="col">Fecha Facturación</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {ListarNegociaciones}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </main>
             </section>

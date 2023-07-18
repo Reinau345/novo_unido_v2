@@ -1,23 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { FaTimes } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth'
 
 import MenuLateral from './MenuLateral';
 
 const CrearNegociacion = () => {
+    const navigate = useNavigate();
+
     const [dataclientes, setDataClientes] = useState([]);
     const [selectedCliente, setSelectedCliente] = useState('');
-    const [anticipo, setAnticipo] = useState('');
-    const [tasa, setTasa] = useState('');
-    const [interes, setInteres] = useState('');
-    const [numCuotas, setNumCuotas] = useState('');
     const [numFactura, setNumFactura] = useState('');
     const [dataproductos, setDataProductos] = useState([]);
-    const [selectedProducto, setSelectedProducto] = useState('');
-    const [cantidad, setCantidad] = useState('');
-    const [referencia, setReferencia] = useState('');
+    const [selectedProductos, setSelectedProductos] = useState([]);
+    const [cantidad, setCantidad] = useState([]);
+    const [precioBase, setPrecioBase] = useState([]);
+    const [precioVenta, setPrecioVenta] = useState([]);
+    const [numCuotas, setNumCuotas] = useState('');
+    const [tasa, setTasa] = useState('');
+    const [anticipo, setAnticipo] = useState('');
+    const [interes, setInteres] = useState('');
     const [fechaFacturacion, setFechaFacturacion] = useState('');
+    const [total, setTotal] = useState('');
     const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+
+    const handleCancelar = () => {
+        navigate(-1); // Regresa a la ubicación anterior
+    };
     const { auth } = useAuth()
 
     useEffect(() => {
@@ -42,37 +51,73 @@ const CrearNegociacion = () => {
             });
     }, []);
 
-    const agregarNegociacion = async () => {
+    function validarNumericos(event) {
+        const charCode = event.keyCode || event.which;
+        const char = String.fromCharCode(charCode);
 
-        // Verificar que todos los campos sean llenados
-        if (
-            anticipo === '' ||
-            tasa === '' ||
-            interes === '' ||
-            numCuotas === '' ||
-            numFactura === '' ||
-            selectedProducto === '' ||
-            cantidad === '' ||
-            referencia === '' ||
-            fechaFacturacion === '' ||
-            selectedCliente === '' ||
-            productosSeleccionados === ''
-        ) {
-            console.error('Todos los campos son obligatorios');
+        // Permitir la tecla de retroceso (backspace) y la tecla de suprimir (delete)
+        if (charCode === 8 || charCode === 46 || charCode === 9) {
             return;
         }
 
+        // Verificar si el carácter no es un número del 0 al 9 ni el punto decimal
+        if (/[\D/.-]/.test(char)) {
+            event.preventDefault();
+        }
+
+        // Verificar que no haya más de un punto decimal
+        if (char === '.' && event.target.value.includes('.')) {
+            event.preventDefault();
+        }
+    }
+
+    //Eliminar los productos del listado de comprados
+    function eliminarProducto(index) {
+        const productosActualizados = [...productosSeleccionados];
+        productosActualizados.splice(index, 1);
+        setProductosSeleccionados(productosActualizados);
+    }
+
+    const agregarNegociacion = async () => {
+
+        // Verificar que todos los campos sean llenados
+        // if (
+        //     selectedCliente === '' ||
+        //     numFactura === '' ||
+        //     selectedProductos.length === 0 ||
+        //     cantidad === '' ||
+        //     precioBase === '' ||
+        //     precioVenta === '' ||
+        //     numCuotas === '' ||
+        //     tasa === '' ||
+        //     anticipo === '' ||
+        //     interes === '' ||
+        //     fechaFacturacion === '' ||
+        //     total === '' ||
+        //     productosSeleccionados.length === 0
+        // ) {
+        //     console.error('Todos los campos son obligatorios');
+        //     return;
+        // }
+
+        const tipoMaquinaArray = productosSeleccionados.map((producto) => producto.tipoMaquina);
+        const cantidadArray = productosSeleccionados.map((producto) => Number(producto.cantidad));
+        const precioBaseArray = productosSeleccionados.map((producto) => Number(producto.precioBase));
+        const precioVentaArray = productosSeleccionados.map((producto) => Number(producto.precioVenta));
+
         const nuevaNegociacion = {
-            anticipo,
-            tasa,
-            interes,
-            numCuotas,
-            numFactura,
-            tipoMaquina: selectedProducto,
-            cantidad,
-            referencia,
-            fechaFacturacion,
             cliente: selectedCliente,
+            numFactura,
+            tipoMaquina: tipoMaquinaArray,
+            cantidad: cantidadArray,
+            precioBase: precioBaseArray,
+            precioVenta: precioVentaArray,
+            numCuotas,
+            tasa,
+            anticipo,
+            interes,
+            fechaFacturacion,
+            total,
             productos: productosSeleccionados, // Agregar productos seleccionados
         };
 
@@ -97,19 +142,47 @@ const CrearNegociacion = () => {
         }
     };
 
+    const agregarProducto = () => {
+        if (selectedProductos.length === 0) {
+            console.log('Debe seleccionar al menos un producto');
+            return;
+        }
 
-    // function agregarProducto() {
-    //     const producto = {
-    //         tipoMaquina: selectedProducto,
-    //         cantidad: cantidad,
-    //         referencia: referencia,
-    //     };
+        const obtenerPrecioBase = (producto) => {
+            const productoEncontrado = dataproductos.find((p) => p.nombre === producto);
+            return productoEncontrado ? productoEncontrado.precioBase : '';
+        };
 
-    //     setProductosSeleccionados([...productosSeleccionados, producto]);
-    //     setSelectedProducto('');
-    //     setCantidad('');
-    //     setReferencia('');
-    // }
+        const nuevosProductos = selectedProductos.map((producto, index) => ({
+            tipoMaquina: producto,
+            cantidad: Number(cantidad[index]), // Convertir la cadena a número
+            precioBase: Number(obtenerPrecioBase(producto)),
+            precioVenta: Number(precioVenta[index]),
+        }));
+
+        setCantidad(prevCantidad => [...prevCantidad, ...nuevosCantidad]);
+        setPrecioBase(prevPrecioBase => [...prevPrecioBase, ...nuevosPreciosBase]);
+        setPrecioVenta(prevPrecioVenta => [...prevPrecioVenta, ...nuevosPreciosVenta]);
+
+        const nuevosCantidad = nuevosProductos.map((producto) => producto.cantidad);
+        const nuevosPreciosBase = nuevosProductos.map((producto) => producto.precioBase); // Obtener el array de precios base
+        const nuevosPreciosVenta = nuevosProductos.map((producto) => producto.precioVenta);
+
+        setProductosSeleccionados((prevProductos) => {
+            const nuevosProductosSeleccionados = [...prevProductos, ...nuevosProductos];
+            console.log(nuevosProductosSeleccionados);
+            return nuevosProductosSeleccionados;
+        });
+
+        // Almacenar los precios base en un estado separado
+        setPrecioBase(prevPreciosBase => [...prevPreciosBase, ...nuevosPreciosBase]);
+    };
+
+    const limpiarCampos = () => {
+        setSelectedProductos([]);
+        setCantidad([]);
+        setPrecioVenta([]);
+    };
 
     return (
         <>
@@ -118,7 +191,7 @@ const CrearNegociacion = () => {
                     <ul className="d-flex flex-column justify-content-start w-100 px-0 my-0 mx-0">
                         <div className="d-flex justify-content-start align-items-center px-3 py-2">
                             <i className="py-3">
-                                <img className="rounded-circle" src="https://e7.pngegg.com/pngimages/164/153/png-clipart-donut-the-simpsons-tapped-out-doughnut-homer-simpson-bart-simpson-krusty-the-clown-donut-food-bagel.png" alt="batman " title="batman" width="40" height="40" />
+                                <img className="rounded-circle" src="https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg" alt="logo" title="logo" width="35" height="35" />
                             </i>
                             <p className="mb-0 mx-3 text-icon-menu">{auth.nombre} {auth.apellido}</p>
                         </div>
@@ -170,58 +243,6 @@ const CrearNegociacion = () => {
                         <div className="contenedores d-flex justify-content-center flex-lg-row flex-column flex-sm-column mx-5 gap-5">
                             <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Anticipo</label>
-                                    <input type="number" className="form-control" id="anticipo" aria-describedby="emailHelp" placeholder="Anticipo" required value={anticipo} onChange={(e) => { setAnticipo(e.target.value) }} />
-                                </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Tasa</label>
-                                    <input type="number" className="form-control" placeholder="Tasa" required value={tasa} onChange={(e) => { setTasa(e.target.value) }} />
-                                </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Interes</label>
-                                    <input type="number" className="form-control" placeholder="Interes" required value={interes} onChange={(e) => { setInteres(e.target.value) }} />
-                                </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Número de Cuotas</label>
-                                    <select className="form-select" required value={numCuotas} onChange={(e) => { setNumCuotas(e.target.value) }}>
-                                        {Array.from({ length: 24 }, (_, index) => (
-                                            <option key={index + 1} value={index + 1}>{index + 1}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Número de Factura</label>
-                                    <input type="text" className="form-control" placeholder="Número de Factura" required value={numFactura} onChange={(e) => { setNumFactura(e.target.value) }} />
-                                </div>
-                            </div>
-                            <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Tipo de Máquina</label>
-                                    <select id="producto" className="form-select" required value={selectedProducto} onChange={(e) => setSelectedProducto(e.target.value)}>
-                                        <option value="">Seleccionar producto</option>
-                                        {dataproductos.map(producto => (
-                                            <option key={producto.codigo} value={producto.nombre}>
-                                                {producto.nombre}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Cantidad</label>
-                                    <input type="number" className="form-control" placeholder="Cantidad" required value={cantidad} onChange={(e) => { setCantidad(e.target.value) }} />
-                                </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Referencia</label>
-                                    <input type="text" className="form-control" placeholder="Referencia" required value={referencia} onChange={(e) => { setReferencia(e.target.value) }} />
-                                </div>
-                                {/* <br />
-                                <button type="submit" className="btn btn-dark w-100 btn-styles" id="producto" required value={selectedProducto} onChange={e => setSelectedProducto(e.target.value)} onClick={agregarProducto}>Agregar</button>
-                                <br /> */}
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Fecha de la Facturación</label>
-                                    <input type="date" className="form-control" placeholder="Fecha de la Facturación" required value={fechaFacturacion} onChange={(e) => { setFechaFacturacion(e.target.value) }} />
-                                </div>
-                                <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Cliente</label>
                                     <select id="cliente" className="form-select" value={selectedCliente} onChange={(e) => setSelectedCliente(e.target.value)}>
                                         <option value="">Seleccionar cliente</option>
@@ -231,6 +252,127 @@ const CrearNegociacion = () => {
                                             </option>
                                         ))}
                                     </select>
+                                </div>
+                                <div className="mb-3 w-100">
+                                    <label className="form-label fw-bold">Producto</label>
+                                    <select
+                                        id="producto"
+                                        className="form-select"
+                                        required
+                                        value={selectedProductos.join(',')} // Convertir el array en una cadena separada por comas
+                                        onChange={(e) =>
+                                            setSelectedProductos(
+                                                Array.from(e.target.selectedOptions, (option) => option.value)
+                                            )}>
+                                        <option value="">Seleccionar producto</option>
+                                        {dataproductos.map((producto) => (
+                                            <option key={producto.codigo} value={producto.nombre}>
+                                                {producto.nombre}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="mb-3 w-100">
+                                    <label className="form-label fw-bold">Precio venta</label>
+                                    {selectedProductos.length > 0 ? (
+                                        selectedProductos.map((producto, index) => (
+                                            <input
+                                                key={index}
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Precio venta"
+                                                required
+                                                onKeyDown={validarNumericos}
+                                                value={precioVenta[index] || ''}
+                                                onChange={(e) => {
+                                                    const nuevosValores = [...precioVenta];
+                                                    nuevosValores[index] = e.target.value;
+                                                    setPrecioVenta(nuevosValores);
+                                                }}
+                                            />
+                                        ))
+                                    ) : (
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Precio venta"
+                                            disabled
+                                        />
+                                    )}
+                                </div>
+                                <div className="mb-3 w-100">
+                                    <label className="form-label fw-bold">Cantidad Cuotas</label>
+                                    <select className="form-select" required value={numCuotas} onChange={(e) => { setNumCuotas(e.target.value) }}>
+                                        <option value="">Seleccionar</option>
+                                        {Array.from({ length: 24 }, (_, index) => (
+                                            <option key={index + 1} value={index + 1}>{index + 1}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="mb-3 w-100">
+                                    <label className="form-label fw-bold">Anticipo</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Porcentaje anticipo"
+                                        required
+                                        value={anticipo}
+                                        onChange={(e) => { setAnticipo(e.target.value) }}
+                                    />
+                                </div>
+                                <div className="mb-3 w-100">
+                                    <label className="form-label fw-bold">Fecha Facturación</label>
+                                    <input type="date" className="form-control" placeholder="Fecha Facturación" required value={fechaFacturacion} onChange={(e) => { setFechaFacturacion(e.target.value) }} />
+                                </div>
+                            </div>
+                            <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
+                                <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
+                                    <div className="mb-3 w-100">
+                                        <label className="form-label fw-bold">Factura</label>
+                                        <input type="text" className="form-control" placeholder="Número de Factura" required value={numFactura} onChange={(e) => { setNumFactura(e.target.value) }} />
+                                    </div>
+
+                                    <div className="mb-3 w-100">
+                                        <label className="form-label fw-bold">Cantidad</label>
+                                        {selectedProductos.length > 0 ? (
+                                            selectedProductos.map((producto, index) => (
+                                                <input
+                                                    key={index}
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Cantidad"
+                                                    required
+                                                    onKeyDown={validarNumericos}
+                                                    value={cantidad[index] || ''}
+                                                    onChange={(e) => {
+                                                        const nuevosValores = [...cantidad];
+                                                        nuevosValores[index] = e.target.value;
+                                                        setCantidad(nuevosValores);
+                                                    }}
+                                                />
+                                            ))
+                                        ) : (
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="Cantidad"
+                                                disabled
+                                            />
+                                        )}
+                                    </div>
+
+                                    <div className="mb-3 w-100">
+                                        <button type="button" className="btn btn-dark btn-styles" id="producto" required value={selectedProductos} onChange={e => setSelectedProductos(e.target.value)} onClick={agregarProducto} style={{ marginRight: 10 }}>Agregar</button>
+                                        <button type="button" className="btn btn-secondary btn-styles" onClick={limpiarCampos}>Limpiar</button>
+                                    </div>
+                                    <div className="mb-3 w-100">
+                                        <label className="form-label fw-bold">Tasa</label>
+                                        <input type="text" className="form-control" placeholder="Porcentaje tasa" required value={tasa} onChange={(e) => { setTasa(e.target.value) }} />
+                                    </div>
+                                    <div className="mb-3 w-100">
+                                        <label className="form-label fw-bold">Interes</label>
+                                        <input type="text" className="form-control" placeholder="Porcentaje interes" required value={interes} onChange={(e) => { setInteres(e.target.value) }} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -242,29 +384,40 @@ const CrearNegociacion = () => {
                             </div>
                             <div className="d-flex justify-content-center w-100">
                                 <div className="div_botones me-sm-0 w-100">
-                                    <button type="reset" className="btn btn-dark w-100 btn-styles">Limpiar</button>
+                                    <button type="button" className="btn btn-dark w-100 btn-styles" onClick={handleCancelar}>Cancelar</button>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    {/* <table className="table mt-3">
-                        <thead>
-                            <tr>
-                                <th>Tipo de Máquina</th>
-                                <th>Cantidad</th>
-                                <th>Referencia</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {productosSeleccionados.map((producto, index) => (
-                                <tr key={index}>
-                                    <td>{producto.tipoMaquina}</td>
-                                    <td>{producto.cantidad}</td>
-                                    <td>{producto.referencia}</td>
+                    <br />
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                        <table className="table table-hover mb-5 border" style={{ maxWidth: 800 }}>
+                            <thead className="table-secondary">
+                                <tr>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Precio Base</th>
+                                    <th scope="col">Precio Venta</th>
+                                    <th scope="col">Acciones</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table> */}
+                            </thead>
+                            <tbody>
+                                {productosSeleccionados.map((producto, index) => (
+                                    <tr key={producto.id || index}>
+                                        <td>{producto.tipoMaquina}</td>
+                                        <td>{producto.cantidad}</td>
+                                        <td>{producto.precioBase}</td>
+                                        <td>{producto.precioVenta}</td>
+                                        <td>
+                                            <Link>
+                                                <FaTimes size={35} style={{ color: 'black' }} onClick={() => eliminarProducto(index)} />
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </main>
             </section>
         </>

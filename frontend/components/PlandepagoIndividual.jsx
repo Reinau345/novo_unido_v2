@@ -34,17 +34,13 @@ const PlandepagoIndividual = ({ plandePago }) => {
             <td>{plandePago.fechaPago}</td>
             <td>{plandePago.valorPago}</td>
             <td>{plandePago.cumplioPago}</td>
-
-            <td>
+            <td style={{ textAlign: 'center' }}>
                 <Link to={`/admin/editarplandepago/${plandePago._id}`}>
-                    <img src={"https://cdn-icons-png.flaticon.com/128/565/565722.png"} alt="icono_editar" width="25px" height="25px" />
+                    <button className="btn btn-warning" style={{ marginRight: 10, color: 'white' }}><i className="fa fa-pencil" style={{ color: 'black' }}></i> | Editar</button>
                 </Link>
-            </td>
-            <td>
-                <Link >
-                    <button onClick={eliminarPlandepago}>
-                        <img src={"https://cdn-icons-png.flaticon.com/128/565/565491.png"} alt="icono_editar" width="25px" height="25px" />
-                    </button>
+
+                <Link onClick={eliminarPlandepago}>
+                        <button className="btn btn-danger"><i className="fa fa-trash" style={{ color: 'black' }}></i> | Eliminar</button>
                 </Link>
             </td>
         </tr>

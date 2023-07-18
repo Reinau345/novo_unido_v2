@@ -1,17 +1,58 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
 
 const EditarProducto = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     //Hooks
     const [referencia, setReferencia] = useState('')
     const [nombre, setNombre] = useState('')
+    const [cantidad, setCantidad] = useState('')
     const [precioBase, setPrecioBase] = useState('')
     const [imagen, setImagen] = useState('')
     const [descripcion, setDescripcion] = useState('')
     const { auth } = useAuth()
+
+    const handleCancelar = () => {
+        navigate(-1); // Regresa a la ubicación anterior
+    };
+
+    function validarTexto(event) {
+        const charCode = event.keyCode || event.which;
+        const char = String.fromCharCode(charCode);
+
+        // Permitir la tecla de retroceso (backspace) y la tecla de suprimir (delete)
+        if (charCode === 8 || charCode === 46 || charCode === 9 || char === ' ') {
+            return;
+        }
+
+        // Verificar si el carácter es un número o un carácter especial
+        if (/[0-9\W_]/.test(char)) {
+            event.preventDefault();
+        }
+    }
+
+    function validarNumericos(event) {
+        const charCode = event.keyCode || event.which;
+        const char = String.fromCharCode(charCode);
+
+        // Permitir la tecla de retroceso (backspace) y la tecla de suprimir (delete)
+        if (charCode === 8 || charCode === 46 || charCode === 9) {
+            return;
+        }
+
+        // Verificar si el carácter no es un número del 0 al 9 ni el punto decimal
+        if (/[\D/.-]/.test(char)) {
+            event.preventDefault();
+        }
+
+        // Verificar que no haya más de un punto decimal
+        if (char === '.' && event.target.value.includes('.')) {
+            event.preventDefault();
+        }
+    }
 
     useEffect(() => {
         fetch(`http://localhost:4000/api/producto/obtenerdataproducto/${id}`)
@@ -24,6 +65,7 @@ const EditarProducto = () => {
             .then((dataproducto) => {
                 setReferencia(dataproducto.referencia)
                 setNombre(dataproducto.nombre)
+                setCantidad(dataproducto.cantidad)
                 setPrecioBase(dataproducto.precioBase)
                 setImagen(dataproducto.imagen)
                 setDescripcion(dataproducto.descripcion)
@@ -40,6 +82,7 @@ const EditarProducto = () => {
         if (
             referencia === '' ||
             nombre === '' ||
+            cantidad === '' ||
             precioBase === '' ||
             imagen === '' ||
             descripcion === ''
@@ -51,6 +94,7 @@ const EditarProducto = () => {
         const productoActualizado = {
             referencia,
             nombre,
+            cantidad,
             precioBase,
             imagen,
             descripcion
@@ -83,7 +127,7 @@ const EditarProducto = () => {
                     <ul className="d-flex flex-column justify-content-start w-100 px-0 my-0 mx-0">
                         <div className="d-flex justify-content-start align-items-center px-3 py-2">
                             <i className="py-3">
-                                <img className="rounded-circle" src="https://e7.pngegg.com/pngimages/164/153/png-clipart-donut-the-simpsons-tapped-out-doughnut-homer-simpson-bart-simpson-krusty-the-clown-donut-food-bagel.png" alt="batman " title="batman" width="40" height="40" />
+                                <img className="rounded-circle" src="https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg" alt="logo" title="logo" width="35" height="35" />
                             </i>
                             <p className="mb-0 mx-3 text-icon-menu">{auth.nombre} {auth.apellido}</p>
                         </div>
@@ -138,20 +182,28 @@ const EditarProducto = () => {
                                     <label className="form-label fw-bold">Referencia</label>
                                     <input type="text" className="form-control" placeholder="Referencia" required value={referencia} onChange={(e) => { setReferencia(e.target.value) }} />
                                 </div>
+
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Nombre</label>
-                                    <input type="text" className="form-control" id="nombre" aria-describedby="emailHelp" placeholder="Nombre" required value={nombre} onChange={(e) => { setNombre(e.target.value) }} />
+                                    <label className="form-label fw-bold">Cantidad</label>
+                                    <input type="text" className="form-control" placeholder="Cantidad" onKeyDown={validarNumericos} required value={cantidad} onChange={(e) => { setCantidad(e.target.value) }} />
                                 </div>
+
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Precio base</label>
-                                    <input type="number" className="form-control" placeholder="Precio base" required value={precioBase} onChange={(e) => { setPrecioBase(e.target.value) }} />
+                                    <label className="form-label fw-bold">Imagen</label>
+                                    <input type="file" className="form-control" placeholder="Imagen" required onChange={(e) => { setImagen(e.target.files[0]) }} />
                                 </div>
                             </div>
                             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Imagen</label>
-                                    <input type="text" className="form-control" placeholder="Imagen" required value={imagen} onChange={(e) => { setImagen(e.target.value) }} />
+                                    <label className="form-label fw-bold">Nombre</label>
+                                    <input type="text" className="form-control" id="nombre" placeholder="Nombre" onKeyDown={validarTexto} required value={nombre} onChange={(e) => { setNombre(e.target.value) }} />
                                 </div>
+
+                                <div className="mb-3 w-100">
+                                    <label className="form-label fw-bold">Precio base</label>
+                                    <input type="number" className="form-control" placeholder="Precio base" onKeyDown={validarNumericos} required value={precioBase} onChange={(e) => { setPrecioBase(e.target.value) }} />
+                                </div>
+
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Descripcion</label>
                                     <input type="text" className="form-control" placeholder="Descripción" required value={descripcion} onChange={(e) => { setDescripcion(e.target.value) }} />
@@ -166,7 +218,7 @@ const EditarProducto = () => {
                             </div>
                             <div className="d-flex justify-content-center w-100">
                                 <div className="div_botones me-sm-0 w-100">
-                                    <button type="reset" className="btn btn-dark w-100 btn-styles">Limpiar</button>
+                                    <button type="button" className="btn btn-dark w-100 btn-styles" onClick={handleCancelar}>Cancelar</button>
                                 </div>
                             </div>
                         </div>
