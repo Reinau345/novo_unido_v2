@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import Alerta from '../components/Alerta'
 import useAuth from '../hooks/useAuth'
 import clienteAxios from '../config/axios'
+import MenuLateral from '../components/MenuLateral'
 
 
 const Registrar = () => {
@@ -16,6 +17,9 @@ const Registrar = () => {
   const [repetirPassword, setRepetirPassword] = useState('')
 
   const [alerta, setAlerta] = useState({})
+
+
+
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -61,11 +65,13 @@ const Registrar = () => {
 
   return (
     <>
-        {/* <div>Registrar</div> */}
+        {/* <div>Registrar</div> */} 
+        <div className='control'>
         <Encabezado></Encabezado>
 
-        <section className="d-flex">
-          <aside className="">
+        {/* <section className="d-flex"> */}
+       
+          {/* <aside className="" id="menu_side">
             <ul className="d-flex flex-column justify-content-start w-100 px-0 my-0 mx-0  ">
 
 
@@ -78,81 +84,54 @@ const Registrar = () => {
                 </div>
 
                 
-                <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/usuarios">
+                <Link className="d-flex justify-content-start py-2 border-bottom border-primary" to="/admin/usuarios">
                     <div className="d-flex  align-items-center ">
-                        <i className="icon-menu fa-solid fa-user-tie mx-4" title="Clientes"></i>
+                        <i className="icon-menu fa-solid fa-user-tie mx-4 " title="Clientes"></i>
                         <p className="text-icon-menu my-0">Usuario</p>
                     </div>
                 </Link>
 
-                <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/listaclientes">
+                <Link className="d-flex justify-content-start py-2 border-bottom border-primary" to="/admin/listaclientes">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-user mx-4" title="Clientes"></i>
                         <p className="text-icon-menu my-0">Clientes</p>
                     </div>
                 </Link>
 
-                <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/listaproductos">
+                <Link className="d-flex justify-content-start py-2 border-bottom border-primary" to="/admin/listaproductos">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-box-open mx-4" title="Clientes"></i>
                         <p className="text-icon-menu my-0">Productos</p>
                     </div>
                 </Link>
 
-                <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/listanegociaciones">
+                <Link className="d-flex justify-content-start py-2 border-bottom border-primary" to="/admin/listanegociaciones">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-sack-dollar mx-4" title="Clientes"></i>
-                        <p className="text-icon-menu my-0">Ventas</p>
+                        <p className="text-icon-menu my-0">Negociación</p>
                     </div>
                 </Link>
 
-                <Link className="d-flex justify-content-between  py-2 border-bottom border-dark" to="/admin/listaplandepago">
+                <Link className="d-flex justify-content-between  py-2 border-bottom border-primary" to="/admin/listaplandepago">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-money-bill-1-wave mx-4" title="Planes de pago"></i>
                         <p className="text-icon-menu my-0">Planes de pago</p>
                     </div>
                 </Link>
 
-                <a className="d-flex justify-content-between  py-2 border-bottom border-dark" href="listarClientes.html">
-                    <div className="d-flex  align-items-center ">
-                        <i className="icon-menu fa-solid fa-book-open mx-4" title="Planes de pago"></i>
-                        <p className="text-icon-menu my-0">Catálogo de productos</p>
-                    </div>
-                </a>
-
-
-
-                <hr></hr>
-                <a className="d-flex justify-content-between  py-2 border-bottom border-dark" href="login.html">
-                    <div className="d-flex  align-items-center ">
-                        <i className="icon-menu fa-solid fa-clipboard-user mx-4" title="Login"></i>
-                        <p className="text-icon-menu my-0">Login</p>
-                    </div>
-                </a>
-
-                <a className="d-flex justify-content-between  py-2 border-bottom border-dark" href="restablecer.html">
-                    <div className="d-flex  align-items-center ">
-
-                        <i className="icon-menu fa-solid fa-key mx-4" title="Recuperar"></i>
-                        <p className="text-icon-menu my-0">recuperar</p>
-                    </div>
-                </a>
-
-                <a className="d-flex justify-content-between  py-2 border-bottom border-dark" href="newPass.html">
-                    <div className="d-flex  align-items-center ">
-
-                        <i className="icon-menu fa-solid fa-user-lock mx-4" title="Planes de pago"></i>
-                        <p className="text-icon-menu my-0">Nuevo pass</p>
-                    </div>
-                </a>
 
             </ul>
-          </aside>
+          </aside> */}
+
+          <MenuLateral></MenuLateral>
 
 
-          <main className="d-flex   flex-column">
+          <main className="d-flex   flex-column border border-primary m-4 rounded">
 
-            <h1 className="text-center  py-0 pt-5 my-0">REGISTRAR USUARIO</h1>
+
+
+
+            <h1 className="text-center  py-0 pt-3 my-0">REGISTRAR USUARIO</h1>
 
             <div className="controles d-flex align-items-center">
                 <i className="icon-menu fa-solid fa-angles-left"> volver </i> 
@@ -239,16 +218,6 @@ const Registrar = () => {
                             
                         </div>
 
-
-                        {/* <div className="mb-3 w-100">                  
-                            <label htmlFor="rol" className="form-label fw-bold">Rol</label>
-                            <input type="file" className="form-control" id="rol" placeholder="Imagen" required />
-                        </div> */}
-
-                        {/* <div className="mb-3 w-100">                  
-                            <label htmlFor="precio" className="form-label fw-bold">Precio</label>
-                            <input type="number" className="form-control" id="precio" aria-describedby="emailHelp" placeholder="Precio" required />
-                        </div> */}
                     </div>
                 </div>
 
@@ -271,9 +240,11 @@ const Registrar = () => {
           </main>
 
           
-        </section>
+        {/* </section> */}
+       
 
-        <Pie></Pie>
+        <Pie></Pie> 
+        </div>
     </>
   )
 }

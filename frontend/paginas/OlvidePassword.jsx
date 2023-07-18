@@ -44,7 +44,8 @@ const OlvidePassword = () => {
 
         <div className="contenedor-formulario">
             <div>
-                <img className="logoLogin" src="https://www.novomatic.com/sites/default/files/2017-05/Logo_N-Shortbrand.png" alt="logo" />
+                {/* <img className="logoLogin" src="https://www.novomatic.com/sites/default/files/2017-05/Logo_N-Shortbrand.png" alt="logo" /> */}
+                <img className="logoLogin" src="../public/img/Logo_9.png" alt="logo" />
             </div>
            <p className="tituloLogin">Restablecer su contraseña</p>
 
@@ -53,19 +54,25 @@ const OlvidePassword = () => {
             />}
 
             <form onSubmit={handleSubmit}  className='formularioLogin' action="index.html" id="formulario">
-                <input  
-                    className='formulario-Input-Text' 
-                    type="text" id="correo" 
-                    placeholder="Correo" 
-                    required 
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    />
+            <div className='input-wrapper'>
+              <i className="icon-input-login fa-solid fa-clipboard-user"></i> 
+              <input  
+                  className='formulario-Input-Text' 
+                  type="text" id="correo" 
+                  placeholder="Correo" 
+                  required 
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  />
+                  <div className='underline'></div>
+              </div>
 
 
                 <div className="contendorBotones">
                     <input type='submit' value="Enviar"/>
                 </div>
+
+                <Link className='olvide-pass-text' to="/">Ir a Login</Link>
             </form>
 
         </div>

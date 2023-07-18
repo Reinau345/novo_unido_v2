@@ -47,7 +47,7 @@ const {msg} = alerta
     <>
         {/* <div>CambiarPassword</div> */}
 
-        <main className="d-flex   flex-column">
+        <main className="d-flex   flex-column border border-primary m-4 rounded">
 
             <h1 className="text-center  py-0 pt-5 my-0">CAMBIAR PASSWORD</h1>
 
