@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth'
 import Alerta from '../../components/Alerta'
@@ -27,6 +27,8 @@ const EditarPerfil = () => {
 
         const resultado = await actualizarPerfil(perfil)
         setAlerta(resultado)
+        window.location.href = '/admin/usuarios';
+
     }
 
     const {msg} = alerta
@@ -35,7 +37,7 @@ const EditarPerfil = () => {
     <>
         {/* <div>EditarPerfil componente</div> */}
 
-        <main className="d-flex   flex-column">
+        <main className="d-flex   flex-column border border-primary m-4 rounded">
 
             <h1 className="text-center  py-0 pt-5 my-0">PERFIL</h1>
 
@@ -119,13 +121,13 @@ const EditarPerfil = () => {
                 <div className="contenedor__botones d-flex justify-content-center flex-lg-row flex-column flex-sm-column my-3 mx-5 gap-5 ">
                     <div className="d-flex justify-content-center  w-100">
                         <div className="div_botones ms-sm-0  w-100">
-                            <button type="submit" className="btn btn-dark w-100 btn-styles">Guardar Cambios</button>
+                            <button type="submit" className="btn btn-dark w-100 btn-styles btn-botones">Guardar Cambios</button>
                         </div>
                     </div>
 
                     <div className="d-flex justify-content-center w-100">
                         <div className="div_botones  me-sm-0  w-100">
-                            <button type="reset" className="btn btn-dark w-100 btn-styles">Limpiar</button>
+                            {/* <button type="reset" className="btn btn-dark w-100 btn-styles">Limpiar</button> */}
                         </div>
                     </div>
                 </div>

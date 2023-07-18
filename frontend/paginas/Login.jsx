@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import Alerta from '../components/Alerta'
 import useAuth from '../hooks/useAuth'
 
+import logo from '../public/img/Logo_1.png'
+
 // import axios from 'axios'
 
 import clienteAxios from '../config/axios'
@@ -66,40 +68,59 @@ const Login = () => {
 
             <div className="contenedor-formulario">
                 <div>
-                    <img className="logoLogin" src="https://www.novomatic.com/sites/default/files/2017-05/Logo_N-Shortbrand.png" alt="logo" />
+                    {/* <img className="logoLogin" src="https://www.novomatic.com/sites/default/files/2017-05/Logo_N-Shortbrand.png" alt="logo" /> */}
+                    {/* <img className="logoLogin" src="../public/img/Logo_6_optimizada.png" alt="logo" /> */}
+                    <img className="logoLogin" src="../public/img/Logo_9.png" alt="logo" />
                 </div>
             <p className="tituloLogin">Iniciar Sesión</p>
 
             {msg && <Alerta alerta={alerta} />}
 
                 <form onSubmit={handleSubmit} className='formularioLogin' id="formularioLogin" >
-                    <input  
-                        className='formulario-Input-Text' 
-                        type="text" id="correo" 
-                        placeholder="Correo" 
-                        required 
-                        autoComplete = "username"
-                        value={email}  
-                        onChange={e => setEmail(e.target.value)}
-                    />
-                    <input 
-                        className='formulario-Input-password' 
-                        type="password" 
-                        id="password" 
-                        placeholder="Password" 
-                        required 
-                        autoComplete = "current-password"
-                        value={password} 
-                        onChange={e => setPassword(e.target.value)}
-                    />
+                    <div className='input-wrapper'>
+                        {/* <i className="icon-input-login fa-solid fa-user-tie" title="Clientes"></i>  */}
+                        <i className="icon-input-login fa-solid fa-clipboard-user"></i>  
+                        {/* <i className="icon-input-login fa-solid fa-address-card"></i> */}
+                        
+                        <input  
+                            className='formulario-Input-Text' 
+                            type="text" id="correo" 
+                            placeholder="Email" 
+                            required 
+                            autoComplete = "username"
+                            value={email}  
+                            onChange={e => setEmail(e.target.value)}
+                        />
+                        <div className='underline'></div>
+                    </div>
 
-                    <Link to="olvide-password">¿Has olvidado tu contraseña o password?</Link>
+                    <div className='input-wrapper'>
+
+                        {/* <i className="icon-input-login fa-solid fa-user-tie" title="Clientes"></i>  */}
+                        <i className=" icon-input-login fa-solid fa-lock"></i>
+                        <input 
+                            className='formulario-Input-password' 
+                            type="password" 
+                            id="password" 
+                            placeholder="Password" 
+                            required 
+                            autoComplete = "current-password"
+                            value={password} 
+                            onChange={e => setPassword(e.target.value)}
+                        />
+                        <div className='underline'></div>
+
+                         
+
+                    </div>
 
                     <div className="contendorBotones">
                         {/* <input type="submit" value="Ingresar" />
                         <input type="reset" value="Cancelar" /> */}
                         <input type='submit' value="Iniciar Sesión"/>
                     </div>
+                    {/* <i className="icon-menu fa-solid fa-user-tie mx-4 " title="Clientes"></i> */}
+                    <Link className='olvide-pass-text' to="olvide-password">¿Has olvidado tu  Password?</Link>
                     
                 </form>
 

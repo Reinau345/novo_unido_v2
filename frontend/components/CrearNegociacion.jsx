@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth'
 
+import MenuLateral from './MenuLateral';
+
 const CrearNegociacion = () => {
     const [dataclientes, setDataClientes] = useState([]);
     const [selectedCliente, setSelectedCliente] = useState('');
@@ -112,7 +114,7 @@ const CrearNegociacion = () => {
     return (
         <>
             <section className="d-flex">
-                <aside className="">
+                {/* <aside className="">
                     <ul className="d-flex flex-column justify-content-start w-100 px-0 my-0 mx-0">
                         <div className="d-flex justify-content-start align-items-center px-3 py-2">
                             <i className="py-3">
@@ -150,15 +152,14 @@ const CrearNegociacion = () => {
                                 <p className="text-icon-menu my-0">Planes de pago</p>
                             </div>
                         </Link>
-                        {/* <a className="d-flex justify-content-between py-2 border-bottom border-dark" to="listarVentas.html">
-                            <div className="d-flex align-items-center">
-                                <i className="icon-menu fa-solid fa-book-open mx-4" title="Catálogo"></i>
-                                <p className="text-icon-menu my-0">Catálogo de productos</p>
-                            </div>
-                        </a> */}
+
                     </ul>
-                </aside>
-                <main className="d-flex flex-column">
+                </aside> */}
+
+                <MenuLateral></MenuLateral>
+
+                
+                <main className="d-flex flex-column  border border-primary m-4 rounded">
                     <h1 className="text-center py-0 pt-5 my-0">CREAR NEGOCIACIÓN</h1>
                     <Link to="/admin/listanegociaciones" style={{ color: 'black', textDecoration: 'none' }}>
                         <div className="controles d-flex align-items-center">
