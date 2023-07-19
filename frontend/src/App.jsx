@@ -36,10 +36,12 @@ function App() {
           {/* <Route path="/listaclientes" element={<ListarClientes />}></Route> */}
           {/* <Route path="/crearcliente" element={<FormCrearCliente />}></Route> */}
           {/* <Route path="/editarcliente/:id" element={<FormEditarCliente />}></Route> */}
+
           {/* Planes de pago */}
           {/* <Route path="/listaplandepago" element={<ListarPlanesdepago />}></Route> */}
           {/* <Route path="/crearplandepago" element={<FormCrearPlandepago />}></Route> */}
           {/* <Route path="/editarplandepago/:id" element={<FormEditarPlandepago />}></Route> */}
+          
           {/* Productos */}
           {/* <Route path="/listaproductos" element={<ListarProductos />}></Route> */}
           {/* <Route path="/crearproducto" element={<FormCrearProducto />}></Route> */}
