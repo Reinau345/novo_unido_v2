@@ -36,15 +36,14 @@ const ClienteIndividual = ({ cliente }) => {
 
   const customStyles = {
     content: {
-      width: '500px',
-      height: '400px',
+      width: '800px',
+      height: '350px',
       margin: 'auto',
       borderRadius: '50px',
       padding: '20px',
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
+      // justifyContent: 'center',
     },
   };
 
@@ -65,32 +64,51 @@ const ClienteIndividual = ({ cliente }) => {
       <td>{cliente.grupo}</td>
       <td style={{ textAlign: 'center' }}>
         <Link onClick={toggleDetalles} >
-          <button className="btn btn-primary" style={{ marginRight: 10 }}><i className="fa fa-info-circle" style={{ color: 'black' }}></i> | Detalles</button>
+          <i className="fa fa-circle-info" title="Detalle" style={{marginRight:10, color: '#212529', fontSize: 22 }} />
         </Link>
 
         <Link to={`/admin/editarcliente/${cliente._id}`}>
-          <button className="btn btn-warning" style={{ marginRight: 10, color: 'white' }}><i className="fa fa-pencil" style={{ color: 'black' }}></i> | Editar</button>
+          <i className="fa fa-pencil" title="Editar" style={{marginRight:10, color: '#212529', fontSize: 22 }} />
         </Link>
 
         <Link onClick={eliminarCliente}>
-          <button className="btn btn-danger"><i className="fa fa-trash" style={{ color: 'black' }}></i> | Eliminar</button>
+          <i className="fa fa-trash" title="Eliminar" style={{ color: '#dc3545', fontSize: 22 }} />
         </Link>
       </td>
       <Modal isOpen={mostrarDetalles} onRequestClose={toggleDetalles} style={customStyles} >
         <Link onClick={closeModal}>
-          <FaTimes size={35} style={{ color: 'black' }} />
+          <FaTimes size={35} style={{ color: 'black', float: 'right' }} />
         </Link>
         <br />
-        <div>
-          <h5>Detalles Cliente</h5>
-          <p>Dirección: {cliente.direccion}</p>
-          <h5>Detalles Codeudor</h5>
-          <p>Nombre: {cliente.nombreCodeudor}</p>
-          <p>Cédula: {cliente.cedulaCodeudor}</p>
-          <p>Teléfono: {cliente.telefonoCodeudor}</p>
-        </div>
+        <h2 style={{textAlign: 'center'}}>Detalle Cliente</h2>
+        <br />
+        <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800 }}>
+            <thead className="table-secondary">
+              <tr>
+                <th scope="col">Cédula</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Email</th>
+                <th scope="col">Nombre Codeudor</th>
+                <th scope="col">Teléfono Codeudor</th>
+                <th scope="col">Grupo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{cliente.cedula}</td>
+                <td>{cliente.nombre}</td>
+                <td>{cliente.direccion}</td>
+                <td>{cliente.telefono}</td>
+                <td>{cliente.email}</td>
+                <td>{cliente.nombreCodeudor}</td>
+                <td>{cliente.telefonoCodeudor}</td>
+                <td>{cliente.grupo}</td>
+              </tr>
+            </tbody>
+          </table>
       </Modal>
-
     </tr>
   );
 };

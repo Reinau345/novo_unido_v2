@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Modal from 'react-modal';
 import { FaTimes } from 'react-icons/fa';
+import { isValid, format, parseISO } from 'date-fns';
 
 const NegociacionIndividual = ({ negociacion }) => {
   const { _id } = negociacion; // Obtén el _id del objeto cliente
@@ -26,15 +27,27 @@ const NegociacionIndividual = ({ negociacion }) => {
 
   const customStyles = {
     content: {
-      width: '500px',
+      width: '1000px',
       height: '400px',
       margin: 'auto',
       borderRadius: '50px',
       padding: '20px',
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
+      // justifyContent: 'center',
+    },
+  };
+
+  const customStyles2 = {
+    content: {
+      width: '500px',
+      height: '300px',
+      margin: 'auto',
+      borderRadius: '50px',
+      padding: '20px',
+      display: 'flex',
+      flexDirection: 'column',
+      // justifyContent: 'center',
     },
   };
 
@@ -63,6 +76,15 @@ const NegociacionIndividual = ({ negociacion }) => {
     return <div>No se ha proporcionado una negociación válida</div>;
   }
 
+  // Fecha
+  let fechaFormateada = '';
+  if (isValid(parseISO(negociacion.fechaGracia))) {
+    const fechaGracia = new Date(negociacion.fechaGracia);
+    fechaFormateada = format(fechaGracia, 'dd/MM/yyyy');
+  } else {
+    fechaFormateada = 'Fecha inválida'; 
+  }
+  
   return (
     <tr>
       <td>{negociacion.cliente}</td>
@@ -73,43 +95,72 @@ const NegociacionIndividual = ({ negociacion }) => {
         </Link>
       </td>
       <td>{negociacion.numCuotas}</td>
-      <td>{negociacion.fechaFacturacion}</td>
+      <td>{fechaFormateada}</td>
       <td>{negociacion.total}</td>
       <td style={{ textAlign: 'center' }}>
         <Link onClick={toggleDetalles} >
-          <button className="btn btn-primary" style={{ marginRight: 10 }}><i className="fa fa-info-circle" style={{ color: 'black' }}></i> | Detalles</button>
+          <i className="fa fa-circle-info" title="Detalle" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
         </Link>
 
         <Link to={`/admin/editarnegociacion/${negociacion._id}`}>
-          <button className="btn btn-warning" style={{ marginRight: 10, color: 'white' }}><i className="fa fa-pencil" style={{ color: 'black' }}></i> | Editar</button>
+          <i className="fa fa-pencil" title="Editar" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
         </Link>
 
         <Link onClick={eliminarnegociacion}>
-          <button className="btn btn-danger" style={{ marginRight: 10 }}><i className="fa fa-trash" style={{ color: 'black' }}></i> | Eliminar</button>
+          <i className="fa fa-trash" title="Eliminar" style={{marginRight: 10, color: '#dc3545', fontSize: 22 }} />
         </Link>
 
         <Link>
-          <button className="btn btn-secondary"><i className="fa fa-money" style={{ color: 'black' }}></i> | Planes de pago</button>
+          <i className="fa fa-money" title="Plan de pago" style={{ color: '#212529', fontSize: 22 }}/>
         </Link>
       </td>
       {/* Modal */}
       <Modal isOpen={mostrarDetalles} onRequestClose={toggleDetalles} style={customStyles} >
         <Link onClick={closeModal}>
-          <FaTimes size={35} style={{ color: 'black' }} />
+          <FaTimes size={35} style={{ color: 'black', float: 'right' }} />
         </Link>
         <br />
-        <div>
-          <h3>Detalles Negociación</h3>
-          <br />
-          <h5>Porcentaje tasa: {negociacion.tasa}</h5>
-          <h5>Porcentaje anticipo: {negociacion.anticipo}</h5>
-          <h5>Porcentaje intereses: {negociacion.interes}</h5>
-        </div>
+        <h2 style={{textAlign: 'center'}}>Detalle Negociación</h2>
+        <br />
+        <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800 }}>
+            <thead className="table-secondary">
+              <tr>
+                <th scope="col">Cliente</th>
+                <th scope="col">Factura</th>
+                <th scope="col">Productos</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio Base</th>
+                <th scope="col">PrecioVenta</th>
+                <th scope="col">Cuotas</th>
+                <th scope="col">Tasa</th>
+                <th scope="col">Anticipo</th>
+                <th scope="col">Intereses</th>
+                <th scope="col">Fecha Fin Gracia</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{negociacion.cliente}</td>
+                <td>{negociacion.numFactura}</td>
+                <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.tipoMaquina) ? negociacion.tipoMaquina.join('<br />') : '' }}></td>
+                <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.cantidad) ? negociacion.cantidad.join('<br />') : '' }}></td>
+                <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioBase) ? negociacion.precioBase.join('<br />') : '' }}></td>
+                <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioVenta) ? negociacion.precioVenta.join('<br />') : '' }}></td>
+                <td>{negociacion.numCuotas}</td>
+                <td>{negociacion.tasa}</td>
+                <td>{negociacion.anticipo}</td>
+                <td>{negociacion.interes}</td>
+                <td>{negociacion.fechaGracia}</td>
+                <td>{negociacion.total}</td>
+              </tr>
+            </tbody>
+          </table>
       </Modal>
       {/* Modal 2 */}
-      <Modal isOpen={showModal} onRequestClose={toggleModal} style={customStyles}>
+      <Modal isOpen={showModal} onRequestClose={toggleModal} style={customStyles2}>
         <Link onClick={closeModal}>
-          <FaTimes size={35} style={{ color: 'black' }} />
+          <FaTimes size={35} style={{ color: 'black', float: 'right' }} />
         </Link>
         <br />
         <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -124,10 +175,10 @@ const NegociacionIndividual = ({ negociacion }) => {
             </thead>
             <tbody>
               <tr>
-                <td style={{ textAlign: 'center' }} dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.tipoMaquina) ? negociacion.tipoMaquina.join('<br />') : '' }}></td>
-                <td style={{ textAlign: 'center' }} dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.cantidad) ? negociacion.cantidad.join('<br />') : '' }}></td>
-                <td style={{ textAlign: 'center' }} dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioBase) ? negociacion.precioBase.join('<br />') : '' }}></td>
-                <td style={{ textAlign: 'center' }} dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioVenta) ? negociacion.precioVenta.join('<br />') : '' }}></td>
+                <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.tipoMaquina) ? negociacion.tipoMaquina.join('<br />') : '' }}></td>
+                <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.cantidad) ? negociacion.cantidad.join('<br />') : '' }}></td>
+                <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioBase) ? negociacion.precioBase.join('<br />') : '' }}></td>
+                <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioVenta) ? negociacion.precioVenta.join('<br />') : '' }}></td>
               </tr>
             </tbody>
           </table>

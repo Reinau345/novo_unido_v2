@@ -37,11 +37,11 @@ const ProductoIndividual = ({ producto }) => {
       <td>{producto.imagen}</td>
       <td style={{ textAlign: 'center' }}>
         <Link to={`/admin/editarproducto/${producto._id}`}>
-          <button className="btn btn-warning" style={{ marginRight: 10, color: 'white' }}><i className="fa fa-pencil" style={{ color: 'black' }}></i> | Editar</button>
+        <i className="fa fa-pencil" title="Editar" style={{marginRight:10, color: '#212529', fontSize: 22 }} />
         </Link>
 
         <Link onClick={eliminarproducto}>
-          <button className="btn btn-danger"><i className="fa fa-trash" style={{ color: 'black' }}></i> | Eliminar</button>
+        <i className="fa fa-trash" title="Eliminar" style={{ color: '#dc3545', fontSize: 22 }} />
         </Link>
       </td>
     </tr>

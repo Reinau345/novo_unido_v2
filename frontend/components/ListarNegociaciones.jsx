@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import NegociacionIndividual from './NegociacionIndividual';
+import EditarNegociacion from './EditarNegociacion';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
 
@@ -42,6 +43,7 @@ const ListarNegociaciones = () => {
     const ListarNegociaciones = filteredNegociaciones.length > 0 ? (
         filteredNegociaciones.map((negociacion) => (
             <NegociacionIndividual key={negociacion._id} negociacion={negociacion} setdatanegociacion={setdatanegociacion} />
+            
         ))
     ) : (
         <tr>
@@ -52,9 +54,13 @@ const ListarNegociaciones = () => {
             </td>
         </tr>
     );
-
+        filteredNegociaciones.map((negociacion) => (
+            <NegociacionIndividual key={negociacion._id} negociacion={negociacion} setdatanegociacion={setdatanegociacion} />
+            
+        ))
     return (
         <>
+
             <section className="d-flex">
                 {/* <aside className="">
                     <ul className="d-flex flex-column justify-content-start w-100 px-0 my-0 mx-0">
@@ -131,9 +137,9 @@ zy                                <img className="rounded-circle" src="https://w
                                     <tr>
                                         <th scope="col">Cliente</th>
                                         <th scope="col">Factura</th>
-                                        <th scope="col">Productos</th>
+                                        <th scope="col" style={{textAlign:'center'}}>Productos</th>
                                         <th scope="col">Cuotas</th>
-                                        <th scope="col">Fecha Facturación</th>
+                                        <th scope="col">Fecha Fin Gracia</th>
                                         <th scope="col">Total</th>
                                         <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
                                     </tr>

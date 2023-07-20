@@ -41,12 +41,12 @@ const EditarCliente = () => {
   function validarTexto(event) {
     const charCode = event.keyCode || event.which;
     const char = String.fromCharCode(charCode);
-  
+
     // Permitir la tecla de retroceso (backspace) y la tecla de suprimir (delete)
     if (charCode === 8 || charCode === 46 || charCode === 9 || char === ' ') {
       return;
     }
-  
+
     // Verificar si el carácter es un número o un carácter especial
     if (/[0-9\W_]/.test(char)) {
       event.preventDefault();
@@ -176,12 +176,8 @@ const EditarCliente = () => {
         <MenuLateral></MenuLateral>
 
         <main className="d-flex flex-column  border border-primary m-4 rounded">
-          <h1 className="text-center py-0 pt-5 my-0">EDITAR CLIENTE</h1>
-          <Link to="/listaclientes" style={{ color: 'black', textDecoration: 'none' }}>
-            <div className="controles d-flex align-items-center">
-              <i className="icon-menu fa-solid fa-angles-left"> Volver </i>
-            </div>
-          </Link>
+          <h2 className="text-center py-0 pt-5 my-0">EDITAR CLIENTE</h2>
+          <br />
           <form className="formulario" action="">
             <div className="contenedores d-flex justify-content-center flex-lg-row flex-column flex-sm-column mx-5 gap-5">
               <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
@@ -233,13 +229,13 @@ const EditarCliente = () => {
             </div>
             <div className="contenedor__botones d-flex justify-content-center flex-lg-row flex-column flex-sm-column my-3 mx-5 gap-5">
               <div className="d-flex justify-content-center w-100">
-                <div className="div_botones ms-sm-0 w-100">
-                  <button type="submit" className="btn btn-dark w-100 btn-styles" onClick={actualizarCliente}>Guardar</button>
+                <div className="div_botones ms-sm-0 w-100 d-flex justify-content-center">
+                  <button type="submit" className="btn btn-dark btn-styles" onClick={actualizarCliente}>Guardar</button>
                 </div>
               </div>
-              <div className="d-flex justify-content-center w-100">
-                <div className="div_botones me-sm-0 w-100">
-                  <button type="button" className="btn btn-dark w-100 btn-styles" onClick={handleCancelar}>Cancelar</button>
+              <div className="d-flex justify-content-center w-100 ">
+                <div className="div_botones me-sm-0 w-100 d-flex justify-content-center">
+                  <button type="button" className="btn btn-dark btn-styles" onClick={handleCancelar}>Cancelar</button>
                 </div>
               </div>
             </div>

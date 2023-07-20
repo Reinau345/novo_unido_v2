@@ -169,12 +169,8 @@ const EditarProducto = () => {
                 <MenuLateral></MenuLateral>
 
                 <main className="d-flex flex-column  border border-primary m-4 rounded">
-                    <h1 className="text-center py-0 pt-5 my-0">EDITAR PRODUCTO</h1>
-                    <Link to="/listaproductos" style={{ color: 'black', textDecoration: 'none' }}>
-                        <div className="controles d-flex align-items-center">
-                            <i className="icon-menu fa-solid fa-angles-left"> Volver </i>
-                        </div>
-                    </Link>
+                    <h2 className="text-center py-0 pt-5 my-0">EDITAR PRODUCTO</h2>
+                    <br />
                     <form className="formulario" action="">
                         <div className="contenedores d-flex justify-content-center flex-lg-row flex-column flex-sm-column mx-5 gap-5">
                             <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
@@ -205,20 +201,20 @@ const EditarProducto = () => {
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Descripcion</label>
+                                    <label className="form-label fw-bold">Descripción</label>
                                     <input type="text" className="form-control" placeholder="Descripción" required value={descripcion} onChange={(e) => { setDescripcion(e.target.value) }} />
                                 </div>
                             </div>
                         </div>
                         <div className="contenedor__botones d-flex justify-content-center flex-lg-row flex-column flex-sm-column my-3 mx-5 gap-5">
                             <div className="d-flex justify-content-center w-100">
-                                <div className="div_botones ms-sm-0 w-100">
-                                    <button type="submit" className="btn btn-dark w-100 btn-styles" onClick={actualizarProducto}>Guardar</button>
+                                <div className="div_botones ms-sm-0 w-100 d-flex justify-content-center">
+                                    <button type="submit" className="btn btn-dark btn-styles" onClick={actualizarProducto}>Guardar</button>
                                 </div>
                             </div>
                             <div className="d-flex justify-content-center w-100">
-                                <div className="div_botones me-sm-0 w-100">
-                                    <button type="button" className="btn btn-dark w-100 btn-styles" onClick={handleCancelar}>Cancelar</button>
+                                <div className="div_botones me-sm-0 w-100 d-flex justify-content-center">
+                                    <button type="button" className="btn btn-dark btn-styles" onClick={handleCancelar}>Cancelar</button>
                                 </div>
                             </div>
                         </div>

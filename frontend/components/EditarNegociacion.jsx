@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Link, useNavigate } from 'react-router-dom'
+import { FaTimes } from 'react-icons/fa';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
 
-const EditarNegociacion = () => {
+const EditarNegociacion = (negociacion) => {
     const navigate = useNavigate();
     const { id } = useParams();
     //Hooks
@@ -19,7 +20,7 @@ const EditarNegociacion = () => {
     const [tasa, setTasa] = useState('');
     const [anticipo, setAnticipo] = useState('');
     const [interes, setInteres] = useState('');
-    const [fechaFacturacion, setFechaFacturacion] = useState('');
+    const [fechaGracia, setFechaGracia] = useState('');
     const [total, setTotal] = useState('');
     const [productosSeleccionados, setProductosSeleccionados] = useState([]);
     const { auth } = useAuth()
@@ -46,7 +47,7 @@ const EditarNegociacion = () => {
                 setTasa(datanegociacion.tasa);
                 setAnticipo(datanegociacion.anticipo);
                 setInteres(datanegociacion.interes);
-                setFechaFacturacion(datanegociacion.fechaFacturacion)
+                setFechaGracia(datanegociacion.fechaGracia)
                 setTotal(datanegociacion.total)
             })
             .catch((err) => {
@@ -101,6 +102,12 @@ const EditarNegociacion = () => {
         return productoEncontrado ? productoEncontrado.precioBase : '';
     };
 
+    const eliminarProducto = (index) => {
+        const nuevosProductosSeleccionados = [...productosSeleccionados];
+        nuevosProductosSeleccionados.splice(index, 1);
+        setProductosSeleccionados(nuevosProductosSeleccionados);
+    };
+
     const limpiarCampos = () => {
         setSelectedProductos([]);
         setCantidad([]);
@@ -121,7 +128,7 @@ const EditarNegociacion = () => {
             tasa === '' ||
             anticipo === '' ||
             interes === '' ||
-            fechaFacturacion === '' ||
+            fechaGracia === '' ||
             total === '' ||
             productosSeleccionados === ''
         ) {
@@ -139,7 +146,7 @@ const EditarNegociacion = () => {
             tasa,
             anticipo,
             interes,
-            fechaFacturacion,
+            fechaGracia,
             total
         };
 
@@ -163,6 +170,7 @@ const EditarNegociacion = () => {
             console.error(error);
         }
     };
+    
 
     return (
         <>
@@ -211,12 +219,8 @@ const EditarNegociacion = () => {
                 <MenuLateral></MenuLateral>
 
                 <main className="d-flex flex-column  border border-primary m-4 rounded">
-                    <h1 className="text-center py-0 pt-5 my-0">EDITAR NEGOCIACIÓN</h1>
-                    <Link to="/listanegociaciones" style={{ color: 'black', textDecoration: 'none' }}>
-                        <div className="controles d-flex align-items-center">
-                            <i className="icon-menu fa-solid fa-angles-left"> Volver </i>
-                        </div>
-                    </Link>
+                    <h2 className="text-center py-0 pt-5 my-0">EDITAR NEGOCIACIÓN</h2>
+                    <br />
                     <form className="formulario" action="">
                         <div className="contenedores d-flex justify-content-center flex-lg-row flex-column flex-sm-column mx-5 gap-5">
                             <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
@@ -232,6 +236,24 @@ const EditarNegociacion = () => {
                                         ))}
                                     </select>
                                 </div>
+                                <div className="mb-3 w-100">
+                                    <label className="form-label fw-bold">Cantidad Cuotas</label>
+                                    <select className="form-select" required value={numCuotas} onChange={(e) => { setNumCuotas(e.target.value) }}>
+                                        {Array.from({ length: 24 }, (_, index) => (
+                                            <option key={index + 1} value={index + 1}>{index + 1}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="mb-3 w-100">
+                                    <label className="form-label fw-bold">Anticipo</label>
+                                    <input type="number" className="form-control" id="anticipo" aria-describedby="emailHelp" placeholder="anticipo" required value={anticipo} onChange={(e) => { setAnticipo(e.target.value) }} />
+                                </div>
+                                <div className="mb-3 w-100">
+                                    <label className="form-label fw-bold">Fecha Fin Gracia</label>
+                                    <input type="date" className="form-control" placeholder="Fecha de Facturacion" required value={fechaGracia} onChange={(e) => { setFechaGracia(e.target.value) }} />
+                                </div>
+                                <br />
+                                <h2>Agregar Nuevos Productos</h2>
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Producto</label>
                                     <select className="form-select" value={selectedProductos}
@@ -271,29 +293,26 @@ const EditarNegociacion = () => {
                                         />
                                     )}
                                 </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Cantidad Cuotas</label>
-                                    <select className="form-select" required value={numCuotas} onChange={(e) => { setNumCuotas(e.target.value) }}>
-                                        {Array.from({ length: 24 }, (_, index) => (
-                                            <option key={index + 1} value={index + 1}>{index + 1}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Anticipo</label>
-                                    <input type="number" className="form-control" id="anticipo" aria-describedby="emailHelp" placeholder="anticipo" required value={anticipo} onChange={(e) => { setAnticipo(e.target.value) }} />
-                                </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Fecha Facturacion</label>
-                                    <input type="date" className="form-control" placeholder="Fecha de Facturacion" required value={fechaFacturacion} onChange={(e) => { setFechaFacturacion(e.target.value) }} />
-                                </div>
                             </div>
                             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Factura</label>
                                     <input type="text" className="form-control" placeholder="Número de la Factura" required value={numFactura} onChange={(e) => { setNumFactura(e.target.value) }} />
                                 </div>
-
+                                <div className="mb-3 w-100">
+                                    <label className="form-label fw-bold">Tasa</label>
+                                    <input type="text" className="form-control" placeholder="Porcentaje tasa" required value={tasa} onChange={(e) => { setTasa(e.target.value) }} />
+                                </div>
+                                <div className="mb-3 w-100">
+                                    <label className="form-label fw-bold">Interes</label>
+                                    <input type="number" className="form-control" placeholder="Interes" required value={interes} onChange={(e) => { setInteres(e.target.value) }} />
+                                </div>
+                                <div className="mb-3 w-100">
+                                    <label className="form-label fw-bold">borrar</label>
+                                    <input type="number" className="form-control" id="anticipo" placeholder="borrar" />
+                                </div>
+                                <br />
+                                <h2>borrar</h2>
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Cantidad</label>
                                     {selectedProductos.length > 0 ? (
@@ -321,62 +340,66 @@ const EditarNegociacion = () => {
                                         />
                                     )}
                                 </div>
-                                <div className="mb-3 w-100">
-                                    <button type="button" className="btn btn-dark btn-styles" id="producto" required value={selectedProductos} onChange={e => setSelectedProductos(e.target.value)} onClick={agregarProducto} style={{ marginRight: 10 }}>Agregar</button>
-                                    <button type="button" className="btn btn-secondary btn-styles" onClick={limpiarCampos}>Limpiar</button>
-                                </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Tasa</label>
-                                    <input type="text" className="form-control" placeholder="Porcentaje tasa" required value={tasa} onChange={(e) => { setTasa(e.target.value) }} />
-                                </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Interes</label>
-                                    <input type="number" className="form-control" placeholder="Interes" required value={interes} onChange={(e) => { setInteres(e.target.value) }} />
+                                <div>
+                                    <button type="button" className="btn btn-dark " id="producto" required value={selectedProductos} onChange={e => setSelectedProductos(e.target.value)} onClick={agregarProducto} style={{ marginRight: 10 }}><i className="fa fa-add" /></button>
+                                    <button type="button" className="btn btn-dark" onClick={limpiarCampos}><i className="fa fa-broom" /></button>
                                 </div>
                             </div>
                         </div>
-                        <div className="contenedor__botones d-flex justify-content-center flex-lg-row flex-column flex-sm-column my-3 mx-5 gap-5">
-                            <div className="d-flex justify-content-center w-100">
-                                <div className="div_botones ms-sm-0 w-100">
-                                    <button type="submit" className="btn btn-dark w-100 btn-styles" onClick={actualizarNegociacion}>Guardar</button>
-                                </div>
-                            </div>
-                            <div className="d-flex justify-content-center w-100">
-                                <div className="div_botones me-sm-0 w-100">
-                                    <button type="button" className="btn btn-dark w-100 btn-styles" onClick={handleCancelar}>Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <br />
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <table className="table table-hover mb-5 border" style={{ maxWidth: 800 }}>
-                            <thead className="table-secondary">
-                                <tr>
-                                    <th scope="col">Producto</th>
-                                    <th scope="col">Cantidad</th>
-                                    <th scope="col">Precio Base</th>
-                                    <th scope="col">Precio Venta</th>
-                                    <th scope="col">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {productosSeleccionados.map((producto, index) => (
-                                    <tr key={producto.id || index}>
-                                        <td>{producto.tipoMaquina}</td>
-                                        <td>{producto.cantidad}</td>
-                                        <td>{producto.precioBase}</td>
-                                        <td>{producto.precioVenta}</td>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <table className="table table-hover mb-5 border" style={{ maxWidth: 800 }}>
+                                <thead className="table-secondary">
+                                    <tr>
+                                        <th scope="col">Producto</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Precio Base</th>
+                                        <th scope="col">Precio Venta</th>
+                                        <th scope="col">Acciones</th>
+                                    </tr>
+                                </thead>
+                                {/* <tbody>
+                                    <tr >
+                                        <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.tipoMaquina) ? negociacion.tipoMaquina.join('<br />') : '' }}></td>
+                                        <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.cantidad) ? negociacion.cantidad.join('<br />') : '' }}></td>
+                                        <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioBase) ? negociacion.precioBase.join('<br />') : '' }}></td>
+                                        <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioVenta) ? negociacion.precioVenta.join('<br />') : '' }}></td>
                                         <td>
                                             <Link>
                                                 <FaTimes size={35} style={{ color: 'black' }} onClick={() => eliminarProducto(index)} />
                                             </Link>
                                         </td>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody> */}
+                                <tbody>
+                                    {productosSeleccionados.map((producto, index) => (
+                                        <tr key={index}>
+                                            <td>{producto.tipoMaquina}</td>
+                                            <td>{cantidad[index]}</td>
+                                            <td>{producto.precioBase}</td>
+                                            <td>{producto.precioVenta}</td> {/* Muestra el precioVenta en la tabla */}
+                                            <td>
+                                                <Link>
+                                                    <FaTimes size={35} style={{ color: 'black' }} onClick={() => eliminarProducto(index)} />
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="contenedor__botones d-flex justify-content-center flex-lg-row flex-column flex-sm-column my-3 mx-5 gap-5">
+                            <div className="d-flex justify-content-center w-100">
+                                <div className="div_botones ms-sm-0 w-100 d-flex justify-content-center">
+                                    <button type="submit" className="btn btn-dark btn-styles" onClick={actualizarNegociacion}>Guardar</button>
+                                </div>
+                            </div>
+                            <div className="d-flex justify-content-center w-100">
+                                <div className="div_botones me-sm-0 w-100 d-flex justify-content-center">
+                                    <button type="button" className="btn btn-dark btn-styles" onClick={handleCancelar}>Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </main>
             </section>
         </>
