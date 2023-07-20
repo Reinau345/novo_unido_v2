@@ -7,7 +7,10 @@ import MenuLateral from './MenuLateral';
 const ListarClientes = () => {
   const [dataclientes, setdatacliente] = useState([]);
   const [busqueda, setBusqueda] = useState("");
-  const { auth } = useAuth()
+  const { auth } = useAuth();
+  const [paginaActual, setPaginaActual] = useState(1);
+  const clientesPorPagina = 4;
+  const [clientesFiltrados, setClientesFiltrados] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:4000/api/cliente/obtenerCliente')
@@ -20,6 +23,7 @@ const ListarClientes = () => {
       .then((data) => {
         console.log(data);
         setdatacliente(data);
+        setClientesFiltrados(data);
       })
       .catch((err) => {
         console.error(err);
@@ -28,33 +32,56 @@ const ListarClientes = () => {
 
   function searchData(event) {
     event.preventDefault();
-    setBusqueda(event.target.value);
+    const searchValue = event.target.value;
+    setBusqueda(searchValue);
+
+    const filteredClientes = dataclientes.filter((cliente) => {
+      return (
+        cliente.cedula.toString().includes(searchValue) ||
+        cliente.nombre.toLowerCase().includes(searchValue.toLowerCase()) ||
+        cliente.grupo.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    });
+
+    setClientesFiltrados(filteredClientes);
+    setPaginaActual(1);
   }
 
-  const filteredClientes = dataclientes.filter((cliente) => {
+  const indexOfLastCliente = paginaActual * clientesPorPagina;
+  const indexOfFirstCliente = indexOfLastCliente - clientesPorPagina;
+  const clientesPaginados = clientesFiltrados.slice(indexOfFirstCliente, indexOfLastCliente);
+
+  const listaclientes = clientesPaginados.length === 0 ? (
+    <tr>
+      <td colSpan="12">
+        <div>
+          <h5 style={{ textAlign: 'center' }}>No se encontraron resultados</h5>
+        </div>
+      </td>
+    </tr>
+  ) : (
+    clientesPaginados.map((cliente) => {
+      return <ClienteIndividual key={cliente._id} cliente={cliente} />;
+    })
+  );
+
+  // Paginador
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(clientesFiltrados.length / clientesPorPagina); i++) {
+    pageNumbers.push(i);
+  }
+
+  const paginador = pageNumbers.map((number) => {
     return (
-      cliente.cedula.toString().includes(busqueda) ||
-      cliente.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-      cliente.grupo.toLowerCase().includes(busqueda.toLowerCase())
+      <li
+        key={number}
+        className={`page-item ${paginaActual === number ? 'active' : ''}`}
+        onClick={() => setPaginaActual(number)}
+      >
+        <button className="page-link">{number}</button>
+      </li>
     );
   });
-
-  let listaclientes;
-  if (filteredClientes.length === 0) {
-    listaclientes = (
-      <tr>
-        <td colSpan="12">
-          <div>
-            <h5 style={{ textAlign: 'center' }}>No se encontraron resultados</h5>
-          </div>
-        </td>
-      </tr>
-    );
-  } else {
-    listaclientes = filteredClientes.map(cliente => (
-      <ClienteIndividual key={cliente._id} cliente={cliente} />
-    ));
-  }
 
   return (
     <>
@@ -106,7 +133,6 @@ const ListarClientes = () => {
         <MenuLateral></MenuLateral>
 
         <main className="d-flex flex-column  border border-primary m-4 rounded" id='main'>
-          <h1 className="text-center py-0 pt-5 my-0">LISTADO CLIENTES</h1>
           <div className="contenedor-tabla mx-3">
             <h2 className="py-0 pt-5 my-0">LISTADO CLIENTES</h2>
             <div className="contenerdor-boton-buscar my-4">
@@ -141,13 +167,14 @@ const ListarClientes = () => {
                 </thead>
                 <tbody>{listaclientes}</tbody>
               </table>
+              <nav className="d-flex justify-content-center">
+                <ul className="pagination justify-content-center">
+                  {paginador}
+                </ul>
+              </nav>
             </div>
-            {/* <nav className="d-flex justify-content-center">
-              <ul className="pagination">
-                {paginador}
-              </ul>
-            </nav> */}
           </div>
+
         </main>
       </section>
     </>

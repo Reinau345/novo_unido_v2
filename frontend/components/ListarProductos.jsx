@@ -7,7 +7,10 @@ import MenuLateral from './MenuLateral';
 const ListarProductos = () => {
     const [dataproductos, setdataproducto] = useState([]);
     const [busqueda, setBusqueda] = useState("");
-    const { auth } = useAuth()
+    const { auth } = useAuth();
+    const [paginaActual, setPaginaActual] = useState(1);
+    const productosPorPagina = 5;
+    const [productosFiltrados, setProductosFiltrados] = useState([]);
 
     useEffect(() => {
         fetch('http://localhost:4000/api/producto/obtenerProducto')
@@ -20,6 +23,7 @@ const ListarProductos = () => {
             .then((data) => {
                 console.log(data);
                 setdataproducto(data);
+                setProductosFiltrados(data);
             })
             .catch((err) => {
                 console.error(err);
@@ -28,33 +32,55 @@ const ListarProductos = () => {
 
     function searchData(event) {
         event.preventDefault();
-        setBusqueda(event.target.value);
+        const searchValue = event.target.value;
+        setBusqueda(searchValue);
+
+        const productosFiltrados = dataproductos.filter((producto) => {
+            return (
+                producto.nombre && producto.nombre.toLowerCase().includes(searchValue.toLowerCase()) ||
+                producto.precioBase && producto.precioBase.toString().includes(searchValue) ||
+                producto.referencia && producto.referencia.toLowerCase().includes(searchValue.toLowerCase())
+            );
+        });
+
+        setProductosFiltrados(productosFiltrados);
+        setPaginaActual(1);
     }
 
-    const filteredProductos = dataproductos.filter((producto) => {
-        return (
-            producto.nombre && producto.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-            producto.precioBase && producto.precioBase.toString().includes(busqueda) ||
-            producto.referencia && producto.referencia.toLowerCase().includes(busqueda.toLowerCase())
-        );
-    });
+    const indexOfLastProducto = paginaActual * productosPorPagina;
+    const indexOfFirstProducto = indexOfLastProducto - productosPorPagina;
+    const productosPaginados = productosFiltrados.slice(indexOfFirstProducto, indexOfLastProducto);
 
-    let listaproductos;
-    if (filteredProductos.length === 0) {
-        listaproductos = (
+    const listaproductos =
+        productosPaginados.length === 0 ? (
             <tr>
-                <td colSpan="12">
+                <td colSpan="6">
                     <div>
                         <h5 style={{ textAlign: 'center' }}>No se encontraron resultados</h5>
                     </div>
                 </td>
             </tr>
+        ) : (
+            productosPaginados.map((producto) => <ProductoIndividual key={producto._id} producto={producto} />)
         );
-    } else {
-        listaproductos = filteredProductos.map(producto => (
-            <ProductoIndividual key={producto._id} producto={producto} />
-        ));
+
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(productosFiltrados.length / productosPorPagina); i++) {
+        pageNumbers.push(i);
     }
+
+    const paginador = pageNumbers.map((number) => {
+        return (
+            <li
+                key={number}
+                className={`page-item ${paginaActual === number ? 'active' : ''}`}
+                onClick={() => setPaginaActual(number)}
+            >
+                <button className="page-link">{number}</button>
+            </li>
+        );
+    });
+
 
     return (
         <>
@@ -110,7 +136,6 @@ const ListarProductos = () => {
                 <MenuLateral></MenuLateral>
 
                 <main className="d-flex flex-column  border border-primary m-4 rounded">
-                    <h1 className="text-center py-0 pt-5 my-0">LISTADO PRODUCTOS</h1>
                     <div className="contenedor-tabla mx-3">
                         <h2 className="py-0 pt-5 my-0">LISTADO PRODUCTOS</h2>
                         <div className="contenerdor-boton-buscar my-4">
@@ -138,13 +163,18 @@ const ListarProductos = () => {
                                     <th scope="col">Cantidad</th>
                                     <th scope="col">Precio Base</th>
                                     <th scope="col">Imagen</th>
-                                    <th scope="col" style={{textAlign:'center'}}>Acciones</th>
+                                    <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {listaproductos}
                             </tbody>
                         </table>
+                        <nav className="d-flex justify-content-center">
+                            <ul className="pagination justify-content-center">
+                                {paginador}
+                            </ul>
+                        </nav>
                     </div>
                 </main>
             </section>

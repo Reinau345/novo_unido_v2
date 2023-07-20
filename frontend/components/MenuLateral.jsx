@@ -62,7 +62,7 @@ const MenuLateral = ({componentePrincipal}) => {
                 <Link className="d-flex justify-content-start py-2 border-bottom  border-primary" to="/admin/usuarios">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-user-tie mx-4" title="Clientes"></i>
-                        <p className="text-icon-menu my-0">Usuario</p>
+                        <p className="text-icon-menu my-0">Usuarios</p>
                     </div>
                 </Link>
 
@@ -85,16 +85,16 @@ const MenuLateral = ({componentePrincipal}) => {
                 <Link className="d-flex justify-content-start py-2 border-bottom border-primary" to="/admin/listanegociaciones">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-sack-dollar mx-4" title="Clientes"></i>
-                        <p className="text-icon-menu my-0">Negociación</p>
+                        <p className="text-icon-menu my-0">Negociaciones</p>
                     </div>
                 </Link>
 
-                <Link className="d-flex justify-content-between  py-2 border-bottom border-primary" to="/admin/listaplandepago">
+                {/* <Link className="d-flex justify-content-between  py-2 border-bottom border-primary" to="/admin/listaplandepago">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-money-bill-1-wave mx-4" title="Planes de pago"></i>
                         <p className="text-icon-menu my-0">Planes de pago</p>
                     </div>
-                </Link>
+                </Link> */}
 
                 <Link className="d-flex li-cerrar-sesion justify-content-between  py-2 border-bottom border-primary" href="/" onClick={cerrarSesion}>
                     <div className="d-flex  align-items-center ">

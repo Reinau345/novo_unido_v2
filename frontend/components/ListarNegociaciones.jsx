@@ -59,8 +59,7 @@ const ListarNegociaciones = () => {
                 {/* <aside className="">
                     <ul className="d-flex flex-column justify-content-start w-100 px-0 my-0 mx-0">
                         <div className="d-flex justify-content-start align-items-center px-3 py-2">
-                            <i className="py-3">
-                                <img className="rounded-circle" src="https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg" alt="logo" title="logo" width="35" height="35" />
+zy                                <img className="rounded-circle" src="https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg" alt="logo" title="logo" width="35" height="35" />
                             </i>
                             <p className="mb-0 mx-3 text-icon-menu">{auth.nombre} {auth.apellido}</p>
                         </div>
@@ -107,7 +106,6 @@ const ListarNegociaciones = () => {
                 <MenuLateral></MenuLateral>
 
                 <main className="d-flex flex-column  border border-primary m-4 rounded">
-                    <h1 className="text-center py-0 pt-5 my-0">LISTADO NEGOCIACIONES</h1>
                     <div className="contenedor-tabla mx-3">
                         <h2 className="py-0 pt-5 my-0">LISTADO NEGOCIACIONES</h2>
 
