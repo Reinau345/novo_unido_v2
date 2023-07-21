@@ -6,9 +6,9 @@ import Pie from '../components/Pie'
 const FormEditar = () => {
   return (
     <>
-    <Encabezado/>
-    <EditarPlandePago/>
-    <Pie/>
+      <Encabezado />
+      <EditarPlandePago />
+      <Pie />
     </>
   )
 }
