@@ -132,9 +132,9 @@ const ListarClientes = () => {
 
         <MenuLateral></MenuLateral>
 
-        <main className="d-flex flex-column  border border-primary m-4 rounded" id='main'>
+        <main className="d-flex flex-column  border border-primary m-3 rounded" id='main'>
           <div className="contenedor-tabla mx-3">
-            <h2 className="py-0 pt-5 my-0">LISTADO CLIENTES</h2>
+            <h3 className="py-0 pt-3 my-0">LISTADO CLIENTES</h3>
             <div className="contenerdor-boton-buscar my-4">
               <div className="row">
                 <div className="col-sm-12 col-md-6 blo1 my-1">
@@ -168,7 +168,7 @@ const ListarClientes = () => {
                 <tbody>{listaclientes}</tbody>
               </table>
               <nav className="d-flex justify-content-center">
-                <ul className="pagination justify-content-center">
+                <ul className="pagination gap-0 justify-content-center">
                   {paginador}
                 </ul>
               </nav>
