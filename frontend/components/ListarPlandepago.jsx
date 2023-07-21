@@ -105,10 +105,10 @@ const ListarPlandepago = () => {
 
                 <MenuLateral></MenuLateral>
 
-                <main className="d-flex flex-column  border border-primary m-4 rounded">
+                <main className="d-flex flex-column  border border-primary m-3 rounded">
                     <h1 className="text-center py-0 pt-5 my-0">LISTADO PLANES DE PAGO</h1>
                     <div className="contenedor-tabla mx-3">
-                        <h2 className="py-0 pt-5 my-0">LISTADO PLANES DE PAGO</h2>
+                        <h3 className="py-0 pt-3 my-0">LISTADO PLANES DE PAGO</h3>
                         <div className="contenerdor-boton-buscar my-4">
                             <div className="row">
                                 <div className="col-sm-12 col-md-6 blo1 my-1">

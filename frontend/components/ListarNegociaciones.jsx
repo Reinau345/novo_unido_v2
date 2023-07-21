@@ -43,7 +43,7 @@ const ListarNegociaciones = () => {
     const ListarNegociaciones = filteredNegociaciones.length > 0 ? (
         filteredNegociaciones.map((negociacion) => (
             <NegociacionIndividual key={negociacion._id} negociacion={negociacion} setdatanegociacion={setdatanegociacion} />
-            
+
         ))
     ) : (
         <tr>
@@ -54,10 +54,10 @@ const ListarNegociaciones = () => {
             </td>
         </tr>
     );
-        filteredNegociaciones.map((negociacion) => (
-            <NegociacionIndividual key={negociacion._id} negociacion={negociacion} setdatanegociacion={setdatanegociacion} />
-            
-        ))
+    filteredNegociaciones.map((negociacion) => (
+        <NegociacionIndividual key={negociacion._id} negociacion={negociacion} setdatanegociacion={setdatanegociacion} />
+
+    ))
     return (
         <>
 
@@ -111,9 +111,9 @@ zy                                <img className="rounded-circle" src="https://w
 
                 <MenuLateral></MenuLateral>
 
-                <main className="d-flex flex-column  border border-primary m-4 rounded">
+                <main className="d-flex flex-column  border border-primary m-3 rounded">
                     <div className="contenedor-tabla mx-3">
-                        <h2 className="py-0 pt-5 my-0">LISTADO NEGOCIACIONES</h2>
+                        <h3 className="py-0 pt-3 my-0">LISTADO NEGOCIACIONES</h3>
 
                         <div className="contenerdor-boton-buscar my-4">
                             <div className="row">
@@ -137,7 +137,7 @@ zy                                <img className="rounded-circle" src="https://w
                                     <tr>
                                         <th scope="col">Cliente</th>
                                         <th scope="col">Factura</th>
-                                        <th scope="col" style={{textAlign:'center'}}>Productos</th>
+                                        <th scope="col" style={{ textAlign: 'center' }}>Productos</th>
                                         <th scope="col">Cuotas</th>
                                         <th scope="col">Fecha Fin Gracia</th>
                                         <th scope="col">Total</th>

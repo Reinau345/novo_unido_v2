@@ -170,7 +170,7 @@ const EditarNegociacion = (negociacion) => {
             console.error(error);
         }
     };
-    
+
 
     return (
         <>
@@ -218,8 +218,8 @@ const EditarNegociacion = (negociacion) => {
 
                 <MenuLateral></MenuLateral>
 
-                <main className="d-flex flex-column  border border-primary m-4 rounded">
-                    <h2 className="text-center py-0 pt-5 my-0">EDITAR NEGOCIACIÓN</h2>
+                <main className="d-flex flex-column  border border-primary m-3 rounded">
+                    <h3 className="text-center py-0 pt-3 my-0">EDITAR NEGOCIACIÓN</h3>
                     <br />
                     <form className="formulario" action="">
                         <div className="contenedores d-flex justify-content-center flex-lg-row flex-column flex-sm-column mx-5 gap-5">

@@ -1,5 +1,5 @@
 const express = require('express');
-const { registrarCliente, obtenerClientes, obtenerDataClientes, actualizarCliente, eliminarCliente } = require('../controllers/clienteControllers');
+const { registrarCliente, obtenerClientes, obtenerDataClientes, actualizarCliente, eliminarCliente } = require('../controllers/ClienteControllers');
 const router = express.Router();
 
 router.post('/agregarCliente', registrarCliente);

@@ -135,9 +135,9 @@ const ListarProductos = () => {
 
                 <MenuLateral></MenuLateral>
 
-                <main className="d-flex flex-column  border border-primary m-4 rounded">
+                <main className="d-flex flex-column  border border-primary m-3 rounded">
                     <div className="contenedor-tabla mx-3">
-                        <h2 className="py-0 pt-5 my-0">LISTADO PRODUCTOS</h2>
+                        <h3 className="py-0 pt-3 my-0">LISTADO PRODUCTOS</h3>
                         <div className="contenerdor-boton-buscar my-4">
                             <div className="row">
                                 <div className="col-sm-12 col-md-6 blo1 my-1">

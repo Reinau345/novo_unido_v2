@@ -91,8 +91,8 @@ const CrearPlandepago = () => {
 
         <MenuLateral></MenuLateral>
 
-        <main className="d-flex flex-column  border border-primary m-4 rounded">
-          <h1 className="text-center py-0 pt-5 my-0">CREAR PLAN DE PAGO</h1>
+        <main className="d-flex flex-column  border border-primary m-3 rounded">
+          <h3 className="text-center py-0 pt-3 my-0">CREAR PLAN DE PAGO</h3>
           <Link to="/admin/listaplandepago" style={{ color: 'black', textDecoration: 'none' }}>
             <div className="controles d-flex align-items-center">
               <i className="icon-menu fa-solid fa-angles-left"> Volver </i>

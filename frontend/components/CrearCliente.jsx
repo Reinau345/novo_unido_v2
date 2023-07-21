@@ -45,12 +45,12 @@ const CrearCliente = () => {
   function validarTexto(event) {
     const charCode = event.keyCode || event.which;
     const char = String.fromCharCode(charCode);
-  
+
     // Permitir la tecla de retroceso (backspace) y la tecla de suprimir (delete)
     if (charCode === 8 || charCode === 46 || charCode === 9 || char === ' ') {
       return;
     }
-  
+
     // Verificar si el carácter es un número o un carácter especial
     if (/[0-9\W_]/.test(char)) {
       event.preventDefault();
@@ -151,11 +151,11 @@ const CrearCliente = () => {
 
           </ul>
         </aside> */}
-        
+
         <MenuLateral></MenuLateral>
 
-        <main className="d-flex flex-column  border border-primary m-4 rounded">
-          <h2 className="text-center py-0 pt-5 my-0">CREAR CLIENTE</h2>
+        <main className="d-flex flex-column  border border-primary m-3 rounded">
+          <h3 className="text-center py-0 pt-3 my-0">CREAR CLIENTE</h3>
           <br />
           <form className="formulario" action="">
             <div className="contenedores d-flex justify-content-center flex-lg-row flex-column flex-sm-column mx-5 gap-5">
@@ -174,7 +174,7 @@ const CrearCliente = () => {
                   <label className="form-label fw-bold">Email</label>
                   <input type="text" className="form-control" placeholder="Email" required value={email} onChange={(e) => { setEmail(e.target.value) }} />
                 </div>
-                
+
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Cédula Codeudor</label>
                   <input type="text" className="form-control" placeholder="Cédula Codeudor" required onKeyDown={validarNumericos} value={cedulaCodeudor} onChange={(e) => { setCedulaCodeudor(e.target.value) }} />
@@ -187,7 +187,7 @@ const CrearCliente = () => {
 
               </div>
               <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
-              <div className="mb-3 w-100">
+                <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Nombre</label>
                   <input type="text" className="form-control" id="nombre" placeholder="Nombre" required onKeyDown={validarTexto} value={nombre} onChange={(e) => { setNombre(e.target.value) }} />
                 </div>
@@ -210,12 +210,12 @@ const CrearCliente = () => {
             </div>
             <div className="contenedor__botones d-flex justify-content-center flex-lg-row flex-column flex-sm-column my-3 mx-5 gap-5">
               <div className="d-flex justify-content-center w-100">
-              <div className="div_botones ms-sm-0 w-100 d-flex justify-content-center">
+                <div className="div_botones ms-sm-0 w-100 d-flex justify-content-center">
                   <button type="submit" className="btn btn-dark btn-styles" onClick={agregarCliente}>Guardar</button>
                 </div>
               </div>
               <div className="d-flex justify-content-center w-100">
-              <div className="div_botones me-sm-0 w-100 d-flex justify-content-center">
+                <div className="div_botones me-sm-0 w-100 d-flex justify-content-center">
                   <button type="button" className="btn btn-dark btn-styles" onClick={handleCancelar}>Cancelar</button>
                 </div>
               </div>

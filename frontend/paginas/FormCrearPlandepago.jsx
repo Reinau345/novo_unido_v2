@@ -1,13 +1,13 @@
 import React from 'react'
 import Encabezado from '../components/Encabezado'
 import Pie from '../components/Pie'
-import CrearPlandePago from '../components/CrearPlandePago'
+import CrearPlandePago from '../components/CrearPlandepago'
 
 const FormCrear = () => {
   return (
     <>
       <Encabezado></Encabezado>
-      <CrearPlandePago/>
+      <CrearPlandePago />
       <Pie></Pie>
     </>
   )
