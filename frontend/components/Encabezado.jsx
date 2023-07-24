@@ -13,7 +13,7 @@ const Encabezado = () => {
 
     useEffect(() => {
         const handleResize = () => {
-            console.log('La pantalla ha cambiado de tamaño');
+            // console.log('La pantalla ha cambiado de tamaño');
 
             const main = document.querySelector('main')
             const width = main.offsetWidth
@@ -26,19 +26,12 @@ const Encabezado = () => {
         const cambiadoDivMain = () => {
             const main = document.querySelector('main')
             const width = main.offsetWidth
-            console.log("cambiado main con click", width)
+            // console.log("cambiado main con click", width)
         }
-
-
 
 
         window.addEventListener('resize', handleResize);
         window.addEventListener('resize', cambiadoDivMain)
-
-
-
-
-
 
 
         // Limpia el listener cuando el componente se desmonta

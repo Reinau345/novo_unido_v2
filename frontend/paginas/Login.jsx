@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import Alerta from '../components/Alerta'
 import useAuth from '../hooks/useAuth'
 
-import logo from '../public/img/Logo_1.png'
+import logo from '../public/img/Logo_10.png'
 
 // import axios from 'axios'
 
@@ -70,7 +70,7 @@ const Login = () => {
                 <div>
                     {/* <img className="logoLogin" src="https://www.novomatic.com/sites/default/files/2017-05/Logo_N-Shortbrand.png" alt="logo" /> */}
                     {/* <img className="logoLogin" src="../public/img/Logo_6_optimizada.png" alt="logo" /> */}
-                    <img className="logoLogin" src="../public/img/Logo_9.png" alt="logo" />
+                    <img className="logoLogin" src={logo} alt="logo" />
                 </div>
             <p className="tituloLogin">Iniciar Sesión</p>
 

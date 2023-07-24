@@ -11,6 +11,8 @@ import MenuLateral from '../components/MenuLateral'
 const Registrar = () => {
 
   const [email, setEmail] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
   const [password, setPassword] = useState('')
   const [estado, setEstado] = useState('')
   const [rol, setRol] = useState('')
@@ -24,7 +26,7 @@ const Registrar = () => {
   const handleSubmit = async e => {
     e.preventDefault()
 
-    if ([email, password, repetirPassword, estado, rol].includes('')) {
+    if ([email, nombre, apellido, password, repetirPassword, estado, rol].includes('')) {
       setAlerta({ msg: "hay campos vacios", error: true });
       return;
     }
@@ -46,7 +48,7 @@ const Registrar = () => {
     try {
     //   const url = `${import.meta.env.VITE_BACKEND_URL}/api/usuarios`
       const url = `/usuarios`
-      const {data} = await clienteAxios.post(url, { email, password, estado, rol})
+      const {data} = await clienteAxios.post(url, { email, nombre, apellido, password, estado, rol})
       console.log(data)
       setAlerta({
         msg: "Creado Correctamente",
@@ -131,7 +133,7 @@ const Registrar = () => {
 
 
 
-            <h1 className="text-center  py-0 pt-3 my-0">REGISTRAR USUARIO</h1>
+            <h3 className="py-0  px-4 pt-3 my-0">REGISTRAR USUARIO</h3>
 
             <div className="controles d-flex align-items-center">
                 <i className="icon-menu fa-solid fa-angles-left"> volver </i> 
@@ -158,6 +160,34 @@ const Registrar = () => {
                         </div>
 
                         <div className="mb-3 w-100">                  
+                            <label htmlFor="nombre" className="form-label fw-bold">Nombre</label>
+                            <input 
+                              type="text" 
+                              className="form-control" 
+                              id="nombre" 
+                              aria-describedby="emailHelp" 
+                              placeholder="Nombre" 
+                              required 
+                              value={nombre}
+                              onChange={e => setNombre(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="mb-3 w-100">                  
+                            <label htmlFor="apellido" className="form-label fw-bold">Apellido</label>
+                            <input 
+                              type="text" 
+                              className="form-control" 
+                              id="nombre" 
+                              aria-describedby="emailHelp" 
+                              placeholder="Apellido" 
+                              required 
+                              value={apellido}
+                              onChange={e => setApellido(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="mb-3 w-100">                  
                             <label htmlFor="password" className="form-label fw-bold">Password</label>
                             <input 
                               type="password" 
@@ -170,6 +200,11 @@ const Registrar = () => {
                               onChange={e => setPassword(e.target.value)}
                             />
                         </div>
+
+                    </div>
+
+                    <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0  w-100 ">
+
 
                         <div className="mb-3 w-100">                  
                             <label htmlFor="descripcion" className="form-label fw-bold">Repetir Password</label>
@@ -184,9 +219,7 @@ const Registrar = () => {
                               onChange={e => setRepetirPassword(e.target.value)}
                             />
                         </div>
-                    </div>
-
-                    <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0  w-100 ">
+                        
                         <div className="mb-3 w-100"> 
                             <label htmlFor="estado" className="form-label fw-bold" >Estado</label>
                             <select 

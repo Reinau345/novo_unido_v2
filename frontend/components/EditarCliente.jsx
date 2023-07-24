@@ -119,7 +119,7 @@ const EditarCliente = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data.message); // Cliente actualizado correctamente
+        // console.log(data.message); // Cliente actualizado correctamente
       } else {
         throw new Error('Error al actualizar el cliente');
       }

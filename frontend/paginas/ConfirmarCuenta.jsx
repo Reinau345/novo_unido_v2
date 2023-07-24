@@ -5,6 +5,8 @@ import axios from 'axios';
 import Alerta from '../components/Alerta'
 import { Link } from 'react-router-dom';
 
+import logo from '../public/img/Logo_10.png'
+
 const ConfirmarCuenta =  () => {
 
   const [cuentaConfirmada, setCuentaConfirmada] = useState(false);
@@ -42,14 +44,15 @@ useEffect(() => {
 
   return (
     <>
-      <div>ConfirmarCuenta</div>
+      {/* <div>ConfirmarCuenta</div> */}
 
       <div className="contenedor">
         <div className="contenedor-formulario">
             <div>
-                <img className="logoLogin" src="https://www.novomatic.com/sites/default/files/2017-05/Logo_N-Shortbrand.png" alt="logo" />
+                {/* <img className="logoLogin" src="https://www.novomatic.com/sites/default/files/2017-05/Logo_N-Shortbrand.png" alt="logo" /> */}
+                <img className="logoLogin" src={logo} alt="logo" />
             </div>
-          <p className="tituloLogin tituloConfirmarCuenta">Restablecer su contraseña</p>
+          <p className="tituloLogin tituloConfirmarCuenta">Confirmar Cuenta</p>
 
           
           {!cargando && <Alerta alerta={alerta} />}

@@ -32,24 +32,6 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          {/* Clientes */}
-          {/* <Route path="/listaclientes" element={<ListarClientes />}></Route> */}
-          {/* <Route path="/crearcliente" element={<FormCrearCliente />}></Route> */}
-          {/* <Route path="/editarcliente/:id" element={<FormEditarCliente />}></Route> */}
-
-          {/* Planes de pago */}
-          {/* <Route path="/listaplandepago" element={<ListarPlanesdepago />}></Route> */}
-          {/* <Route path="/crearplandepago" element={<FormCrearPlandepago />}></Route> */}
-          {/* <Route path="/editarplandepago/:id" element={<FormEditarPlandepago />}></Route> */}
-          
-          {/* Productos */}
-          {/* <Route path="/listaproductos" element={<ListarProductos />}></Route> */}
-          {/* <Route path="/crearproducto" element={<FormCrearProducto />}></Route> */}
-          {/* <Route path="/editarproducto/:id" element={<FormEditarProducto />}></Route> */}
-          {/* Negociaciones */}
-          {/* <Route path="/listanegociaciones" element={<ListarNegociaciones />}></Route> */}
-          {/* <Route path="/crearnegociacion" element={<FormCrearNegociacion />}></Route> */}
-          {/* <Route path="/editarnegociacion/:id" element={<FormEditarNegociacion />}></Route> */}
           {/* Usuarios */}
           <Route path='/' element={<AuthLayout />}>
             <Route index element={<Login />} />

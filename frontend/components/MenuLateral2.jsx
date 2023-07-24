@@ -61,38 +61,38 @@ const MenuLateral = () => {
                     </div>
                 </Link>
 
-                <a className="d-flex justify-content-between  py-2 border-bottom border-dark" href="listarClientes.html">
+                <Link className="d-flex justify-content-between  py-2 border-bottom border-dark" href="listarClientes.html">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-book-open mx-4" title="Planes de pago"></i>
                         <p className="text-icon-menu my-0">Catálogo de productos</p>
                     </div>
-                </a>
+                </Link>
 
 
 
                 <hr></hr>
-                <a className="d-flex justify-content-between  py-2 border-bottom border-dark" href="login.html">
+                <Link className="d-flex justify-content-between  py-2 border-bottom border-dark" href="login.html">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-clipboard-user mx-4" title="Login"></i>
                         <p className="text-icon-menu my-0">Login</p>
                     </div>
-                </a>
+                </Link>
 
-                <a className="d-flex justify-content-between  py-2 border-bottom border-dark" href="restablecer.html">
+                <Link className="d-flex justify-content-between  py-2 border-bottom border-dark" href="restablecer.html">
                     <div className="d-flex  align-items-center ">
 
                         <i className="icon-menu fa-solid fa-key mx-4" title="Recuperar"></i>
                         <p className="text-icon-menu my-0">recuperar</p>
                     </div>
-                </a>
+                </Link>
 
-                <a className="d-flex justify-content-between  py-2 border-bottom border-dark" href="newPass.html">
+                <Link className="d-flex justify-content-between  py-2 border-bottom border-dark" href="newPass.html">
                     <div className="d-flex  align-items-center ">
 
                         <i className="icon-menu fa-solid fa-user-lock mx-4" title="Planes de pago"></i>
                         <p className="text-icon-menu my-0">Nuevo pass</p>
                     </div>
-                </a>
+                </Link>
             
             </ul>
         </aside>

@@ -57,7 +57,7 @@ const Editarplandepago = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data.message); // plan de pago actualizado correctamente
+                // console.log(data.message); // plan de pago actualizado correctamente
             } else {
                 throw new Error('Error al actualizar el plan de');
             }

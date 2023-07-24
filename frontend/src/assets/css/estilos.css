@@ -4,6 +4,7 @@
 *{
     list-style: none;
     text-decoration: none !important;
+    font-size: 15px;
     
 }
 
@@ -15,6 +16,7 @@ body{
     background-color: rgb(230, 230, 230);
     margin-left: -250px;
     transition: margin-left 300ms;
+    /* font-size: 10px; */
 }
 
 @media (min-width:700px){
@@ -46,6 +48,7 @@ header{
     left: 250px;
     width: 100%;
     width: calc(100% - 250px);
+    /* height: 52px; */
 }
 
 header.header-expanded{
@@ -67,12 +70,12 @@ header.header-expanded{
 
 .perfil
 {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50px;
 }
 .perfil-imagen{
-    margin: 3px;
+    margin: 0px;
 
 }
 
@@ -305,13 +308,15 @@ ul .li-cerrar-sesion:last-child {
 
 
 
-
-
+aside p{
+    font-size: 15px !important;
+}
 
 
     aside ul a{
         background-color: #021F59;
         color: white;
+        font-size: 10px;
     }
     aside ul a:hover{
         background-color: #41AED9;
@@ -390,7 +395,7 @@ ul .li-cerrar-sesion:last-child {
 /* ===================== MAIN =========================== */
 .icon__menu{
     position: relative;
-    left: -50px;
+    left: -10px;
     color: #fff;
     padding: 10px;
     width: 50px;
@@ -401,6 +406,12 @@ ul .li-cerrar-sesion:last-child {
     font-size: 20px;
     cursor: pointer;
 
+}
+
+@media (min-width:992px){
+    .icon__menu{
+        left: -50px;
+    }
 }
 
 
@@ -568,9 +579,13 @@ main{
     left: 0;
     width: 100%;
     width: calc(100% - 0px);
-    height: 50px;
+    height: 42px;
 
     
+}
+
+.texto-footer{
+    font-size: 13px;
 }
 
 @media (min-width:550px){
@@ -675,3 +690,20 @@ body{
     width: 100%;
 }
 /* MENU MODAL */
+
+
+
+
+main::-webkit-scrollbar {
+    width: 5px;               
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: orange;        
+  }
+  
+  main::-webkit-scrollbar-thumb {
+    background-color: rgb(230, 230, 230);
+    border-radius: 20px;      
+    border: 3px solid #032770;  
+  }

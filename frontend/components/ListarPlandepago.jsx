@@ -18,7 +18,7 @@ const ListarPlandepago = () => {
                 return res.json();
             })
             .then((data) => {
-                console.log(data);
+                // console.log(data);
                 setdataPlandePago(data);
             })
             .catch((err) => {

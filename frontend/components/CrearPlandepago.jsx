@@ -35,7 +35,7 @@ const CrearPlandepago = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data.message); // Plan de pago agregado correctamente
+        // console.log(data.message); // Plan de pago agregado correctamente
       } else {
         throw new Error('Error al agregar el cliente');
       }

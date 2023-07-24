@@ -39,13 +39,13 @@ const emailRegistro = async (datos) => {
         },
       });
 
-      const {email, estado, token} = datos;
+      const {email, nombre, apellido, estado, token} = datos;
 
       const info = await transporter.sendMail({
         from: "Novotic - Notificacion envio de Mail",
         to: email,
         subject: "Comprobar cuenta en novotic",
-        html: `<p>Hola: ${estado}, comprueba tu email</p>
+        html: `<p>Hola: ${nombre}, comprueba tu email</p>
         <p>Tu cuesta esta lista, comprobar en el siguiente enlace:
         <a href="${process.env.FRONTEND_URL}/confirmar/${token}">Comprobar cuenta</a></p>
 

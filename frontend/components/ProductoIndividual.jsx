@@ -15,7 +15,7 @@ const ProductoIndividual = ({ producto }) => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        // console.log(data);
         alert(data.message); // Mostrar el mensaje específico del objeto
         navegar(0);
       })

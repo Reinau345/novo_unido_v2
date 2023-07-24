@@ -4,6 +4,24 @@ const generarJWT = require('../helpers/generarJWT.js')
 const emailRegistro = require('../helpers/emailRegistro.js')
 const emailOlvidePassword = require('../helpers/emailOlvidePassword.js')
 
+const obtenerUsuarios = async (req, res) => {
+    try {
+        const usuarios = await Usuario.find()
+        res.json( usuarios )
+    } catch (err) {
+        console.log(err)
+    }
+
+    // Usuario.find({})
+    // .then((results) => {
+    //     res.json(results);
+    // })
+    // .catch((error) => {
+    //     console.error(error);
+    //     res.status(500).json({ error: 'Error al obtener los clientes' });
+    // });
+} 
+
 const registrar = async (req, res) =>{
 
     const {email,estado,nombre,apellido} = req.body
@@ -220,6 +238,25 @@ const actualizarPassword = async (req, res) => {
 
 }
 
+const eliminarUsuario = async (req, res) => {
+    const { id } = req.params;
+    const usuario = await Usuario.findById(id)
+
+    if(!usuario){
+        return res.status(404).json({ msg: "No Encontrado", id})
+    }
+
+    if(id.toString() !== usuario._id.toString()){
+        return res.json({ msg: "Accion no válida" })
+    }
+
+    try {
+        await usuario.deleteOne()
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 module.exports = {
     registrar,
@@ -230,5 +267,7 @@ module.exports = {
     comprobarToken,
     nuevoPassword,
     actualizarPerfil,
-    actualizarPassword
+    actualizarPassword,
+    obtenerUsuarios,
+    eliminarUsuario
 }

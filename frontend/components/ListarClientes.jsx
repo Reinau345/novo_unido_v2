@@ -21,7 +21,7 @@ const ListarClientes = () => {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setdatacliente(data);
         setClientesFiltrados(data);
       })

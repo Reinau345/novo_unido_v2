@@ -88,7 +88,7 @@ const CrearProducto = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data.message); // Cliente agregado correctamente
+                // console.log(data.message); // Cliente agregado correctamente
 
             } else {
                 throw new Error('Error al agregar el producto');

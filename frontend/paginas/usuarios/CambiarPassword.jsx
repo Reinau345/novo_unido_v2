@@ -49,7 +49,7 @@ const {msg} = alerta
 
         <main className="d-flex   flex-column border border-primary m-4 rounded">
 
-            <h1 className="text-center  py-0 pt-5 my-0">CAMBIAR PASSWORD</h1>
+            <h3 className="py-0  px-4 pt-3 my-0">CAMBIAR PASSWORD</h3>
 
             <div className="controles d-flex align-items-center">
               <Link to={"/admin/usuarios"}>

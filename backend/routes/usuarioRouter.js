@@ -10,7 +10,9 @@ const {
     comprobarToken, 
     nuevoPassword,
     actualizarPerfil,
-    actualizarPassword
+    actualizarPassword,
+    obtenerUsuarios,
+    eliminarUsuario
 } = require('../controllers/usuarioController.js');
 const checkAuth = require('../middleware/authMiddleware.js');
 
@@ -23,5 +25,7 @@ router.post("/", registrar);
 router.get("/perfil", checkAuth, perfil)
 router.put("/perfil/:id", checkAuth, actualizarPerfil)
 router.put("/actualizar-password", checkAuth, actualizarPassword)
+router.get("/obtener-usuarios", obtenerUsuarios)
+router.delete("/eliminar-usuario/:id", eliminarUsuario)
 
 module.exports = router;
