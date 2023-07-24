@@ -14,7 +14,7 @@ const EditarNegociacion = (negociacion) => {
     const [numFactura, setNumFactura] = useState('');
     const [dataproductos, setDataProductos] = useState([]);
     const [selectedProductos, setSelectedProductos] = useState([]);
-    const [cantidad, setCantidad] = useState([]);
+    const [cantidad, setCantidad] = useState('');
     const [precioVenta, setPrecioVenta] = useState([]);
     const [numCuotas, setNumCuotas] = useState('');
     const [tasa, setTasa] = useState('');
@@ -49,6 +49,7 @@ const EditarNegociacion = (negociacion) => {
                 setInteres(datanegociacion.interes);
                 setFechaGracia(datanegociacion.fechaGracia)
                 setTotal(datanegociacion.total)
+                
             })
             .catch((err) => {
                 console.error(err);
@@ -78,23 +79,19 @@ const EditarNegociacion = (negociacion) => {
     }, []);
 
     const agregarProducto = () => {
-        if (selectedProductos.length === 0) {
-            console.log('Debe seleccionar al menos un producto');
+        if (selectedProductos.length === 0 || cantidad === '' || precioVenta === '') {
+            console.log('Debe seleccionar un producto, ingresar una cantidad y un precio de venta');
             return;
         }
 
-        const nuevosProductos = selectedProductos.map((producto, index) => ({
-            tipoMaquina: producto,
-            cantidad: Number(cantidad[index]), // Convertir la cadena a número
-            precioBase: obtenerPrecioBase(producto),
-            precioVenta: Number(precioVenta[index]),
-        }));
+        const nuevoProducto = {
+            tipoMaquina: selectedProductos,
+            cantidad: Number(cantidad),
+            precioBase: obtenerPrecioBase(selectedProductos),
+            precioVenta: precioVenta, // Utilizar el valor del estado precioVenta
+        };
 
-        setProductosSeleccionados((prevProductos) => {
-            const nuevosProductosSeleccionados = [...prevProductos, ...nuevosProductos];
-            console.log(nuevosProductosSeleccionados);
-            return nuevosProductosSeleccionados;
-        });
+        setProductosSeleccionados((prevProductos) => [...prevProductos, nuevoProducto]);
     };
 
     const obtenerPrecioBase = (producto) => {
@@ -112,6 +109,38 @@ const EditarNegociacion = (negociacion) => {
         setSelectedProductos([]);
         setCantidad([]);
         setPrecioVenta([]);
+    };
+
+    function validarNumericos(event) {
+        const charCode = event.keyCode || event.which;
+        const char = String.fromCharCode(charCode);
+
+        // Permitir la tecla de retroceso (backspace) y la tecla de suprimir (delete)
+        if (charCode === 8 || charCode === 46 || charCode === 9) {
+            return;
+        }
+
+        // Verificar si el carácter no es un número del 0 al 9 ni el punto decimal
+        if (/[\D/.-]/.test(char)) {
+            event.preventDefault();
+        }
+
+        // Verificar que no haya más de un punto decimal
+        if (char === '.' && event.target.value.includes('.')) {
+            event.preventDefault();
+        }
+    }
+
+    const handleCantidadChange = (e, index) => {
+        const nuevosProductosSeleccionados = [...productosSeleccionados];
+        nuevosProductosSeleccionados[index].cantidad = Number(e.target.textContent);
+        setProductosSeleccionados(nuevosProductosSeleccionados);
+    };
+
+    const handlePrecioVentaChange = (e, index) => {
+        const nuevosProductosSeleccionados = [...productosSeleccionados];
+        nuevosProductosSeleccionados[index].precioVenta = e.target.textContent;
+        setProductosSeleccionados(nuevosProductosSeleccionados);
     };
 
     //Función para actualizar
@@ -135,6 +164,7 @@ const EditarNegociacion = (negociacion) => {
             console.error('Todos los campos son obligatorios');
             return;
         }
+
 
         const negociacionActualizada = {
             cliente: selectedCliente,
@@ -175,47 +205,6 @@ const EditarNegociacion = (negociacion) => {
     return (
         <>
             <section className="d-flex">
-                {/* <aside className="">
-                    <ul className="d-flex flex-column justify-content-start w-100 px-0 my-0 mx-0">
-                        <div className="d-flex justify-content-start align-items-center px-3 py-2">
-                            <i className="py-3">
-                                <img className="rounded-circle" src="https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg" alt="logo" title="logo" width="35" height="35" />
-                            </i>
-                            <p className="mb-0 mx-3 text-icon-menu">{auth.nombre} {auth.apellido}</p>
-                        </div>
-                        <Link className="d-flex justify-content-start py-2  border-bottom border-primary" to="/admin/usuarios">
-                            <div className="d-flex align-items-center">
-                                <i className="icon-menu fa-solid fa-user-tie mx-4" title="Usuarios"></i>
-                                <p className="text-icon-menu my-0">Usuarios</p>
-                            </div>
-                        </Link>
-                        <Link className="d-flex justify-content-start py-2  border-bottom border-primary" to="/admin/listaclientes">
-                            <div className="d-flex align-items-center">
-                                <i className="icon-menu fa-solid fa-user mx-4" title="Clientes"></i>
-                                <p className="text-icon-menu my-0">Clientes</p>
-                            </div>
-                        </Link>
-                        <Link className="d-flex justify-content-start py-2  border-bottom border-primary" to="/admin/listaproductos">
-                            <div className="d-flex align-items-center">
-                                <i className="icon-menu fa-solid fa-box-open mx-4" title="Productos"></i>
-                                <p className="text-icon-menu my-0">Productos</p>
-                            </div>
-                        </Link>
-                        <Link className="d-flex justify-content-start py-2  border-bottom border-primary" to="/admin/listanegociaciones">
-                            <div className="d-flex align-items-center">
-                                <i className="icon-menu fa-solid fa-sack-dollar mx-4" title="Negociaciones"></i>
-                                <p className="text-icon-menu my-0">Negociaciones</p>
-                            </div>
-                        </Link>
-                        <Link className="d-flex justify-content-between py-2  border-bottom border-primary" to="/admin/listaplandepago">
-                            <div className="d-flex align-items-center">
-                                <i className="icon-menu fa-solid fa-money-bill-1-wave mx-4" title="Planes de pago"></i>
-                                <p className="text-icon-menu my-0">Planes de pago</p>
-                            </div>
-                        </Link>
-                    </ul>
-                </aside> */}
-
                 <MenuLateral></MenuLateral>
 
                 <main className="d-flex flex-column  border border-primary m-3 rounded">
@@ -256,11 +245,15 @@ const EditarNegociacion = (negociacion) => {
                                 <h2>Agregar Nuevos Productos</h2>
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Producto</label>
-                                    <select className="form-select" value={selectedProductos}
+                                    <select
+                                        id="producto"
+                                        className="form-select"
+                                        required
+                                        value={selectedProductos} // Utiliza el valor seleccionado directamente
                                         onChange={(e) => setSelectedProductos(e.target.value)}>
-                                        <option value="">Seleccione un producto</option>
+                                        <option value="">Seleccionar producto</option>
                                         {dataproductos.map((producto) => (
-                                            <option key={producto.id} value={producto.id}>
+                                            <option key={producto.codigo} value={producto.nombre}>
                                                 {producto.nombre}
                                             </option>
                                         ))}
@@ -269,21 +262,14 @@ const EditarNegociacion = (negociacion) => {
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Precio venta</label>
                                     {selectedProductos.length > 0 ? (
-                                        selectedProductos.map((producto, index) => (
-                                            <input
-                                                key={index}
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Precio venta"
-                                                required
-                                                value={precioVenta[index] || ''}
-                                                onChange={(e) => {
-                                                    const nuevosValores = [...precioVenta];
-                                                    nuevosValores[index] = e.target.value;
-                                                    setPrecioVenta(nuevosValores);
-                                                }}
-                                            />
-                                        ))
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Precio venta"
+                                            required
+                                            onChange={(e) => setPrecioVenta(e.target.value)}
+                                            onKeyDown={validarNumericos}
+                                        />
                                     ) : (
                                         <input
                                             type="text"
@@ -308,29 +294,22 @@ const EditarNegociacion = (negociacion) => {
                                     <input type="number" className="form-control" placeholder="Interes" required value={interes} onChange={(e) => { setInteres(e.target.value) }} />
                                 </div>
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">borrar</label>
-                                    <input type="number" className="form-control" id="anticipo" placeholder="borrar" />
+                                    <label className="form-label fw-bold">Total</label>
+                                    <input type="text" className="form-control" placeholder="Total" required value={total} onChange={(e) => { setTotal(e.target.value) }} />
                                 </div>
                                 <br />
                                 <h2>borrar</h2>
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Cantidad</label>
                                     {selectedProductos.length > 0 ? (
-                                        selectedProductos.map((producto, index) => (
-                                            <input
-                                                key={index}
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Cantidad"
-                                                required
-                                                value={cantidad[index] || ''}
-                                                onChange={(e) => {
-                                                    const nuevosValores = [...cantidad];
-                                                    nuevosValores[index] = e.target.value;
-                                                    setCantidad(nuevosValores);
-                                                }}
-                                            />
-                                        ))
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Cantidad"
+                                            required
+                                            onChange={(e) => {setCantidad(e.target.value)}}
+                                            onKeyDown={validarNumericos}
+                                        />
                                     ) : (
                                         <input
                                             type="text"
@@ -354,32 +333,23 @@ const EditarNegociacion = (negociacion) => {
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">Precio Base</th>
                                         <th scope="col">Precio Venta</th>
-                                        <th scope="col">Acciones</th>
+                                        <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
                                     </tr>
                                 </thead>
-                                {/* <tbody>
-                                    <tr >
-                                        <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.tipoMaquina) ? negociacion.tipoMaquina.join('<br />') : '' }}></td>
-                                        <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.cantidad) ? negociacion.cantidad.join('<br />') : '' }}></td>
-                                        <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioBase) ? negociacion.precioBase.join('<br />') : '' }}></td>
-                                        <td dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioVenta) ? negociacion.precioVenta.join('<br />') : '' }}></td>
-                                        <td>
-                                            <Link>
-                                                <FaTimes size={35} style={{ color: 'black' }} onClick={() => eliminarProducto(index)} />
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                </tbody> */}
                                 <tbody>
                                     {productosSeleccionados.map((producto, index) => (
                                         <tr key={index}>
                                             <td>{producto.tipoMaquina}</td>
-                                            <td>{cantidad[index]}</td>
+                                            <td>{producto.cantidad}</td>
                                             <td>{producto.precioBase}</td>
-                                            <td>{producto.precioVenta}</td> {/* Muestra el precioVenta en la tabla */}
-                                            <td>
+                                            <td>{producto.precioVenta}</td>
+                                            <td style={{ textAlign: 'center' }}>
                                                 <Link>
-                                                    <FaTimes size={35} style={{ color: 'black' }} onClick={() => eliminarProducto(index)} />
+                                                    <FaTimes
+                                                        size={35}
+                                                        style={{ color: 'black' }}
+                                                        onClick={() => eliminarProducto(index)}
+                                                    />
                                                 </Link>
                                             </td>
                                         </tr>

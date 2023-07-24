@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaTimes } from 'react-icons/fa';
 import { format, parseISO } from 'date-fns';
 import useAuth from '../hooks/useAuth'
-
 import MenuLateral from './MenuLateral';
 
 const CrearNegociacion = () => {
@@ -188,48 +187,6 @@ const CrearNegociacion = () => {
     return (
         <>
             <section className="d-flex">
-                {/* <aside className="">
-                    <ul className="d-flex flex-column justify-content-start w-100 px-0 my-0 mx-0">
-                        <div className="d-flex justify-content-start align-items-center px-3 py-2">
-                            <i className="py-3">
-                                <img className="rounded-circle" src="https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg" alt="logo" title="logo" width="35" height="35" />
-                            </i>
-                            <p className="mb-0 mx-3 text-icon-menu">{auth.nombre} {auth.apellido}</p>
-                        </div>
-                        <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/usuarios">
-                            <div className="d-flex align-items-center">
-                                <i className="icon-menu fa-solid fa-user-tie mx-4" title="Usuarios"></i>
-                                <p className="text-icon-menu my-0">Usuarios</p>
-                            </div>
-                        </Link>
-                        <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/listaclientes">
-                            <div className="d-flex align-items-center">
-                                <i className="icon-menu fa-solid fa-user mx-4" title="Clientes"></i>
-                                <p className="text-icon-menu my-0">Clientes</p>
-                            </div>
-                        </Link>
-                        <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/listaproductos">
-                            <div className="d-flex align-items-center">
-                                <i className="icon-menu fa-solid fa-box-open mx-4" title="Productos"></i>
-                                <p className="text-icon-menu my-0">Productos</p>
-                            </div>
-                        </Link>
-                        <Link className="d-flex justify-content-start py-2 border-bottom border-dark" to="/admin/listanegociaciones">
-                            <div className="d-flex align-items-center">
-                                <i className="icon-menu fa-solid fa-sack-dollar mx-4" title="Negociaciones"></i>
-                                <p className="text-icon-menu my-0">Negociaciones</p>
-                            </div>
-                        </Link>
-                        <Link className="d-flex justify-content-between py-2 border-bottom border-dark" to="/admin/listaplandepago">
-                            <div className="d-flex align-items-center">
-                                <i className="icon-menu fa-solid fa-money-bill-1-wave mx-4" title="Planes de pago"></i>
-                                <p className="text-icon-menu my-0">Planes de pago</p>
-                            </div>
-                        </Link>
-
-                    </ul>
-                </aside> */}
-
                 <MenuLateral></MenuLateral>
 
 
@@ -338,8 +295,8 @@ const CrearNegociacion = () => {
                                         <input type="text" className="form-control" placeholder="Porcentaje interes" required value={interes} onChange={(e) => { setInteres(e.target.value) }} />
                                     </div>
                                     <div className="mb-3 w-100">
-                                        <label className="form-label fw-bold">borrar</label>
-                                        <input type="text" className="form-control" placeholder="borrar" />
+                                        <label className="form-label fw-bold">Total</label>
+                                        <input type="text" className="form-control" placeholder="Total" required value={total} onChange={(e) => { setTotal(e.target.value) }} />
                                     </div>
                                     <h2>borrar</h2>
                                     <div className="mb-3 w-100">

@@ -36,8 +36,8 @@ const ClienteIndividual = ({ cliente }) => {
 
   const customStyles = {
     content: {
-      width: '800px',
-      height: '350px',
+      width: '700px',
+      height: '600px',
       margin: 'auto',
       borderRadius: '50px',
       padding: '20px',
@@ -64,11 +64,11 @@ const ClienteIndividual = ({ cliente }) => {
       <td>{cliente.grupo}</td>
       <td style={{ textAlign: 'center' }}>
         <Link onClick={toggleDetalles} >
-          <i className="fa fa-circle-info" title="Detalle" style={{marginRight:10, color: '#212529', fontSize: 22 }} />
+          <i className="fa fa-circle-info" title="Detalle" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
         </Link>
 
         <Link to={`/admin/editarcliente/${cliente._id}`}>
-          <i className="fa fa-pencil" title="Editar" style={{marginRight:10, color: '#212529', fontSize: 22 }} />
+          <i className="fa fa-pencil" title="Editar" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
         </Link>
 
         <Link onClick={eliminarCliente}>
@@ -80,34 +80,48 @@ const ClienteIndividual = ({ cliente }) => {
           <FaTimes size={35} style={{ color: 'black', float: 'right' }} />
         </Link>
         <br />
-        <h2 style={{textAlign: 'center'}}>Detalle Cliente</h2>
+        <h2 style={{ textAlign: 'center' }}>Detalle Cliente</h2>
         <br />
-        <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800 }}>
-            <thead className="table-secondary">
-              <tr>
-                <th scope="col">Cédula</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Dirección</th>
-                <th scope="col">Teléfono</th>
-                <th scope="col">Email</th>
-                <th scope="col">Nombre Codeudor</th>
-                <th scope="col">Teléfono Codeudor</th>
-                <th scope="col">Grupo</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{cliente.cedula}</td>
-                <td>{cliente.nombre}</td>
-                <td>{cliente.direccion}</td>
-                <td>{cliente.telefono}</td>
-                <td>{cliente.email}</td>
-                <td>{cliente.nombreCodeudor}</td>
-                <td>{cliente.telefonoCodeudor}</td>
-                <td>{cliente.grupo}</td>
-              </tr>
-            </tbody>
-          </table>
+        <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid black" }}>
+          <tbody>
+            <tr>
+              <th scope="row" style={{ backgroundColor: "lightgray" }}>Cédula</th>
+              <td>{cliente.cedula}</td>
+            </tr>
+            <tr>
+              <th scope="row" style={{ backgroundColor: "lightgray" }}>Nombre</th>
+              <td>{cliente.nombre}</td>
+            </tr>
+            <tr>
+              <th scope="row" style={{ backgroundColor: "lightgray" }}>Dirección</th>
+              <td>{cliente.direccion}</td>
+            </tr>
+            <tr>
+              <th scope="row" style={{ backgroundColor: "lightgray" }}>Teléfono</th>
+              <td>{cliente.telefono}</td>
+            </tr>
+            <tr>
+              <th scope="row" style={{ backgroundColor: "lightgray" }}>Email</th>
+              <td>{cliente.email}</td>
+            </tr>
+            <tr>
+              <th scope="row" style={{ backgroundColor: "lightgray" }}>Cédula Codeudor</th>
+              <td>{cliente.cedulaCodeudor}</td>
+            </tr>
+            <tr>
+              <th scope="row" style={{ backgroundColor: "lightgray" }}>Nombre Codeudor</th>
+              <td>{cliente.nombreCodeudor}</td>
+            </tr>
+            <tr>
+              <th scope="row" style={{ backgroundColor: "lightgray" }}>Teléfono Codeudor</th>
+              <td>{cliente.telefonoCodeudor}</td>
+            </tr>
+            <tr>
+              <th scope="row" style={{ backgroundColor: "lightgray" }}>Grupo</th>
+              <td>{cliente.grupo}</td>
+            </tr>
+          </tbody>
+        </table>
       </Modal>
     </tr>
   );

@@ -65,9 +65,8 @@ const Encabezado = () => {
 
 
     return (
-
         <header className="py-0">
-            <nav className="navbar navbar-expand-lg ">
+            <nav className="navbar navbar-expand-lg">
                 <div className="container-fluid mx-sm-1 mx-1 mx-lg-5">
 
                     <Link className="navbar-brand" onClick={modalMenuLateral} >
@@ -112,12 +111,7 @@ const Encabezado = () => {
                                     </div>
                                 </Link>
                             </li>
-
-
-
-
                         </ul>
-
                     </div>
 
 
@@ -126,8 +120,6 @@ const Encabezado = () => {
 
                 </div>
             </nav>
-
-
         </header>
 
     )
