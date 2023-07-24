@@ -32,6 +32,11 @@ const schemaCliente = new Schema({
         required: [true, 'Este campo es obligatorio'],
         trim: true
     },
+    cedulaCodeudor: {
+        type: Number,
+        required: [true, 'Este campo es obligatorio'],
+        trim: true
+    },
     nombreCodeudor: {
         type: String,
         required: [true, 'Este campo es obligatorio'],

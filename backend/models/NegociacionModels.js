@@ -57,7 +57,7 @@ const schemaNegociacion = new Schema({
         required: [true, 'Este campo es obligatorio'],
         trim: true
     },
-    fechaFacturacion: {
+    fechaGracia: {
         type: Date,
         required: [true, 'Este campo es obligatorio'],
         trim: true
