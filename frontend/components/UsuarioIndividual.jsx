@@ -31,7 +31,7 @@ const UsuarioIndividual = ({ usuario }) => {
             .catch(error => {
                 console.error('Error:', error);
                 alert('Error al eliminar el producto');
-            });
+            }); 
     }
 
 
