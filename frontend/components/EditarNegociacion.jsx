@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Link, useNavigate } from 'react-router-dom'
 import { FaTimes } from 'react-icons/fa';
+import { format, parseISO } from 'date-fns';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
 
@@ -47,9 +48,9 @@ const EditarNegociacion = (negociacion) => {
                 setTasa(datanegociacion.tasa);
                 setAnticipo(datanegociacion.anticipo);
                 setInteres(datanegociacion.interes);
-                setFechaGracia(datanegociacion.fechaGracia)
+                setFechaGracia(datanegociacion.fechaGracia);
                 setTotal(datanegociacion.total)
-                
+
             })
             .catch((err) => {
                 console.error(err);
@@ -307,7 +308,7 @@ const EditarNegociacion = (negociacion) => {
                                             className="form-control"
                                             placeholder="Cantidad"
                                             required
-                                            onChange={(e) => {setCantidad(e.target.value)}}
+                                            onChange={(e) => { setCantidad(e.target.value) }}
                                             onKeyDown={validarNumericos}
                                         />
                                     ) : (

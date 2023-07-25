@@ -707,3 +707,10 @@ main::-webkit-scrollbar {
     border-radius: 20px;      
     border: 3px solid #032770;  
   }
+
+  .navPaginador {
+    position: fixed;
+    bottom: 100px; /* Ajusta el valor según lo desees */
+    left: 60%; /* Centra el paginador horizontalmente */
+    transform: translateX(-50%);
+  }

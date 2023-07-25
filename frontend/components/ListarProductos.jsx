@@ -123,7 +123,7 @@ const ListarProductos = () => {
                                 {listaproductos}
                             </tbody>
                         </table>
-                        <nav className="d-flex justify-content-center">
+                        <nav className="d-flex justify-content-center navPaginador">
                             <ul className="pagination gap-0 justify-content-center">
                                 {paginador}
                             </ul>

@@ -34,12 +34,13 @@ const ClienteIndividual = ({ cliente }) => {
     setMostrarDetalles(!mostrarDetalles);
   };
 
+
   const customStyles = {
     content: {
       width: '700px',
-      height: '600px',
+      height: '570px',
       margin: 'auto',
-      borderRadius: '50px',
+      borderRadius: '10px',
       padding: '20px',
       display: 'flex',
       flexDirection: 'column',
@@ -56,6 +57,8 @@ const ClienteIndividual = ({ cliente }) => {
   }
 
   return (
+
+    
     <tr>
       <td>{cliente.cedula}</td>
       <td>{cliente.nombre}</td>
@@ -80,45 +83,45 @@ const ClienteIndividual = ({ cliente }) => {
           <FaTimes size={35} style={{ color: 'black', float: 'right' }} />
         </Link>
         <br />
-        <h2 style={{ textAlign: 'center' }}>Detalle Cliente</h2>
+        <h2 style={{ textAlign: 'center', color: '#032770' }}>DETALLE CLIENTE</h2>
         <br />
-        <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid black" }}>
+        <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid blue"}}>
           <tbody>
             <tr>
-              <th scope="row" style={{ backgroundColor: "lightgray" }}>Cédula</th>
-              <td>{cliente.cedula}</td>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cédula</th>
+              <td style={{color: '#032770'}}>{cliente.cedula}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "lightgray" }}>Nombre</th>
-              <td>{cliente.nombre}</td>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Nombre</th>
+              <td style={{color: '#032770'}}>{cliente.nombre}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "lightgray" }}>Dirección</th>
-              <td>{cliente.direccion}</td>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Dirección</th>
+              <td style={{color: '#032770'}}>{cliente.direccion}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "lightgray" }}>Teléfono</th>
-              <td>{cliente.telefono}</td>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Teléfono</th>
+              <td style={{color: '#032770'}}>{cliente.telefono}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "lightgray" }}>Email</th>
-              <td>{cliente.email}</td>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Email</th>
+              <td style={{color: '#032770'}}>{cliente.email}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "lightgray" }}>Cédula Codeudor</th>
-              <td>{cliente.cedulaCodeudor}</td>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cédula Codeudor</th>
+              <td style={{color: '#032770'}}>{cliente.cedulaCodeudor}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "lightgray" }}>Nombre Codeudor</th>
-              <td>{cliente.nombreCodeudor}</td>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Nombre Codeudor</th>
+              <td style={{color: '#032770'}}>{cliente.nombreCodeudor}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "lightgray" }}>Teléfono Codeudor</th>
-              <td>{cliente.telefonoCodeudor}</td>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Teléfono Codeudor</th>
+              <td style={{color: '#032770'}}>{cliente.telefonoCodeudor}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "lightgray" }}>Grupo</th>
-              <td>{cliente.grupo}</td>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Grupo</th>
+              <td style={{color: '#032770'}}>{cliente.grupo}</td>
             </tr>
           </tbody>
         </table>

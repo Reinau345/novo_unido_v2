@@ -9,7 +9,7 @@ const ListarClientes = () => {
   const [busqueda, setBusqueda] = useState("");
   const { auth } = useAuth();
   const [paginaActual, setPaginaActual] = useState(1);
-  const clientesPorPagina = 5;
+  const clientesPorPagina = 7;
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
 
   useEffect(() => {
@@ -123,7 +123,7 @@ const ListarClientes = () => {
                 </thead>
                 <tbody>{listaclientes}</tbody>
               </table>
-              <nav className="d-flex justify-content-center">
+              <nav className="d-flex justify-content-center navPaginador">
                 <ul className="pagination gap-0 justify-content-center">
                   {paginador}
                 </ul>

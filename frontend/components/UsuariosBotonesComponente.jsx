@@ -1,11 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import UsuarioIndividual from './UsuarioIndividual'
-
 import MenuLateral from './MenuLateral'
-
-
-
 
 const UsuariosBotonesComponente = () => {
 
@@ -45,7 +41,7 @@ const UsuariosBotonesComponente = () => {
             return(
                 usuario.nombre && usuario.nombre.toLowerCase().includes(searchValue.toLowerCase()) ||
                 usuario.apellido && usuario.apellido.toLowerCase().includes(searchValue.toLowerCase()) ||
-                usuario.email && usuario.email.toLowerCase().includes(searchValue.toLowerCase())
+                usuario.email && usuario.email.toLowerCase().includes(searchValue.toLowerCase()) 
 
             );
         });
@@ -121,6 +117,7 @@ const UsuariosBotonesComponente = () => {
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Apellido</th>
                                     <th scope="col">Email</th>
+                                    <th scope="col">Estado</th>
                                     <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
                                 </tr>
                             </thead>
@@ -128,8 +125,8 @@ const UsuariosBotonesComponente = () => {
                                 {listaUsuarios}
                             </tbody>
                         </table>
-                        <nav className="d-flex justify-content-center">
-                            <ul className="pagination justify-content-center">
+                        <nav className="d-flex justify-content-center navPaginador">
+                            <ul className="pagination gap-0 justify-content-center">
                                 {paginador}
                             </ul>
                         </nav>

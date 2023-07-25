@@ -5,7 +5,6 @@ import React from 'react'
 // import MenuLateral from '../../components/MenuLateral'
 import MenuLateral from '../../components/MenuLateral'
 
-import Principal from '../../components/Principal'
 // import EditarPerfilComponente from '../perfil/EditarPerfil'
 import EditarPerfilComponente from '../perfil/EditarPerfil'
 
