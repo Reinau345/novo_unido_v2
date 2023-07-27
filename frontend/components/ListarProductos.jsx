@@ -38,7 +38,6 @@ const ListarProductos = () => {
         const productosFiltrados = dataproductos.filter((producto) => {
             return (
                 producto.nombre && producto.nombre.toLowerCase().includes(searchValue.toLowerCase()) ||
-                producto.precioBase && producto.precioBase.toString().includes(searchValue) ||
                 producto.referencia && producto.referencia.toLowerCase().includes(searchValue.toLowerCase())
             );
         });
@@ -107,23 +106,24 @@ const ListarProductos = () => {
                                 </div>
                             </div>
                         </div>
-
-                        <table className="table table-hover mb-5">
-                            <thead className="table-secondary">
-                                <tr>
-                                    <th scope="col">Referencia</th>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Cantidad</th>
-                                    <th scope="col">Precio Base</th>
-                                    <th scope="col">Imagen</th>
-                                    <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {listaproductos}
-                            </tbody>
-                        </table>
-                        <nav className="d-flex justify-content-center navPaginador">
+                        <div className="table-container" style={{ overflowX: 'auto' }}>
+                            <table className="table table-hover mb-5" style={{ overflowX: 'auto' }}>
+                                <thead className="table-secondary">
+                                    <tr>
+                                        <th scope="col">Referencia</th>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Precio Base</th>
+                                        <th scope="col">Imagen</th>
+                                        <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {listaproductos}
+                                </tbody>
+                            </table>
+                        </div>
+                        <nav className="d-flex justify-content-center">
                             <ul className="pagination gap-0 justify-content-center">
                                 {paginador}
                             </ul>

@@ -13,7 +13,7 @@ import FormCrearNegociacion from "../paginas/FormCrearNegociacion";
 import FormEditarNegociacion from '../paginas/FormEditarNegociacion';
 import AuthLayout from '../layout/AuthLayout'
 import AdminLayout from '../layout/AdminLayout'
-
+import { NegociacionProvider } from "../components/NegociacionContext";
 import Login from '../paginas/Login'
 import Registrar from '../paginas/Registrar'
 import ConfirmarCuenta from '../paginas/ConfirmarCuenta'
@@ -26,50 +26,55 @@ import UsuariosBotones from '../paginas/usuarios/UsuariosBotones'
 
 
 import { AuthProvider } from '../context/AuthProvider'
+import EditarNegociacion from "../components/EditarNegociacion";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          {/* Usuarios */}
-          <Route path='/' element={<AuthLayout />}>
-            <Route index element={<Login />} />
-            <Route path='olvide-password' element={<OlvidePassword />} />
-            <Route path='olvide-password/:token' element={<NuevoPassword />} />
-            <Route path='confirmar/:id' element={<ConfirmarCuenta />} />
-          </Route>
+        <NegociacionProvider>
+          <Routes>
+            {/* Usuarios */}
+            <Route path='/' element={<AuthLayout />}>
+              <Route index element={<Login />} />
+              <Route path='olvide-password' element={<OlvidePassword />} />
+              <Route path='olvide-password/:token' element={<NuevoPassword />} />
+              <Route path='confirmar/:id' element={<ConfirmarCuenta />} />
+            </Route>
 
-          <Route path='/admin' element={<AdminLayout />}>
-            <Route index element={<Admin />} />
-            <Route path='perfil' element={<EditarPerfil/>}/>
-            <Route path='registrar' element={<Registrar />} />
-            <Route path='cambiar-password' element={<CambiarPasswordCarga/>}/>
-            <Route path='usuarios' element={<UsuariosBotones/>}/>
+            <Route path='/admin' element={<AdminLayout />}>
+              <Route index element={<Admin />} />
+              <Route path='perfil' element={<EditarPerfil />} />
+              <Route path='registrar' element={<Registrar />} />
+              <Route path='cambiar-password' element={<CambiarPasswordCarga />} />
+              <Route path='usuarios' element={<UsuariosBotones />} />
 
-            {/* Clientes */}
-            <Route path="listaclientes" element={<ListarClientes />}></Route>
-            <Route path="crearcliente" element={<FormCrearCliente />}></Route>
-            <Route path="editarcliente/:id" element={<FormEditarCliente />}></Route>
-            
-            {/* Planes de pago */}
-            <Route path="listaplandepago" element={<ListarPlanesdepago />}></Route>
-            <Route path="crearplandepago" element={<FormCrearPlandepago />}></Route>
-            <Route path="editarplandepago/:id" element={<FormEditarPlandepago />}></Route>
+              {/* Clientes */}
+              <Route path="listaclientes" element={<ListarClientes />}></Route>
+              <Route path="crearcliente" element={<FormCrearCliente />}></Route>
+              <Route path="editarcliente/:id" element={<FormEditarCliente />}></Route>
 
-            {/* Productos */}
-            <Route path="listaproductos" element={<ListarProductos />}></Route>
-            <Route path="crearproducto" element={<FormCrearProducto />}></Route>
-            <Route path="editarproducto/:id" element={<FormEditarProducto />}></Route>
+              {/* Planes de pago */}
+              <Route path="listaplandepago" element={<ListarPlanesdepago />}></Route>
+              <Route path="crearplandepago" element={<FormCrearPlandepago />}></Route>
+              <Route path="editarplandepago/:id" element={<FormEditarPlandepago />}></Route>
 
-            {/* Negociaciones */}
-            <Route path="listanegociaciones" element={<ListarNegociaciones />}></Route>
-            <Route path="crearnegociacion" element={<FormCrearNegociacion />}></Route>
-            <Route path="editarnegociacion/:id" element={<FormEditarNegociacion />}></Route>
-       
-          </Route>
-        </Routes>
+              {/* Productos */}
+              <Route path="listaproductos" element={<ListarProductos />}></Route>
+              <Route path="crearproducto" element={<FormCrearProducto />}></Route>
+              <Route path="editarproducto/:id" element={<FormEditarProducto />}></Route>
+
+              {/* Negociaciones */}
+              <Route path="listanegociaciones" element={<ListarNegociaciones />}></Route>
+              <Route path="crearnegociacion" element={<FormCrearNegociacion />}></Route>
+              <Route path="editarnegociacion/:id" element={<EditarNegociacion />}></Route>
+
+            </Route>
+
+          </Routes>
+        </NegociacionProvider>
       </AuthProvider>
+
     </BrowserRouter>
   )
 }

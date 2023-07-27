@@ -8,44 +8,45 @@ const UsuariosBotonesComponente = () => {
     const [usuarios, setUsuarios] = useState([])
     const [busqueda, setBusqueda] = useState("");
     const [paginaActual, setPaginaActual] = useState(1);
-    
     const usuariosPorPagina = 5;
     const [usuariosFiltrados, setUsuariosFiltrados] = useState([])
-    
-
 
     useEffect(() => {
         fetch('http://localhost:4000/api/usuarios/obtener-usuarios')
             .then((res) => {
-                if(!res.ok){
+                if (!res.ok) {
                     throw new Error('Error al obtener los datos del usuario');
                 }
                 return res.json();
             })
             .then((data) => {
-                // console.log(data)
-                setUsuarios(data)
-                setUsuariosFiltrados(data)
+                // Convertir el correo a minúscula antes de guardar los datos
+                const usuariosLowerCase = data.map((usuario) => ({
+                    ...usuario,
+                    correo: usuario.correo.toLowerCase(),
+                }));
+
+                setUsuarios(usuariosLowerCase);
+                setUsuariosFiltrados(usuariosLowerCase);
             })
-            .catch((err) =>{
+            .catch((err) => {
                 console.log(err)
             })
-    },[])
+    }, [])
 
-    function searchDate(e){
+    function searchDate(e) {
         e.preventDefault();
         const searchValue = e.target.value;
         setBusqueda(searchValue);
 
         const usuariosFiltrados = usuarios.filter((usuario) => {
-            return(
+            return (
                 usuario.nombre && usuario.nombre.toLowerCase().includes(searchValue.toLowerCase()) ||
                 usuario.apellido && usuario.apellido.toLowerCase().includes(searchValue.toLowerCase()) ||
-                usuario.email && usuario.email.toLowerCase().includes(searchValue.toLowerCase()) 
+                usuario.email && usuario.email.toLowerCase().includes(searchValue.toLowerCase())
 
             );
         });
-
 
         setUsuariosFiltrados(usuariosFiltrados);
         setPaginaActual(1)
@@ -55,7 +56,7 @@ const UsuariosBotonesComponente = () => {
     const indexOfFirstUsuario = indexOfLastUsuario - usuariosPorPagina;
     const usuariosPaginados = usuariosFiltrados.slice(indexOfFirstUsuario, indexOfLastUsuario)
 
-    const listaUsuarios = 
+    const listaUsuarios =
         usuariosPaginados.length === 0 ? (
             <tr>
                 <td colSpan="6">

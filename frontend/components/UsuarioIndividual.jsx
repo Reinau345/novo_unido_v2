@@ -7,32 +7,41 @@ const UsuarioIndividual = ({ usuario }) => {
 
     const navegar = useNavigate()
 
-    function toggleEstadoUsuario() {
-        // Actualiza el estado 'activo' del usuario en función del valor actual
-        const nuevoEstadoUsuario = {
-          ...usuario,
-          estado: !usuario.estado // Cambiar el valor del estado (toggle)
-        }
-    }
-
     function eliminarUsuario() {
-        fetch(`http://localhost:4000/api/usuarios/eliminar-usuario/${_id}`, {  // Corrección en la ruta
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
+        swal({
+            title: "Eliminar",
+            text: "¿Estás seguro de eliminar el registro?",
+            icon: "warning",
+            buttons: {
+                cancel: "NO",
+                confirm: "SI"
+            },
+            dangerMode: true
+        }).then(isConfirmed => {
+            if (isConfirmed) {
+                fetch(`http://localhost:4000/api/usuarios/eliminar-usuario/${_id}`, {  // Corrección en la ruta
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                        swal({
+                            text: "El registro se ha borrado con éxito",
+                            icon: "success"
+                        }).then(() => {
+                            navegar(0);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error al eliminar el usuario');
+                    });
             }
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                alert(data.message); // Mostrar el mensaje específico del objeto
-                navegar(0);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error al eliminar el producto');
-            });
-    }
+        });
+    };
 
 
     if (!usuario) {

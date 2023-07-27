@@ -40,13 +40,13 @@ const actualizarCliente = async (req, res) => {
     const id = req.params.id;
     const propiedadesActualizadas = req.body;
     try {
-      await Cliente.findByIdAndUpdate(id, propiedadesActualizadas);
-      res.json({ message: 'Cliente actualizado correctamente' });
+        await Cliente.findByIdAndUpdate(id, propiedadesActualizadas);
+        res.json({ message: 'Cliente actualizado correctamente' });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Error al actualizar el cliente' });
+        console.error(error);
+        res.status(500).json({ error: 'Error al actualizar el cliente' });
     }
-  };
+};
 
 const eliminarCliente = async (req, res) => {
     const id = req.params.id;

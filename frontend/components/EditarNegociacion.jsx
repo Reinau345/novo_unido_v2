@@ -5,8 +5,9 @@ import { FaTimes } from 'react-icons/fa';
 import { format, parseISO } from 'date-fns';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
+import { useNegociacionContext } from './NegociacionContext';
 
-const EditarNegociacion = (negociacion) => {
+const EditarNegociacion = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     //Hooks
@@ -23,7 +24,7 @@ const EditarNegociacion = (negociacion) => {
     const [interes, setInteres] = useState('');
     const [fechaGracia, setFechaGracia] = useState('');
     const [total, setTotal] = useState('');
-    const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+    const { productosSeleccionados, setProductosSeleccionados } = useNegociacionContext();
     const { auth } = useAuth()
 
     const handleCancelar = () => {
@@ -148,24 +149,27 @@ const EditarNegociacion = (negociacion) => {
     const actualizarNegociacion = async () => {
 
         // Verificar que todos los campos sean llenados
-        if (
-            selectedCliente === '' ||
-            numFactura === '' ||
-            selectedProductos === '' ||
-            cantidad === '' ||
-            precioVenta === '' ||
-            numCuotas === '' ||
-            tasa === '' ||
-            anticipo === '' ||
-            interes === '' ||
-            fechaGracia === '' ||
-            total === '' ||
-            productosSeleccionados === ''
-        ) {
-            console.error('Todos los campos son obligatorios');
-            return;
-        }
-
+        // if (
+        //     selectedCliente === '' ||
+        //     numFactura === '' ||
+        //     selectedProductos === '' ||
+        //     cantidad === '' ||
+        //     precioVenta === '' ||
+        //     numCuotas === '' ||
+        //     tasa === '' ||
+        //     anticipo === '' ||
+        //     interes === '' ||
+        //     fechaGracia === '' ||
+        //     total === '' ||
+        //     productosSeleccionados === ''
+        // ) {
+        //     swal({
+        //         title: "Campos vacíos",
+        //         text: "Todos los campos son obligatorios",
+        //         icon: "warning",
+        //         button: "Aceptar"
+        //     })
+        // }
 
         const negociacionActualizada = {
             cliente: selectedCliente,
@@ -193,7 +197,23 @@ const EditarNegociacion = (negociacion) => {
 
             if (response.ok) {
                 const data = await response.json();
-                // console.log(data.message); // Cliente actualizado correctamente
+                swal({
+                    title: "Actualización exitosa",
+                    icon: "success",
+                    buttons: {
+                        accept: {
+                            text: "Aceptar",
+                            value: true,
+                            visible: true,
+                            className: "btn-primary",
+                            closeModal: true
+                        }
+                    }
+                }).then((value) => {
+                    if (value) {
+                        window.location.href = "/admin/listanegociaciones";
+                    }
+                });
             } else {
                 throw new Error('Error al actualizar la negociación');
             }
@@ -202,7 +222,7 @@ const EditarNegociacion = (negociacion) => {
         }
     };
 
-
+    console.log(productosSeleccionados)
     return (
         <>
             <section className="d-flex">
@@ -361,7 +381,7 @@ const EditarNegociacion = (negociacion) => {
                         <div className="contenedor__botones d-flex justify-content-center flex-lg-row flex-column flex-sm-column my-3 mx-5 gap-5">
                             <div className="d-flex justify-content-center w-100">
                                 <div className="div_botones ms-sm-0 w-100 d-flex justify-content-center">
-                                    <button type="submit" className="btn btn-dark btn-styles" onClick={actualizarNegociacion}>Guardar</button>
+                                    <button type="button" className="btn btn-dark btn-styles" onClick={actualizarNegociacion}>Guardar</button>
                                 </div>
                             </div>
                             <div className="d-flex justify-content-center w-100">
