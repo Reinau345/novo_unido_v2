@@ -9,7 +9,7 @@ const ListarClientes = () => {
   const [busqueda, setBusqueda] = useState("");
   const { auth } = useAuth();
   const [paginaActual, setPaginaActual] = useState(1);
-  const clientesPorPagina = 7;
+  const clientesPorPagina = 5;
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
 
   useEffect(() => {
@@ -38,8 +38,7 @@ const ListarClientes = () => {
     const filteredClientes = dataclientes.filter((cliente) => {
       return (
         cliente.cedula.toString().includes(searchValue) ||
-        cliente.nombre.toLowerCase().includes(searchValue.toLowerCase()) ||
-        cliente.grupo.toLowerCase().includes(searchValue.toLowerCase())
+        cliente.nombre.toLowerCase().includes(searchValue.toLowerCase())
       );
     });
 
@@ -107,7 +106,7 @@ const ListarClientes = () => {
               </div>
             </div>
 
-            <div className="table-container">
+            <div className="table-container" style={{ overflowX: 'auto' }}>
               <table className="table table-hover mb-5 border">
                 <thead className="table-secondary">
                   <tr>
@@ -123,14 +122,13 @@ const ListarClientes = () => {
                 </thead>
                 <tbody>{listaclientes}</tbody>
               </table>
-              <nav className="d-flex justify-content-center navPaginador">
-                <ul className="pagination gap-0 justify-content-center">
-                  {paginador}
-                </ul>
-              </nav>
             </div>
+            <nav className="d-flex justify-content-center">
+              <ul className="pagination gap-0 justify-content-center">
+                {paginador}
+              </ul>
+            </nav>
           </div>
-
         </main>
       </section>
     </>

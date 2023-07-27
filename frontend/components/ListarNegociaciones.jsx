@@ -3,10 +3,14 @@ import { Link } from 'react-router-dom'
 import NegociacionIndividual from './NegociacionIndividual';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
+import EditarNegociacion from './EditarNegociacion'
 
 const ListarNegociaciones = () => {
     const [datanegociaciones, setdatanegociacion] = useState([]);
     const [busqueda, setBusqueda] = useState("");
+    const [paginaActual, setPaginaActual] = useState(1);
+    const negociacionesPorPagina = 5;
+    const [negociacionesFiltradas, setNegociacionesFiltradas] = useState([]);
     const { auth } = useAuth()
 
     useEffect(() => {
@@ -20,6 +24,7 @@ const ListarNegociaciones = () => {
             .then((data) => {
                 // console.log(data);
                 setdatanegociacion(data);
+                setNegociacionesFiltradas(data);
             })
             .catch((err) => {
                 console.error(err);
@@ -27,24 +32,25 @@ const ListarNegociaciones = () => {
     }, []);
 
     function searchData(event) {
-        event.preventDefault();
-        setBusqueda(event.target.value);
+        const searchValue = event.target.value;
+        setBusqueda(searchValue);
+
+        const filteredNegociaciones = datanegociaciones.filter((negociacion) => {
+            return (
+                negociacion.numFactura && negociacion.numFactura.toLowerCase().includes(searchValue.toLowerCase()) ||
+                negociacion.cliente && negociacion.cliente.toString().includes(searchValue)
+            );
+        })
+
+        setNegociacionesFiltradas(searchValue ? filteredNegociaciones : datanegociaciones);
+        setPaginaActual(1);
     }
 
+    const indexOfLastNegociacion = paginaActual * negociacionesPorPagina;
+    const indexOfFirstNegociacion = indexOfLastNegociacion - negociacionesPorPagina;
+    const negociacionesPaginadas = negociacionesFiltradas.slice(indexOfFirstNegociacion, indexOfLastNegociacion);
 
-    const filteredNegociaciones = datanegociaciones.filter((negociacion) => {
-        return (
-            negociacion.numFactura && negociacion.numFactura.toLowerCase().includes(busqueda.toLowerCase()) ||
-            negociacion.cliente && negociacion.cliente.toString().includes(busqueda)
-        );
-    })
-
-    const ListarNegociaciones = filteredNegociaciones.length > 0 ? (
-        filteredNegociaciones.map((negociacion) => (
-            <NegociacionIndividual key={negociacion._id} negociacion={negociacion} setdatanegociacion={setdatanegociacion} />
-
-        ))
-    ) : (
+    const listanegociaciones = negociacionesPaginadas.length === 0 ? (
         <tr>
             <td colSpan="12">
                 <div>
@@ -52,11 +58,30 @@ const ListarNegociaciones = () => {
                 </div>
             </td>
         </tr>
+    ) : (
+        negociacionesPaginadas.map((negociacion) => {
+            return <NegociacionIndividual key={negociacion._id} negociacion={negociacion} />;
+        })
     );
-    filteredNegociaciones.map((negociacion) => (
-        <NegociacionIndividual key={negociacion._id} negociacion={negociacion} setdatanegociacion={setdatanegociacion} />
 
-    ))
+    // Paginador
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(negociacionesFiltradas.length / negociacionesPorPagina); i++) {
+        pageNumbers.push(i);
+    }
+
+    const paginador = pageNumbers.map((number) => {
+        return (
+            <li
+                key={number}
+                className={`page-item ${paginaActual === number ? 'active' : ''}`}
+                onClick={() => setPaginaActual(number)}
+            >
+                <button className="page-link">{number}</button>
+            </li>
+        );
+    });
+
     return (
         <>
             <section className="d-flex">
@@ -82,7 +107,7 @@ const ListarNegociaciones = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="table-container">
+                        <div className="table-container" style={{ overflowX: 'auto' }}>
                             <table className="table table-hover mb-5 border">
                                 <thead className="table-secondary">
                                     <tr>
@@ -96,10 +121,15 @@ const ListarNegociaciones = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {ListarNegociaciones}
+                                    {listanegociaciones}
                                 </tbody>
                             </table>
                         </div>
+                        <nav className="d-flex justify-content-center">
+                            <ul className="pagination gap-0 justify-content-center">
+                                {paginador}
+                            </ul>
+                        </nav>
                     </div>
                 </main>
             </section>

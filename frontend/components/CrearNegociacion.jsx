@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaTimes } from 'react-icons/fa';
-import { format, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
 
@@ -81,24 +81,33 @@ const CrearNegociacion = () => {
     const agregarNegociacion = async () => {
 
         // Verificar que todos los campos sean llenados
-        // if (
-        //     selectedCliente === '' ||
-        //     numFactura === '' ||
-        //     selectedProductos.length === 0 ||
-        //     cantidad === '' ||
-        //     precioBase === '' ||
-        //     precioVenta === '' ||
-        //     numCuotas === '' ||
-        //     tasa === '' ||
-        //     anticipo === '' ||
-        //     interes === '' ||
-        //     fechaGracia === '' ||
-        //     total === '' ||
-        //     productosSeleccionados.length === 0
-        // ) {
-        //     console.error('Todos los campos son obligatorios');
-        //     return;
-        // }
+        if (
+            selectedCliente === '' ||
+            numFactura === '' ||
+            numCuotas === '' ||
+            tasa === '' ||
+            anticipo === '' ||
+            interes === '' ||
+            fechaGracia === '' ||
+            total === ''
+        ) {
+            swal({
+                title: "Campos vacíos",
+                text: "Todos los campos son obligatorios",
+                icon: "warning",
+                button: "Aceptar"
+            });
+        } for (let i = 0; i < selectedProductos.length; i++) {
+            if (!cantidad[i] || !precioVenta[i] || !productosSeleccionados[i]) {
+                swal({
+                    title: "Campos vacíos",
+                    text: "Todos los campos son obligatorios",
+                    icon: "warning",
+                    button: "Aceptar"
+                });
+                return;
+            }
+        }
 
         const tipoMaquinaArray = productosSeleccionados.map((producto) => producto.tipoMaquina);
         const cantidadArray = productosSeleccionados.map((producto) => Number(producto.cantidad));
@@ -132,10 +141,25 @@ const CrearNegociacion = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data.message); // Cliente agregado correctamente
-
+                swal({
+                    title: "Negociación Creada Correctamente",
+                    icon: "success",
+                    buttons: {
+                        accept: {
+                            text: "Aceptar",
+                            value: true,
+                            visible: true,
+                            className: "btn-primary",
+                            closeModal: true
+                        }
+                    }
+                }).then((value) => {
+                    if (value) {
+                        window.location.href = "/admin/listanegociaciones";
+                    }
+                });
             } else {
-                throw new Error('Error al agregar la negociación');
+                throw new Error('Error al agregar el cliente');
             }
         } catch (error) {
             console.error(error);
@@ -222,8 +246,7 @@ const CrearNegociacion = () => {
                                         type="text"
                                         className="form-control"
                                         placeholder="Porcentaje anticipo"
-                                        required
-                                        value={anticipo}
+                                        required value={anticipo}
                                         onChange={(e) => { setAnticipo(e.target.value) }}
                                     />
                                 </div>
@@ -259,7 +282,7 @@ const CrearNegociacion = () => {
                                                 key={index}
                                                 type="text"
                                                 className="form-control"
-                                                placeholder="Precio venta"
+                                                placeholder="$"
                                                 required
                                                 onKeyDown={validarNumericos}
                                                 value={precioVenta[index] || ''}
@@ -274,7 +297,7 @@ const CrearNegociacion = () => {
                                         <input
                                             type="text"
                                             className="form-control"
-                                            placeholder="Precio venta"
+                                            placeholder="$"
                                             disabled
                                         />
                                     )}
@@ -296,7 +319,7 @@ const CrearNegociacion = () => {
                                     </div>
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Total</label>
-                                        <input type="text" className="form-control" placeholder="Total" required value={total} onChange={(e) => { setTotal(e.target.value) }} />
+                                        <input type="text" className="form-control" placeholder="$" required onKeyDown={validarNumericos} value={total} onChange={(e) => { setTotal(e.target.value) }} />
                                     </div>
                                     <h2>borrar</h2>
                                     <div className="mb-3 w-100">
@@ -367,7 +390,7 @@ const CrearNegociacion = () => {
                         <div className="contenedor__botones d-flex justify-content-center flex-lg-row flex-column flex-sm-column my-3 mx-5 gap-5">
                             <div className="d-flex justify-content-center w-100">
                                 <div className="div_botones ms-sm-0 w-100 d-flex justify-content-center">
-                                    <button type="submit" className="btn btn-dark btn-styles" onClick={agregarNegociacion}>Guardar</button>
+                                    <button type="button" className="btn btn-dark btn-styles" onClick={agregarNegociacion}>Guardar</button>
                                 </div>
                             </div>
                             <div className="d-flex justify-content-center w-100">

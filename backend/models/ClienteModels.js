@@ -9,6 +9,7 @@ const schemaCliente = new Schema({
     },
     cedula: {
         type: Number,
+        unique: true,
         required: [true, 'Este campo es obligatorio'],
         trim: true
     },

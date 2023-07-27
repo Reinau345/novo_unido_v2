@@ -39,18 +39,13 @@ const EditarCliente = () => {
   }
 
   function validarTexto(event) {
-    const charCode = event.keyCode || event.which;
-    const char = String.fromCharCode(charCode);
+    const inputText = event.target.value;
 
-    // Permitir la tecla de retroceso (backspace) y la tecla de suprimir (delete)
-    if (charCode === 8 || charCode === 46 || charCode === 9 || char === ' ') {
-      return;
-    }
+    // Remover caracteres especiales y números, permitiendo solo letras y la letra "ñ" (tanto en mayúscula como en minúscula)
+    const sanitizedText = inputText.replace(/[^a-zA-ZñÑ\s]/g, '');
 
-    // Verificar si el carácter es un número o un carácter especial
-    if (/[0-9\W_]/.test(char)) {
-      event.preventDefault();
-    }
+    // Actualizar el valor del input con el texto sanitizado
+    event.target.value = sanitizedText;
   }
 
   useEffect(() => {
@@ -92,8 +87,12 @@ const EditarCliente = () => {
       telefonoCodeudor === '' ||
       grupo === ''
     ) {
-      console.error('Todos los campos son obligatorios');
-      return;
+      swal({
+        title:"Campos vacíos",
+        text:"Todos los campos son obligatorios",
+        icon:"warning",
+        button:"Aceptar"
+      })
     }
 
     const clienteActualizado = {
@@ -119,7 +118,23 @@ const EditarCliente = () => {
 
       if (response.ok) {
         const data = await response.json();
-        // console.log(data.message); // Cliente actualizado correctamente
+        swal({
+          title: "Actualización exitosa",
+          icon: "success",
+          buttons: {
+            accept: {
+              text: "Aceptar",
+              value: true,
+              visible: true,
+              className: "btn-primary",
+              closeModal: true
+            }
+          }
+        }).then((value) => {
+          if (value) {
+            window.location.href = "/admin/listaclientes";
+          }
+        });
       } else {
         throw new Error('Error al actualizar el cliente');
       }
@@ -166,7 +181,7 @@ const EditarCliente = () => {
               <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Nombre</label>
-                  <input type="text" className="form-control" id="nombre" placeholder="Nombre" required onKeyDown={validarTexto} value={nombre} onChange={(e) => { setNombre(e.target.value) }} />
+                  <input type="text" className="form-control" id="nombre" placeholder="Nombre" required onInput={validarTexto} value={nombre} onChange={(e) => { setNombre(e.target.value) }} />
                 </div>
 
                 <div className="mb-3 w-100">
@@ -176,19 +191,19 @@ const EditarCliente = () => {
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Grupo</label>
-                  <input type="text" className="form-control" placeholder="Grupo" required onKeyDown={validarTexto} value={grupo} onChange={(e) => { setGrupo(e.target.value) }} />
+                  <input type="text" className="form-control" placeholder="Grupo" required onInput={validarTexto} value={grupo} onChange={(e) => { setGrupo(e.target.value) }} />
                 </div>
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Nombre Codeudor</label>
-                  <input type="text" className="form-control" placeholder="Nombre Codeudor" required onKeyDown={validarTexto} value={nombreCodeudor} onChange={(e) => { setNombreCodeudor(e.target.value) }} />
+                  <input type="text" className="form-control" placeholder="Nombre Codeudor" required onInput={validarTexto} value={nombreCodeudor} onChange={(e) => { setNombreCodeudor(e.target.value) }} />
                 </div>
               </div>
             </div>
             <div className="contenedor__botones d-flex justify-content-center flex-lg-row flex-column flex-sm-column my-3 mx-5 gap-5">
               <div className="d-flex justify-content-center w-100">
                 <div className="div_botones ms-sm-0 w-100 d-flex justify-content-center">
-                  <button type="submit" className="btn btn-dark btn-styles" onClick={actualizarCliente}>Guardar</button>
+                  <button type="button" className="btn btn-dark btn-styles" onClick={actualizarCliente}>Guardar</button>
                 </div>
               </div>
               <div className="d-flex justify-content-center w-100 ">
