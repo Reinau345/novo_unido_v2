@@ -29,7 +29,7 @@ const UsuarioIndividual = ({ usuario }) => {
                     .then(data => {
                         console.log(data);
                         swal({
-                            text: "El registro se ha borrado con éxito",
+                            title: "Usuario eliminado con éxito",
                             icon: "success"
                         }).then(() => {
                             navegar(0);
@@ -37,7 +37,6 @@ const UsuarioIndividual = ({ usuario }) => {
                     })
                     .catch(error => {
                         console.error('Error:', error);
-                        alert('Error al eliminar el usuario');
                     });
             }
         })
@@ -49,7 +48,6 @@ const UsuarioIndividual = ({ usuario }) => {
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error al eliminar el producto');
             }); 
     }
 

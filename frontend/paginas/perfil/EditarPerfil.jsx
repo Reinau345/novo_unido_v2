@@ -11,7 +11,7 @@ const EditarPerfil = () => {
     const [alerta, setAlerta] = useState({})
 
     const handleCancelar = () => {
-        navigate('/admin/usuarios'); // Regresa a la ubicación anterior
+        navigate('/admin/listar-usuarios'); // Regresa a la ubicación anterior
     };
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const EditarPerfil = () => {
 
         const resultado = await actualizarPerfil(perfil)
         setAlerta(resultado)
-        window.location.href = '/admin/usuarios';
+        window.location.href = '/admin/listar-usuarios';
 
     }
 

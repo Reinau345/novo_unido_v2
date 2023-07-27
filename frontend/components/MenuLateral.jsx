@@ -59,7 +59,7 @@ const MenuLateral = ({componentePrincipal}) => {
                     </div>
                 </Link> */}
                 
-                <Link className="d-flex justify-content-start py-2 border-bottom  border-primary" to="/admin/usuarios">
+                <Link className="d-flex justify-content-start py-2 border-bottom  border-primary" to="/admin/listar-usuarios">
                     <div className="d-flex  align-items-center ">
                         <i className="icon-menu fa-solid fa-user-tie mx-4" title="Clientes"></i>
                         <p className="text-icon-menu my-0">Usuarios</p>

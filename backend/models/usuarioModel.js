@@ -41,12 +41,12 @@ const usuarioSchema = mongoose.Schema({
   },
   estado: {
     type: String,
-    required: true,
+    default: 'Activo',
     trim: true
   },
   rol: {
     type: String,
-    required: true,
+    default: 'Administador',
     trim: true
   },
   token: {

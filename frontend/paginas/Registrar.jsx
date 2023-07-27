@@ -15,8 +15,6 @@ const Registrar = () => {
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
   const [password, setPassword] = useState('')
-  const [estado, setEstado] = useState('')
-  const [rol, setRol] = useState('')
   const [repetirPassword, setRepetirPassword] = useState('')
 
   const [alerta, setAlerta] = useState({})
@@ -28,20 +26,22 @@ const Registrar = () => {
   const handleSubmit = async e => {
     e.preventDefault()
 
-    if ([email, nombre, apellido, password, repetirPassword, estado, rol].includes('')) {
+    if ([email, nombre, apellido, password, repetirPassword].includes('')) {
       setAlerta({ msg: "hay campos vacios", error: true });
       return;
     }
 
     if (password !== repetirPassword) {
       console.log("Los password no son iguales")
+      setAlerta({ msg: "Los password no son igualess", error: true });
       return
     }
 
-    // if(password.length < 8){
-    //   console.log('El password es muy corto')
-    //   return
-    // }
+    if(password.length < 6){
+      console.log('El password es muy corto')
+      setAlerta({ msg: "El password debe tener mas de 6 caracteres", error: true });
+      return
+    }
 
 
     setAlerta({})
@@ -50,7 +50,7 @@ const Registrar = () => {
     try {
       //   const url = `${import.meta.env.VITE_BACKEND_URL}/api/usuarios`
       const url = `/usuarios`
-      const { data } = await clienteAxios.post(url, { email, nombre, apellido, password, estado, rol })
+      const { data } = await clienteAxios.post(url, { email, nombre, apellido, password })
       console.log(data)
       setAlerta({
         msg: "Creado Correctamente",
@@ -127,17 +127,7 @@ const Registrar = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label htmlFor="estado" className="form-label fw-bold" >Estado</label>
-                  <select
-                    className="form-select"
-                    aria-label="Default select example"
-                    value={estado}
-                    onChange={e => setEstado(e.target.value)}
-                  >
-                    <option defaultValue>Seleccionar</option>
-                    <option value="Activo">Activo</option>
-                    <option value="Inactivo">Inactivo</option>
-                  </select>
+ 
                 </div>
               </div>
 
@@ -171,16 +161,7 @@ const Registrar = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label htmlFor="rol" className="form-label fw-bold">Rol</label>
-                  <select
-                    className="form-select"
-                    aria-label="Default select example"
-                    value={rol}
-                    onChange={e => setRol(e.target.value)}
-                  >
-                    <option defaultValue>Seleccionar</option>
-                    <option value="admin">Administrador</option>
-                  </select>
+
                 </div>
               </div>
             </div>

@@ -23,8 +23,7 @@ import NuevoPassword from '../paginas/NuevoPassword'
 import EditarPerfil from '../paginas/perfil/EditarPerfilCarga'
 import CambiarPasswordCarga from '../paginas/usuarios/CambiarPasswordCarga'
 import UsuariosBotones from '../paginas/usuarios/UsuariosBotones'
-
-
+import ListarUsuarios from "../paginas/ListarUsuario";
 import { AuthProvider } from '../context/AuthProvider'
 import EditarNegociacion from "../components/EditarNegociacion";
 
@@ -48,6 +47,7 @@ function App() {
               <Route path='registrar' element={<Registrar />} />
               <Route path='cambiar-password' element={<CambiarPasswordCarga />} />
               <Route path='usuarios' element={<UsuariosBotones />} />
+              <Route path='listar-usuarios' element={<ListarUsuarios />} />
 
               {/* Clientes */}
               <Route path="listaclientes" element={<ListarClientes />}></Route>
