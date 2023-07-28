@@ -107,6 +107,7 @@ const CrearCliente = () => {
       console.log(response)
       if (response.ok) {
         const data = await response.json();
+        console.log(data)
         swal({
           title: "Cliente Creado Correctamente",
           icon: "success",
