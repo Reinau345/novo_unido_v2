@@ -16,6 +16,7 @@ const CrearNegociacion = () => {
     const [cantidad, setCantidad] = useState([]);
     const [precioBase, setPrecioBase] = useState([]);
     const [precioVenta, setPrecioVenta] = useState([]);
+    const [subtotal, setSubtotal] = useState(0);
     const [numCuotas, setNumCuotas] = useState('');
     const [tasa, setTasa] = useState('');
     const [anticipo, setAnticipo] = useState('');
@@ -97,7 +98,10 @@ const CrearNegociacion = () => {
                 icon: "warning",
                 button: "Aceptar"
             });
-        } for (let i = 0; i < selectedProductos.length; i++) {
+            return;
+        }
+
+        for (let i = 0; i < selectedProductos.length; i++) {
             if (!cantidad[i] || !precioVenta[i] || !productosSeleccionados[i]) {
                 swal({
                     title: "Campos vacíos",
@@ -162,7 +166,20 @@ const CrearNegociacion = () => {
                 throw new Error('Error al agregar el cliente');
             }
         } catch (error) {
-            console.error(error);
+            swal({
+                title: "Error",
+                text: "Ha ocurrido un error al crear la negociación.",
+                icon: "error",
+                buttons: {
+                    accept: {
+                        text: "Aceptar",
+                        value: true,
+                        visible: true,
+                        className: "btn-danger",
+                        closeModal: true
+                    }
+                }
+            });
         }
     };
 

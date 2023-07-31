@@ -21,7 +21,6 @@ const ListarProductos = () => {
                 return res.json();
             })
             .then((data) => {
-                // console.log(data);
                 setdataproducto(data);
                 setProductosFiltrados(data);
             })
@@ -37,8 +36,10 @@ const ListarProductos = () => {
 
         const productosFiltrados = dataproductos.filter((producto) => {
             return (
-                producto.nombre && producto.nombre.toLowerCase().includes(searchValue.toLowerCase()) ||
-                producto.referencia && producto.referencia.toLowerCase().includes(searchValue.toLowerCase())
+                producto.referencia.toLowerCase().includes(searchValue.toLowerCase()) ||
+                producto.nombre.toLowerCase().includes(searchValue.toLowerCase()) ||
+                producto.cantidad.toString().includes(searchValue) ||
+                producto.precioBase.toString().includes(searchValue)
             );
         });
 

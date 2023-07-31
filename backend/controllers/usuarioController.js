@@ -11,15 +11,6 @@ const obtenerUsuarios = async (req, res) => {
     } catch (err) {
         console.log(err)
     }
-
-    // Usuario.find({})
-    // .then((results) => {
-    //     res.json(results);
-    // })
-    // .catch((error) => {
-    //     console.error(error);
-    //     res.status(500).json({ error: 'Error al obtener los clientes' });
-    // });
 } 
 
 const registrar = async (req, res) =>{
@@ -257,6 +248,26 @@ const eliminarUsuario = async (req, res) => {
     }
 }
 
+//Actualizar el estado del usuario
+const actualizarEstadoUsuario = (req, res) => {
+    // Obtiene el ID del usuario desde los parámetros de la URL
+    const usuarioId = req.params.id;
+
+    // Obtiene el nuevo estado del usuario desde el cuerpo de la solicitud
+    const nuevoEstado = req.body.estado;
+
+    // Actualiza el estado del usuario en la base de datos
+    Usuario.findByIdAndUpdate(usuarioId, { estado: nuevoEstado }, { new: true })
+        .then(usuarioActualizado => {
+            // Envía la respuesta con el usuario actualizado
+            res.json(usuarioActualizado);
+        })
+        .catch(error => {
+            // Maneja los errores y envía una respuesta con el código de error correspondiente
+            res.status(500).json({ error: 'Error al actualizar el estado del usuario' });
+        });
+};
+
 
 module.exports = {
     registrar,
@@ -269,5 +280,6 @@ module.exports = {
     actualizarPerfil,
     actualizarPassword,
     obtenerUsuarios,
-    eliminarUsuario
+    eliminarUsuario,
+    actualizarEstadoUsuario
 }

@@ -39,9 +39,16 @@ const schemaNegociacion = new Schema({
     },
     numCuotas: {
         type: Number,
-        required: [true, 'Este campo es obligatorio'],
         trim: true
     },
+    cumplimientoPago: [{
+        numCuota: {
+          type: Number,
+        },
+        cumplimiento: {
+          type: Boolean,
+        },
+      }],
     tasa: {
         type: Number,
         required: [true, 'Este campo es obligatorio'],
@@ -64,6 +71,11 @@ const schemaNegociacion = new Schema({
     },
     total: {
         type: Number,
+        trim: true
+    },
+    estado: {
+        type: String,
+        default: 'Activo',
         trim: true
     },
 })

@@ -84,11 +84,12 @@ const EditarProducto = () => {
             descripcion === ''
         ) {
             swal({
-                title:"Campos vacíos",
-                text:"Todos los campos son obligatorios",
-                icon:"warning",
-                button:"Aceptar"
-              })
+                title: "Campos vacíos",
+                text: "Todos los campos son obligatorios",
+                icon: "warning",
+                button: "Aceptar"
+            })
+            return;
         }
 
         const productoActualizado = {
@@ -112,29 +113,43 @@ const EditarProducto = () => {
             if (response.ok) {
                 const data = await response.json();
                 swal({
-                  title: "Actualización exitosa",
-                  icon: "success",
-                  buttons: {
-                    accept: {
-                      text: "Aceptar",
-                      value: true,
-                      visible: true,
-                      className: "btn-primary",
-                      closeModal: true
+                    title: "Actualización exitosa",
+                    icon: "success",
+                    buttons: {
+                        accept: {
+                            text: "Aceptar",
+                            value: true,
+                            visible: true,
+                            className: "btn-primary",
+                            closeModal: true
+                        }
                     }
-                  }
                 }).then((value) => {
-                  if (value) {
-                    window.location.href = "/admin/listaproductos";
-                  }
-                });        
-              } else {
+                    if (value) {
+                        window.location.href = "/admin/listaproductos";
+                    }
+                });
+            } else {
                 throw new Error('Error al actualizar el producto');
-              }
-            } catch (error) {
-              console.error(error);
             }
-          };
+        } catch (error) {
+            console.error(error);
+            swal({
+                title: "Error",
+                text: "Ha ocurrido un error al actualizar el producto.",
+                icon: "error",
+                buttons: {
+                    accept: {
+                        text: "Aceptar",
+                        value: true,
+                        visible: true,
+                        className: "btn-danger",
+                        closeModal: true
+                    }
+                }
+            });
+        }
+    };
 
     return (
         <>

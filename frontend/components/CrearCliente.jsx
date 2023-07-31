@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
 import swal from 'sweetalert';
@@ -55,10 +55,10 @@ const CrearCliente = () => {
 
   function validarCorreo(event) {
     const inputValue = event.target.value;
-  
+
     // Expresión regular para validar que haya al menos un carácter alfanumérico, seguido de "@", seguido de al menos un carácter alfanumérico, seguido de ".", seguido de al menos un carácter alfanumérico.
     const regex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/;
-  
+
     setReferenciaValida(regex.test(inputValue));
   }
 
@@ -71,7 +71,6 @@ const CrearCliente = () => {
       direccion === '' ||
       telefono === '' ||
       email === '' ||
-      grupo === '' ||
       cedulaCodeudor === '' ||
       nombreCodeudor === '' ||
       telefonoCodeudor === ''
@@ -81,7 +80,8 @@ const CrearCliente = () => {
         text: "Todos los campos son obligatorios",
         icon: "warning",
         button: "Aceptar"
-      })
+      });
+      return;
     }
 
     const nuevoCliente = {
@@ -130,6 +130,20 @@ const CrearCliente = () => {
       }
     } catch (error) {
       console.error(error);
+      swal({
+        title: "Error",
+        text: "Ha ocurrido un error al crear el cliente.",
+        icon: "error",
+        buttons: {
+          accept: {
+            text: "Aceptar",
+            value: true,
+            visible: true,
+            className: "btn-danger",
+            closeModal: true
+          }
+        }
+      });
     }
   };
 

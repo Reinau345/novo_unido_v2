@@ -50,7 +50,11 @@ const schemaCliente = new Schema({
     },
     grupo: {
         type: String,
-        required: [true, 'Este campo es obligatorio'],
+        trim: true
+    },
+    estado: {
+        type: String,
+        default: 'Activo',
         trim: true
     },
 })

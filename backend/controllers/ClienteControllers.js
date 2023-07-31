@@ -7,7 +7,6 @@ const registrarCliente = async (req, res) => {
         console.log(nuevoCliente);
 
         //validar cedular
-        
 
         await nuevoCliente.save();
         res.json({ message: 'Cliente agregado correctamente' });
@@ -63,10 +62,31 @@ const eliminarCliente = async (req, res) => {
     }
 };
 
+//Actualizar el estado del cliente
+const actualizarEstadoCliente = (req, res) => {
+    // Obtiene el ID del cliente desde los parámetros de la URL
+    const clienteId = req.params.id;
+
+    // Obtiene el nuevo estado del cliente desde el cuerpo de la solicitud
+    const nuevoEstado = req.body.estado;
+
+    // Actualiza el estado del cliente en la base de datos
+    Cliente.findByIdAndUpdate(clienteId, { estado: nuevoEstado }, { new: true })
+        .then(clienteActualizado => {
+            // Envía la respuesta con el cliente actualizado
+            res.json(clienteActualizado);
+        })
+        .catch(error => {
+            // Maneja los errores y envía una respuesta con el código de error correspondiente
+            res.status(500).json({ error: 'Error al actualizar el estado del cliente' });
+        });
+};
+
 module.exports = {
     registrarCliente,
     obtenerClientes,
     obtenerDataClientes,
     actualizarCliente,
-    eliminarCliente
+    eliminarCliente,
+    actualizarEstadoCliente,
 };

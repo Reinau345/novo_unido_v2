@@ -59,10 +59,31 @@ const eliminarProducto = async (req, res) => {
     }
 };
 
+//Actualizar el estado del producto
+const actualizarEstadoProducto = (req, res) => {
+    // Obtiene el ID del producto desde los parámetros de la URL
+    const productoId = req.params.id;
+
+    // Obtiene el nuevo estado del producto desde el cuerpo de la solicitud
+    const nuevoEstado = req.body.estado;
+
+    // Actualiza el estado del producto en la base de datos
+    Producto.findByIdAndUpdate(productoId, { estado: nuevoEstado }, { new: true })
+        .then(productoActualizado => {
+            // Envía la respuesta con el producto actualizado
+            res.json(productoActualizado);
+        })
+        .catch(error => {
+            // Maneja los errores y envía una respuesta con el código de error correspondiente
+            res.status(500).json({ error: 'Error al actualizar el estado del producto' });
+        });
+};
+
 module.exports = {
     registrarProducto,
     obtenerProductos,
     obtenerDataProductos,
     actualizarProducto,
-    eliminarProducto
+    eliminarProducto,
+    actualizarEstadoProducto
 }

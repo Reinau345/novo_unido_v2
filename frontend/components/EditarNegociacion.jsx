@@ -219,6 +219,20 @@ const EditarNegociacion = () => {
             }
         } catch (error) {
             console.error(error);
+            swal({
+                title: "Error",
+                text: "Ha ocurrido un error al actualizar la negociación.",
+                icon: "error",
+                buttons: {
+                    accept: {
+                        text: "Aceptar",
+                        value: true,
+                        visible: true,
+                        className: "btn-danger",
+                        closeModal: true
+                    }
+                }
+            });
         }
     };
 

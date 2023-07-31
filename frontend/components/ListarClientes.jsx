@@ -38,7 +38,10 @@ const ListarClientes = () => {
     const filteredClientes = dataclientes.filter((cliente) => {
       return (
         cliente.cedula.toString().includes(searchValue) ||
-        cliente.nombre.toLowerCase().includes(searchValue.toLowerCase())
+        cliente.nombre.toLowerCase().includes(searchValue.toLowerCase()) ||
+        cliente.telefono.toString().includes(searchValue) ||
+        cliente.email.toLowerCase().includes(searchValue.toLowerCase()) ||
+        cliente.grupo.toLowerCase().includes(searchValue.toLowerCase())
       );
     });
 

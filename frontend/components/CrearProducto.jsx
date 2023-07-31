@@ -65,6 +65,19 @@ const CrearProducto = () => {
                 icon: "warning",
                 button: "Aceptar"
             })
+            return;
+        }
+
+        const cantidadNum = parseFloat(cantidad);
+        const precioBaseNum = parseFloat(precioBase);
+        if (cantidadNum <= 0 || precioBaseNum <= 0 || isNaN(cantidadNum) || isNaN(precioBaseNum)) {
+            swal({
+                title: "Valores inválidos",
+                text: "La cantidad y el precio base deben ser mayores a 0",
+                icon: "warning",
+                button: "Aceptar"
+            });
+            return;
         }
 
         const nuevoProducto = {
@@ -109,8 +122,23 @@ const CrearProducto = () => {
             }
         } catch (error) {
             console.error(error);
+            swal({
+                title: "Error",
+                text: "Ha ocurrido un error al crear el producto.",
+                icon: "error",
+                buttons: {
+                    accept: {
+                        text: "Aceptar",
+                        value: true,
+                        visible: true,
+                        className: "btn-danger",
+                        closeModal: true
+                    }
+                }
+            });
         }
     };
+
     return (
         <>
             <section className="d-flex">

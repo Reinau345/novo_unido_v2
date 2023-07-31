@@ -1,5 +1,5 @@
 const express = require('express');
-const { registrarNegociacion, obtenerNegociaciones, obtenerDataNegociaciones, actualizarNegociacion, eliminarNegociacion } = require('../controllers/NegociacionControllers');
+const { registrarNegociacion, obtenerNegociaciones, obtenerDataNegociaciones, actualizarNegociacion, eliminarNegociacion, actualizarEstadoNegociacion, actualizarCumplimientoCuotas, obtenerCumplimientoCuotas } = require('../controllers/NegociacionControllers');
 const router = express.Router();
 
 //Agregar negociación
@@ -16,5 +16,13 @@ router.put('/actualizarNegociacion/:id', actualizarNegociacion);
 
 //Eliminar negociación
 router.delete('/eliminarnegociacion/:id', eliminarNegociacion);
+
+//Actualizar estado negociación
+router.put('/actualizar-estado/:id', actualizarEstadoNegociacion);
+
+//Actualizar cumplimiento cuotas plan de pago
+router.put('/actualizar-cumplimiento-cuotas/:id', actualizarCumplimientoCuotas);
+
+router.get('/obtener-cumplimiento-cuotas/:id', obtenerCumplimientoCuotas);
 
 module.exports = router;

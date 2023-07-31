@@ -78,7 +78,6 @@ const EditarCliente = () => {
     // Verificar que todos los campos sean llenados
     if (
       cedula === '' ||
-      nombre === '' ||
       direccion === '' ||
       telefono === '' ||
       email === '' ||
@@ -88,11 +87,12 @@ const EditarCliente = () => {
       grupo === ''
     ) {
       swal({
-        title:"Campos vacíos",
-        text:"Todos los campos son obligatorios",
-        icon:"warning",
-        button:"Aceptar"
+        title: "Campos vacíos",
+        text: "Todos los campos son obligatorios",
+        icon: "warning",
+        button: "Aceptar"
       })
+      return;
     }
 
     const clienteActualizado = {
@@ -140,6 +140,20 @@ const EditarCliente = () => {
       }
     } catch (error) {
       console.error(error);
+      swal({
+        title: "Error",
+        text: "Ha ocurrido un error al actualizar el cliente.",
+        icon: "error",
+        buttons: {
+          accept: {
+            text: "Aceptar",
+            value: true,
+            visible: true,
+            className: "btn-danger",
+            closeModal: true
+          }
+        }
+      });
     }
   };
 
@@ -191,7 +205,7 @@ const EditarCliente = () => {
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Grupo</label>
-                  <input type="text" className="form-control" placeholder="Grupo" required onInput={validarTexto} value={grupo} onChange={(e) => { setGrupo(e.target.value) }} />
+                  <input type="text" className="form-control" placeholder="Grupo" onInput={validarTexto} value={grupo} onChange={(e) => { setGrupo(e.target.value) }} />
                 </div>
 
                 <div className="mb-3 w-100">

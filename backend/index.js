@@ -27,20 +27,19 @@ app.use('/api/producto', rutaProducto)
 app.use('/api/negociacion', rutaNegociacion)
 app.use('/api/usuarios', usuarioRouter)
 
-const dominiosPermitidos = ['localhost:5173']
-
-const cosrOptions = {
+// Configurar CORS con las opciones personalizadas
+const dominiosPermitidos = ['http://localhost:5173']; // Agrega aquí los dominios permitidos
+const corsOptions = {
   origin: function (origin, callback) {
     if (dominiosPermitidos.indexOf(origin) !== -1) {
-      //origin permitido
+      // Origin permitido
       callback(null, true);
     } else {
-      callback(new Error('No permitido por Cors'));
+      callback(new Error('No permitido por CORS'));
     }
   }
-}
-
-app.use(cors(cosrOptions))
+};
+app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
     res.end('Bienvenido al servidor')

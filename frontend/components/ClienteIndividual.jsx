@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import { FaTimes } from 'react-icons/fa';
+import { FaToggleOn } from 'react-icons/fa';
 
 const ClienteIndividual = ({ cliente }) => {
   const { _id } = cliente; // Obtén el _id del objeto cliente
   const { id } = useParams();
+  const [isActivated, setIsActivated] = useState(false);
+  const [estado, setEstado] = useState(cliente.estado);
 
   //Función para eliminar el cliente
   const navegar = useNavigate();
@@ -39,7 +42,20 @@ const ClienteIndividual = ({ cliente }) => {
           })
           .catch(error => {
             console.error('Error:', error);
-            alert('Error al eliminar el cliente');
+            swal({
+              title: "Error al eliminar el cliente",
+              text: "Ha ocurrido un error al eliminar el cliente.",
+              icon: "error",
+              buttons: {
+                accept: {
+                  text: "Aceptar",
+                  value: true,
+                  visible: true,
+                  className: "btn-danger",
+                  closeModal: true
+                }
+              }
+            });
           });
       }
     });
@@ -50,7 +66,6 @@ const ClienteIndividual = ({ cliente }) => {
   const toggleDetalles = () => {
     setMostrarDetalles(!mostrarDetalles);
   };
-
 
   const customStyles = {
     content: {
@@ -73,6 +88,48 @@ const ClienteIndividual = ({ cliente }) => {
     return <div>No se ha proporcionado un cliente válido</div>;
   }
 
+  useEffect(() => {
+    setIsActivated(estado === 'Activo');
+  }, [estado]);
+
+  const toggleActivation = () => {
+    setIsActivated(!isActivated);
+
+    const newEstado = estado === 'Activo' ? 'Inactivo' : 'Activo';
+    setEstado(newEstado);
+
+    // Envía la solicitud al servidor para actualizar el estado en la base de datos
+    fetch(`http://localhost:4000/api/cliente/actualizar-estado/${_id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ estado: newEstado })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        // Puedes mostrar una notificación o mensaje de éxito aquí si lo deseas
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        swal({
+          title: "Error",
+          text: "Ha ocurrido un error al modificar el estado del cliente.",
+          icon: "error",
+          buttons: {
+            accept: {
+              text: "Aceptar",
+              value: true,
+              visible: true,
+              className: "btn-danger",
+              closeModal: true
+            }
+          }
+        });
+      });
+  };
+
   return (
     <tr>
       <td>{cliente.cedula}</td>
@@ -88,9 +145,20 @@ const ClienteIndividual = ({ cliente }) => {
         <Link to={`/admin/editarcliente/${cliente._id}`}>
           <i className="fa fa-pencil" title="Editar" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
         </Link>
-
-        <Link onClick={eliminarCliente}>
+        {/* <Link onClick={eliminarCliente}>
           <i className="fa fa-trash" title="Eliminar" style={{ color: '#dc3545', fontSize: 22 }} />
+        </Link> */}
+        <Link onClick={toggleActivation}>
+          <FaToggleOn
+            title="Activar-Desactivar"
+            style={{
+              marginRight: 10,
+              color: isActivated ? 'green' : 'gray', // Cambia el color según el estado
+              fontSize: 30,
+              transition: 'transform 0.2s ease', // Agrega una transición suave al giro
+              transform: isActivated ? 'rotateY(180deg)' : 'rotateY(0deg)', // Aplica el giro horizontal según el estado
+            }}
+          />
         </Link>
       </td>
       <Modal isOpen={mostrarDetalles} onRequestClose={toggleDetalles} style={customStyles} >

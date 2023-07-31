@@ -36,7 +36,12 @@ const schemaProducto = new Schema({
         type: String,
         required: [true, 'Este campo es obligatorio'],
         trim: true
-    }
+    },
+    estado: {
+        type: String,
+        default: 'Activo',
+        trim: true
+    },
 })
 
 const ModeloProducto = mongoose.model('Producto', schemaProducto)
