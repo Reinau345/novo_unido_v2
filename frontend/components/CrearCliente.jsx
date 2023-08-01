@@ -82,6 +82,7 @@ const CrearCliente = () => {
         icon: "warning",
         button: "Aceptar"
       })
+      return
     }
 
     const nuevoCliente = {
@@ -104,10 +105,12 @@ const CrearCliente = () => {
         },
         body: JSON.stringify(nuevoCliente)
       });
-      console.log(response)
+
+      const data = await response.json();
+
+
       if (response.ok) {
-        const data = await response.json();
-        console.log(data)
+
         swal({
           title: "Cliente Creado Correctamente",
           icon: "success",
@@ -126,10 +129,20 @@ const CrearCliente = () => {
           }
         });
       } else {
-        throw new Error('Error al agregar el cliente');
+        if(data.msg){
+          throw new Error(data.msg);
+        }else{
+          throw new Error(data.error);
+        }
+
       }
     } catch (error) {
-      console.error(error);
+
+      swal({
+        text: "",
+        icon: "warning",
+        button: "Aceptar"
+      })
     }
   };
 

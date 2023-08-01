@@ -1,19 +1,27 @@
 const Cliente = require('../models/ClienteModels');
 
+
 const registrarCliente = async (req, res) => {
+
+    const { cedula } = req.body;
+
+    const existeCedula = await Cliente.findOne({cedula})
+
+
+    if(existeCedula){
+        const error = new Error("Cedula ya registrada..")
+        return res.status(400).json({msg: error.message})
+    }
+
     try {
         const nuevoCliente = new Cliente(req.body);
-        console.log(req.body);
-        console.log(nuevoCliente);
-
-        //validar cedular
-        
+     
 
         await nuevoCliente.save();
         res.json({ message: 'Cliente agregado correctamente' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Error al agregar el cliente' });
+       return res.status(500).json({ error: 'Error al agregar el cliente' });
     }
 };
 

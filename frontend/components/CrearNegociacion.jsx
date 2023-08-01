@@ -92,15 +92,17 @@ const CrearNegociacion = () => {
             total === ''
         ) {
             swal({
-                title: "Campos vacíos",
+                title: "1Campos vacíos",
                 text: "Todos los campos son obligatorios",
                 icon: "warning",
                 button: "Aceptar"
             });
-        } for (let i = 0; i < selectedProductos.length; i++) {
+            return
+        } 
+        for (let i = 0; i < selectedProductos.length; i++) {
             if (!cantidad[i] || !precioVenta[i] || !productosSeleccionados[i]) {
                 swal({
-                    title: "Campos vacíos",
+                    title: "2Campos vacíos",
                     text: "Todos los campos son obligatorios",
                     icon: "warning",
                     button: "Aceptar"
@@ -139,8 +141,9 @@ const CrearNegociacion = () => {
                 body: JSON.stringify(nuevaNegociacion)
             });
 
+            const data = await response.json();
+
             if (response.ok) {
-                const data = await response.json();
                 swal({
                     title: "Negociación Creada Correctamente",
                     icon: "success",
@@ -159,16 +162,33 @@ const CrearNegociacion = () => {
                     }
                 });
             } else {
-                throw new Error('Error al agregar el cliente');
+
+                if(data.msg){
+                    throw new Error(data.msg);
+                }else{
+                    throw new Error(data.error);
+                }
             }
         } catch (error) {
             console.error(error);
+            swal({
+                title: `${error.message}`,
+                text: "",
+                icon: "warning",
+                button: "Aceptar"
+              })
         }
     };
 
     const agregarProducto = () => {
         if (selectedProductos.length === 0) {
             console.log('Debe seleccionar al menos un producto');
+            swal({
+                title: "Debe Agregar al menos un producto",
+                text: "",
+                icon: "warning",
+                button: "Aceptar"
+            });
             return;
         }
 

@@ -1,10 +1,18 @@
 const Negociacion = require('../models/NegociacionModels');
 
 const registrarNegociacion = async (req, res) => {
+
+    const { numFactura } = req.body
+    const existeFactura = await Negociacion.findOne({numFactura})
+
+    if(existeFactura){
+        const error = new Error("Factura ya registrada..")
+        return res.status(400).json({msg: error.message})
+    }
+
     try {
         const nuevaNegociacion = new Negociacion(req.body);
-        console.log(req.body);
-        console.log(nuevaNegociacion);
+
         await nuevaNegociacion.save();
         res.json({ message: 'Negociación agregada correctamente' });
     } catch (error) {
