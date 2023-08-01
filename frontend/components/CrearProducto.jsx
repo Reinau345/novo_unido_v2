@@ -48,8 +48,8 @@ const CrearProducto = () => {
         }
     }
 
-    const agregarProducto = async () => {
-
+    const agregarProducto = async (e) => {
+            e.preventDefault()
         // Verificar que todos los campos sean llenados
         if (
             referencia === '' ||
@@ -65,6 +65,7 @@ const CrearProducto = () => {
                 icon: "warning",
                 button: "Aceptar"
             })
+<<<<<<< HEAD
             return;
         }
 
@@ -78,6 +79,9 @@ const CrearProducto = () => {
                 button: "Aceptar"
             });
             return;
+=======
+            return
+>>>>>>> juan
         }
 
         const nuevoProducto = {
@@ -97,9 +101,10 @@ const CrearProducto = () => {
                 },
                 body: JSON.stringify(nuevoProducto)
             });
+            
+            const data = await response.json();
 
             if (response.ok) {
-                const data = await response.json();
                 swal({
                     title: "Producto Creado Correctamente",
                     icon: "success",
@@ -118,11 +123,17 @@ const CrearProducto = () => {
                     }
                 });
             } else {
-                throw new Error('Error al agregar el cliente');
+
+                if(data.msg){
+                    throw new Error(data.msg);
+                }else{
+                    throw new Error(data.error);
+                }
             }
         } catch (error) {
             console.error(error);
             swal({
+<<<<<<< HEAD
                 title: "Error",
                 text: "Ha ocurrido un error al crear el producto.",
                 icon: "error",
@@ -136,6 +147,13 @@ const CrearProducto = () => {
                     }
                 }
             });
+=======
+                title: `${error.message}`,
+                text: "",
+                icon: "warning",
+                button: "Aceptar"
+            })
+>>>>>>> juan
         }
     };
 

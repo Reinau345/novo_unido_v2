@@ -19,6 +19,7 @@ const Registrar = () => {
 
   const [alerta, setAlerta] = useState({})
 
+
   const handleCancelar = () => {
     navigate(-1); // Regresa a la ubicación anterior
   };
@@ -56,12 +57,24 @@ const Registrar = () => {
         msg: "Creado Correctamente",
         error: false
       })
+
+      swal({
+        title: `Creado Correctamente`,
+        text: "",
+        icon: "warning",
+        button: "Aceptar"
+    });
+
+    navigate("/admin/listar-usuarios")
+      
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
         error: true
       })
     }
+
+    // navigate("/admin/listar-usuarios")
 
   }
 

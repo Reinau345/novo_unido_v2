@@ -11,13 +11,16 @@ const obtenerUsuarios = async (req, res) => {
     } catch (err) {
         console.log(err)
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> juan
 } 
 
 const registrar = async (req, res) =>{
 
     const {email,estado,nombre,apellido} = req.body
 
-    // prevenir usuarios duplicados
     const existeUsuario = await Usuario.findOne({email})
 
     if(existeUsuario){
@@ -74,8 +77,6 @@ const confirmar = async (req, res) =>{
 
 const autenticar = async (req, res) =>{
     const {email, password} = req.body
-
-
  
     const usuario = await Usuario.findOne({email})
  
@@ -92,8 +93,7 @@ const autenticar = async (req, res) =>{
  
     // revisar el password
     if( await usuario.comprobarPassword(password)){
-     // autenticar
-    //  usuario.token = 
+
      res.json({
         _id: usuario._id,
         nombre: usuario.nombre,
@@ -102,11 +102,9 @@ const autenticar = async (req, res) =>{
         email: usuario.email,
         token: generarJWT(usuario.id)
      })
-     // console.log("=== usuario ===")
-     // console.log(usuario)
-     // console.log(usuario.id)
+
     }else{
-     const error = new Error("El password es incorrecto");
+     const error = new Error("El password o email es incorrecto");
      return res.status(403).json({msg: error.message});
     }
  }

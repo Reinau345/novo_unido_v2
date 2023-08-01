@@ -1,10 +1,18 @@
 const Producto = require('../models/ProductoModels');
 
 const registrarProducto = async (req, res) => {
+
+    const { referencia } = req.body;
+    const existeReferencia = await Producto.findOne({referencia})
+
+    if(existeReferencia){
+        const error = new Error("Referencia ya registrada..")
+        return res.status(400).json({msg: error.message})
+    }
+
     try {
         const nuevoProducto = new Producto(req.body);
-        console.log(req.body);
-        console.log(nuevoProducto);
+
         await nuevoProducto.save();
         res.json({ message: 'Producto agregado correctamente' });
     } catch (error) {
