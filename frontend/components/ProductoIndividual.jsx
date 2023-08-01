@@ -4,6 +4,8 @@ import Modal from 'react-modal';
 import { FaTimes } from 'react-icons/fa';
 import { FaToggleOn } from 'react-icons/fa';
 
+import maquina from '../../backend/public/uploads/maquina1.png';
+
 const ProductoIndividual = ({ producto }) => {
   const { _id } = producto; // Obtén el _id del objeto cliente
   const { id } = useParams();
@@ -191,7 +193,8 @@ const ProductoIndividual = ({ producto }) => {
                 <div style={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{producto.descripcion}</div>
               </td>
             </tr>
-            <p>{producto.imagen}</p>
+            {/* <p>{producto.imagen}</p> */}
+            <p><img className='text-centerounded mx-auto d-block' src={maquina}></img></p>
           </tbody>
         </table>
       </Modal>

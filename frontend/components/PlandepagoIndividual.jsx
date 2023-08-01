@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 
-const PlandepagoIndividual = ({ plandePago }) => {
+const PlandepagoIndividual = ({ plandePago,planPagoData }) => {
     const { _id } = plandePago; // Obtén el _id del objeto Plan de Pago
     const { id } = useParams();
 

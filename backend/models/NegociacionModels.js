@@ -41,14 +41,6 @@ const schemaNegociacion = new Schema({
         type: Number,
         trim: true
     },
-    cumplimientoPago: [{
-        numCuota: {
-          type: Number,
-        },
-        cumplimiento: {
-          type: Boolean,
-        },
-      }],
     tasa: {
         type: Number,
         required: [true, 'Este campo es obligatorio'],
@@ -78,6 +70,11 @@ const schemaNegociacion = new Schema({
         default: 'Activo',
         trim: true
     },
+    cumplimientoPagos: {
+        type: [Boolean],
+        default: false,
+    },
+    
 })
 
 const ModeloNegociacion = mongoose.model('Negociacion', schemaNegociacion)
