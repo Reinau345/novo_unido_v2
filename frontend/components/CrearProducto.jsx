@@ -14,6 +14,13 @@ const CrearProducto = () => {
     const [descripcion, setDescripcion] = useState('')
     const { auth } = useAuth()
 
+
+    const handleFileChange = (event) => {
+        const selectedFile = event.target.files[0];
+        // console.log(selectedFile)
+        setImagen(selectedFile);
+    };
+
     const handleCancelar = () => {
         navigate(-1); // Regresa a la ubicación anterior
     };
@@ -89,13 +96,19 @@ const CrearProducto = () => {
             descripcion
         };
 
+        const formData = new FormData();
+        formData.append('referencia', referencia);
+        formData.append('nombre', nombre);
+        formData.append('cantidad', cantidad);
+        formData.append('precioBase', precioBase);
+        formData.append('imagen', imagen); // Agregar el archivo adjunto
+        formData.append('descripcion', descripcion);
+        formData.append('nuevoProducto',JSON.stringify(nuevoProducto))
+
         try {
             const response = await fetch('http://localhost:4000/api/producto/agregarProducto', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(nuevoProducto)
+                body: formData
             });
             
             const data = await response.json();
@@ -146,7 +159,7 @@ const CrearProducto = () => {
                 <main className="d-flex flex-column  border border-primary m-3 rounded">
                     <h3 className="text-center py-0 pt-3 my-0">CREAR PRODUCTO</h3>
                     <br />
-                    <form className="formulario" action="">
+                    <form className="formulario" encType="multipart/form-data" onSubmit={agregarProducto}>
                         <div className="contenedores d-flex justify-content-center flex-lg-row flex-column flex-sm-column mx-5 gap-5">
                             <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
                                 <div className="mb-3 w-100">
@@ -161,7 +174,7 @@ const CrearProducto = () => {
 
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Imagen</label>
-                                    <input type="file" className="form-control" placeholder="Imagen" required value={imagen} onChange={(e) => { setImagen(e.target.value) }} />
+                                    <input type="file" className="form-control" placeholder="Imagen" name='imagen' required onChange={handleFileChange} />
                                 </div>
                             </div>
                             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
@@ -185,7 +198,7 @@ const CrearProducto = () => {
                         <div className="contenedor__botones d-flex justify-content-center flex-lg-row flex-column flex-sm-column my-3 mx-5 gap-5">
                             <div className="d-flex justify-content-center w-100">
                                 <div className="div_botones ms-sm-0 w-100 d-flex justify-content-center">
-                                    <button type="submit" className="btn btn-dark btn-styles" onClick={agregarProducto}>Guardar</button>
+                                    <button type="submit" className="btn btn-dark btn-styles" >Guardar</button>
                                 </div>
                             </div>
                             <div className="d-flex justify-content-center w-100">

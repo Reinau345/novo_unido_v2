@@ -1,6 +1,25 @@
 const Producto = require('../models/ProductoModels');
+const path = require('path')
 
 const registrarProducto = async (req, res) => {
+
+    if (!req.files || Object.keys(req.files).length === 0 || !req.files.imagen) {
+        res.status(400).json({msg: 'No hay archivos que subir'});
+        return;
+      }
+    
+      const {imagen} = req.files;
+    
+      const uploadPath = path.join( __dirname, '../../frontend/public/uploads/products/', imagen.name);
+    
+      imagen.mv(uploadPath, (err) => {
+        if (err) {
+            console.log(err)
+        //   return res.status(500).json({err});
+        }
+    
+        // res.json({msg: 'File uploaded to ' + uploadPath});
+      });
 
     const { referencia } = req.body;
     const existeReferencia = await Producto.findOne({referencia})
@@ -11,7 +30,14 @@ const registrarProducto = async (req, res) => {
     }
 
     try {
-        const nuevoProducto = new Producto(req.body);
+        const nuevoProducto = new Producto();
+        nuevoProducto.referencia = req.body.referencia || nuevoProducto.referencia;
+        nuevoProducto.nombre = req.body.nombre || nuevoProducto.nombre;
+        // nuevoProducto.imagen = uploadPath || nuevoProducto.imagen;
+        nuevoProducto.imagen = imagen.name || nuevoProducto.imagen;
+        nuevoProducto.cantidad = req.body.cantidad || nuevoProducto.cantidad;
+        nuevoProducto.precioBase = req.body.precioBase || nuevoProducto.precioBase;
+        nuevoProducto.descripcion = req.body.descripcion || nuevoProducto.descripcion;
 
         await nuevoProducto.save();
         res.json({ message: 'Producto agregado correctamente' });

@@ -1,7 +1,16 @@
 const express = require('express')
 const dotenv = require('dotenv');
 const cors = require('cors')
+const fileUpload = require('express-fileupload');
 const app = express()
+
+
+// app.use(fileUpload());
+app.use(fileUpload({
+  useTempFiles : true,
+  tempFileDir : '/tmp/',
+  createParentPath: true
+}));
 
 app.use(cors())
 //Importar la conexión

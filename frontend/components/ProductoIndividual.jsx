@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import { FaTimes } from 'react-icons/fa';
 import { FaToggleOn } from 'react-icons/fa';
 
-import maquina from '../../backend/public/uploads/maquina1.png';
+
 
 const ProductoIndividual = ({ producto }) => {
   const { _id } = producto; // Obtén el _id del objeto cliente
@@ -13,6 +13,7 @@ const ProductoIndividual = ({ producto }) => {
   const [estado, setEstado] = useState(producto.estado);
 
   const navegar = useNavigate()
+
   function eliminarproducto() {
     swal({
       title: "Eliminar",
@@ -194,7 +195,8 @@ const ProductoIndividual = ({ producto }) => {
               </td>
             </tr>
             {/* <p>{producto.imagen}</p> */}
-            <p><img className='text-centerounded mx-auto d-block' src={maquina}></img></p>
+
+            <p><img className='text-centerounded mx-auto d-block' src={`../uploads/products/${producto.imagen}`} ></img></p>
           </tbody>
         </table>
       </Modal>
