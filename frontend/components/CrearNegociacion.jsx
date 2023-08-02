@@ -342,7 +342,12 @@ const CrearNegociacion = () => {
                                         <label className="form-label fw-bold">Total</label>
                                         <input type="text" className="form-control" placeholder="$" required onKeyDown={validarNumericos} value={total} onChange={(e) => { setTotal(e.target.value) }} />
                                     </div>
-                                    <h2>borrar</h2>
+                                    <div className="mb-3 w-100">
+                                        {/* <label className="form-label fw-bold"></label>
+                                        <input type="text" className="form-control" }} /> */}
+                                        {/* <label className="form-label fw-bold"></label>
+                                        <input type="text" className="form-control" }} /> */}
+                                    </div>
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Cantidad</label>
                                         {selectedProductos.length > 0 ? (

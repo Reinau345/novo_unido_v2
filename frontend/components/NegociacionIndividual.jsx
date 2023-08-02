@@ -1,4 +1,4 @@
-import React, { useEffect, useState,  } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Modal from 'react-modal';
 import { FaCheck, FaTimes } from 'react-icons/fa';
@@ -14,14 +14,30 @@ const NegociacionIndividual = ({ negociacion }) => {
   const [mostrarDetalles, setMostrarDetalles] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showPlanPagoModal, setShowPlanPagoModal] = useState(false);
-  const [cumplimientoCuotas, setCumplimientoCuotas] = useState([]);
+  const [cuotasPagadas, setCuotasPagadas] = useState({});
 
+  // Función para marcar una cuota como pagada
+  const handleCuotaPagada = (numCuota) => {
+    setCuotasPagadas((prevCuotas) => ({
+      ...prevCuotas,
+      [numCuota]: true,
+    }));
+  };
+
+  // Función para marcar una cuota como NO pagada
+  const handleCuotaNoPagada = (numCuota) => {
+    setCuotasPagadas((prevCuotas) => ({
+      ...prevCuotas,
+      [numCuota]: false,
+    }));
+  };
+
+  // Obtener las cuotas pagadas desde la base de datos
   useEffect(() => {
-    fetch(`http://localhost:4000/api/negociacion/obtener-acumplimiento-cuotas/${_id}`)
+    fetch(`http://localhost:4000/api/negociacion/${_id}/cuotasPagadas`)
       .then((res) => res.json())
       .then((data) => {
-        // Actualiza el estado cumplimientoCuotas con los datos obtenidos desde la base de datos
-        setCumplimientoCuotas(data.cumplimientoCuotas);
+        setCuotasPagadas(data);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -225,37 +241,10 @@ const NegociacionIndividual = ({ negociacion }) => {
     return planDePago;
   };
 
-  const planPagoData = calcularPlanPago();
-
-  const toggleCumplimientoCuota = (numCuota) => {
-    // Crea un nuevo array de cumplimiento de cuotas basado en el array existente
-    const nuevoCumplimientoCuotas = cumplimientoCuotas.map((estado, index) =>
-      index === numCuota ? !estado : estado
-    );
-
-    setCumplimientoCuotas(nuevoCumplimientoCuotas);
-
-    // Envía la solicitud al servidor para actualizar el cumplimiento de cuotas en la base de datos
-    fetch(`http://localhost:4000/api/negociacion/actualizar-cumplimiento-cuotas/${_id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ cumplimientoPago: nuevoCumplimientoCuotas }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        // Resto del código
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        // Si ocurre algún error, restauramos el estado anterior para evitar inconsistencias
-        setCumplimientoCuotas(cumplimientoCuotas);
-      });
-  };
+  const negociacionPlanPagoData = calcularPlanPago(); // Renombra la variable aquí
 
   return (
+
     <tr>
       <td>{negociacion.cliente}</td>
       <td>{negociacion.numFactura}</td>
@@ -418,28 +407,25 @@ const NegociacionIndividual = ({ negociacion }) => {
               </tr>
             </thead>
             <tbody>
-              {planPagoData.map((item, index) => (
+              {negociacionPlanPagoData.map((item, index) => (
                 <tr
-                  key={item.numCuota}
-                  style={{
-                    backgroundColor: cumplimientoCuotas[item.numCuota] ? '#AFA8A8' : 'white',
-                    color: cumplimientoCuotas[item.numCuota] ? 'white' : 'black',
-                  }}
+                  key={index}
+                  className={cuotasPagadas[item.numCuota] ? 'row-pagada' : 'row-no-pagada'}
                 >
-                  <td style={{ textAlign: 'center' }}>{item.numCuota}</td>
-                  <td style={{ textAlign: 'center' }}>{item.fecha}</td>
-                  <td style={{ textAlign: 'center' }}>$ {item.valor}</td>
-                  <td style={{ textAlign: 'center' }}>
+                  <td style={{ color: '#032770' }}>{item.numCuota}</td>
+                  <td style={{ color: '#032770' }}>{item.fecha}</td>
+                  <td style={{ color: '#032770' }}>$ {item.valor}</td>
+                  <td key={item.numCuota} style={{ textAlign: 'center' }}>
                     <span>
                       <FaCheck
-                        className={`gray-icon ${cumplimientoCuotas[item.numCuota] ? 'active' : ''}`}
+                        className={`gray-icon ${!cuotasPagadas[item.numCuota] ? 'active' : ''}`}
                         style={{ fontSize: 20, cursor: 'pointer' }}
-                        onClick={() => toggleCumplimientoCuota(item.numCuota)}
+                        onClick={() => handleCuotaPagada(item.numCuota)}
                       />
                       <FaTimes
-                        className={`red-icon ${!cumplimientoCuotas[item.numCuota] ? 'active' : ''}`}
-                        style={{ fontSize: 22, marginLeft: 10, cursor: 'pointer' }}
-                        onClick={() => toggleCumplimientoCuota(item.numCuota)}
+                        className={`red-icon ${cuotasPagadas[item.numCuota] ? 'active' : ''}`}
+                        style={{ fontSize: 22, marginLeft: 30, cursor: 'pointer' }}
+                        onClick={() => handleCuotaNoPagada(item.numCuota)}
                       />
                     </span>
                   </td>

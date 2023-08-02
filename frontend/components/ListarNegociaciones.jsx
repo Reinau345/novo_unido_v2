@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import NegociacionIndividual from './NegociacionIndividual';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
-import EditarNegociacion from './EditarNegociacion'
 
 const ListarNegociaciones = () => {
     const [datanegociaciones, setdatanegociacion] = useState([]);

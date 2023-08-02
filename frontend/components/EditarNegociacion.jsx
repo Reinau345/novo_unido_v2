@@ -333,7 +333,13 @@ const EditarNegociacion = () => {
                                     <input type="text" className="form-control" placeholder="Total" required value={total} onChange={(e) => { setTotal(e.target.value) }} />
                                 </div>
                                 <br />
-                                <h2>borrar</h2>
+                                <div className="mb-3 w-100">
+                                    {/* <label className="form-label fw-bold"></label>
+                                        <input type="text" className="form-control" }} /> */}
+                                    {/* <label className="form-label fw-bold"></label>
+                                        <input type="text" className="form-control"/> */}
+                                </div>
+                                <br />
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Cantidad</label>
                                     {selectedProductos.length > 0 ? (

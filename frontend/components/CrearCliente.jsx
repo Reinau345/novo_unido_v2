@@ -158,7 +158,7 @@ const CrearCliente = () => {
               <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Cédula</label>
-                  <input type="text" className="form-control" id="cedula" placeholder="Cédula" required onKeyDown={validarNumericos} value={cedula} onChange={(e) => { setCedula(e.target.value) }} />
+                  <input type="text" className="form-control" id="cedula" placeholder="Cédula" maxLength={10} minLength={6} required onKeyDown={validarNumericos} value={cedula} onChange={(e) => { setCedula(e.target.value) }} />
                 </div>
 
                 <div className="mb-3 w-100">
