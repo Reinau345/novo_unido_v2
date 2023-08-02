@@ -11,10 +11,6 @@ const obtenerUsuarios = async (req, res) => {
     } catch (err) {
         console.log(err)
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> juan
 } 
 
 const registrar = async (req, res) =>{

@@ -65,7 +65,6 @@ const CrearProducto = () => {
                 icon: "warning",
                 button: "Aceptar"
             })
-<<<<<<< HEAD
             return;
         }
 
@@ -79,9 +78,6 @@ const CrearProducto = () => {
                 button: "Aceptar"
             });
             return;
-=======
-            return
->>>>>>> juan
         }
 
         const nuevoProducto = {
@@ -133,27 +129,11 @@ const CrearProducto = () => {
         } catch (error) {
             console.error(error);
             swal({
-<<<<<<< HEAD
-                title: "Error",
-                text: "Ha ocurrido un error al crear el producto.",
-                icon: "error",
-                buttons: {
-                    accept: {
-                        text: "Aceptar",
-                        value: true,
-                        visible: true,
-                        className: "btn-danger",
-                        closeModal: true
-                    }
-                }
-            });
-=======
                 title: `${error.message}`,
                 text: "",
                 icon: "warning",
                 button: "Aceptar"
             })
->>>>>>> juan
         }
     };
 

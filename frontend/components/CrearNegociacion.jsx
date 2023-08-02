@@ -98,14 +98,8 @@ const CrearNegociacion = () => {
                 icon: "warning",
                 button: "Aceptar"
             });
-<<<<<<< HEAD
-            return;
-        }
-
-=======
             return
         } 
->>>>>>> juan
         for (let i = 0; i < selectedProductos.length; i++) {
             if (!cantidad[i] || !precioVenta[i] || !productosSeleccionados[i]) {
                 swal({
@@ -177,22 +171,6 @@ const CrearNegociacion = () => {
                 }
             }
         } catch (error) {
-<<<<<<< HEAD
-            swal({
-                title: "Error",
-                text: "Ha ocurrido un error al crear la negociación.",
-                icon: "error",
-                buttons: {
-                    accept: {
-                        text: "Aceptar",
-                        value: true,
-                        visible: true,
-                        className: "btn-danger",
-                        closeModal: true
-                    }
-                }
-            });
-=======
             console.error(error);
             swal({
                 title: `${error.message}`,
@@ -200,7 +178,6 @@ const CrearNegociacion = () => {
                 icon: "warning",
                 button: "Aceptar"
               })
->>>>>>> juan
         }
     };
 

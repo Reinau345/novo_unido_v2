@@ -15,14 +15,7 @@ const registrarCliente = async (req, res) => {
 
     try {
         const nuevoCliente = new Cliente(req.body);
-<<<<<<< HEAD
-        console.log(req.body);
-        console.log(nuevoCliente);
-
-        //validar cedular
-=======
      
->>>>>>> juan
 
         await nuevoCliente.save();
         res.json({ message: 'Cliente agregado correctamente' });

@@ -80,13 +80,8 @@ const CrearCliente = () => {
         text: "Todos los campos son obligatorios",
         icon: "warning",
         button: "Aceptar"
-<<<<<<< HEAD
       });
       return;
-=======
-      })
-      return
->>>>>>> juan
     }
 
     const nuevoCliente = {
@@ -141,30 +136,12 @@ const CrearCliente = () => {
 
       }
     } catch (error) {
-<<<<<<< HEAD
-      console.error(error);
-      swal({
-        title: "Error",
-        text: "Ha ocurrido un error al crear el cliente.",
-        icon: "error",
-        buttons: {
-          accept: {
-            text: "Aceptar",
-            value: true,
-            visible: true,
-            className: "btn-danger",
-            closeModal: true
-          }
-        }
-      });
-=======
 
       swal({
         text: "",
         icon: "warning",
         button: "Aceptar"
       })
->>>>>>> juan
     }
   };
 
