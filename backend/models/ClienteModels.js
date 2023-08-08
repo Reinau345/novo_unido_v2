@@ -7,6 +7,10 @@ const schemaCliente = new Schema({
         type: Schema.Types.ObjectId,
         auto:true,
     },
+    tipoDocumento: {
+        type: String,
+        required: [true, 'Este campo es obligatorio'],
+    }, 
     cedula: {
         type: Number,
         unique: true,
@@ -33,6 +37,10 @@ const schemaCliente = new Schema({
         required: [true, 'Este campo es obligatorio'],
         trim: true
     },
+    tipoDocumentoCod: {
+        type: String,
+        required: [true, 'Este campo es obligatorio'],
+    }, 
     cedulaCodeudor: {
         type: Number,
         required: [true, 'Este campo es obligatorio'],

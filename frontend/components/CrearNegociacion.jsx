@@ -93,7 +93,7 @@ const CrearNegociacion = () => {
             total === ''
         ) {
             swal({
-                title: "1Campos vacíos",
+                title: "1 Campo vacíos",
                 text: "Todos los campos son obligatorios",
                 icon: "warning",
                 button: "Aceptar"
@@ -103,7 +103,7 @@ const CrearNegociacion = () => {
         for (let i = 0; i < selectedProductos.length; i++) {
             if (!cantidad[i] || !precioVenta[i] || !productosSeleccionados[i]) {
                 swal({
-                    title: "2Campos vacíos",
+                    title: "Campos vacíos",
                     text: "Todos los campos son obligatorios",
                     icon: "warning",
                     button: "Aceptar"
@@ -347,6 +347,7 @@ const CrearNegociacion = () => {
                                         <input type="text" className="form-control" }} /> */}
                                         {/* <label className="form-label fw-bold"></label>
                                         <input type="text" className="form-control" }} /> */}
+                                        
                                     </div>
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Cantidad</label>

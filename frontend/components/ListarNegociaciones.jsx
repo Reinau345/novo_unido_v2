@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import NegociacionIndividual from './NegociacionIndividual';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
+import ClienteIndividual from './ClienteIndividual'
 
 const ListarNegociaciones = () => {
     const [datanegociaciones, setdatanegociacion] = useState([]);
@@ -36,8 +37,11 @@ const ListarNegociaciones = () => {
 
         const filteredNegociaciones = datanegociaciones.filter((negociacion) => {
             return (
-                negociacion.numFactura && negociacion.numFactura.toLowerCase().includes(searchValue.toLowerCase()) ||
-                negociacion.cliente && negociacion.cliente.toString().includes(searchValue)
+                (negociacion.numFactura && negociacion.numFactura.toLowerCase().includes(searchValue.toLowerCase())) ||
+                (negociacion.cliente && negociacion.cliente.toString().includes(searchValue)) ||
+                (negociacion.numCuotas && negociacion.numCuotas.toString().includes(searchValue)) ||
+                (negociacion.fechaGracia && negociacion.fechaGracia.includes(searchValue)) ||
+                (negociacion.total && negociacion.total.toString().includes(searchValue))
             );
         })
 
@@ -112,10 +116,10 @@ const ListarNegociaciones = () => {
                                     <tr>
                                         <th scope="col">Cliente</th>
                                         <th scope="col">Factura</th>
-                                        <th scope="col" style={{ textAlign: 'center' }}>Productos</th>
                                         <th scope="col">Cuotas</th>
                                         <th scope="col">Fecha Fin Gracia</th>
                                         <th scope="col">Total</th>
+                                        <th scope="col" style={{ textAlign: 'center' }}>Productos</th>
                                         <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
                                     </tr>
                                 </thead>

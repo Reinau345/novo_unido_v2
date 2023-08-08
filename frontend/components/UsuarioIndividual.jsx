@@ -74,7 +74,19 @@ const UsuarioIndividual = ({ usuario }) => {
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                // Puedes mostrar una notificación o mensaje de éxito aquí si lo deseas
+                swal({
+                    title: "Estado modificado correctamente",
+                    icon: "success",
+                    buttons: {
+                        accept: {
+                            text: "Aceptar",
+                            value: true,
+                            visible: true,
+                            className: "btn-primary",
+                            closeModal: true
+                        }
+                    }
+                })
             })
             .catch(error => {
                 console.error('Error:', error);

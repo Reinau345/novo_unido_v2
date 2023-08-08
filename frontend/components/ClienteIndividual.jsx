@@ -109,7 +109,19 @@ const ClienteIndividual = ({ cliente }) => {
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        // Puedes mostrar una notificación o mensaje de éxito aquí si lo deseas
+        swal({
+          title: "Estado modificado correctamente",
+          icon: "success",
+          buttons: {
+            accept: {
+              text: "Aceptar",
+              value: true,
+              visible: true,
+              className: "btn-primary",
+              closeModal: true
+            }
+          }
+        })
       })
       .catch(error => {
         console.error('Error:', error);
@@ -171,6 +183,10 @@ const ClienteIndividual = ({ cliente }) => {
         <table className="table table-hover mb-5 table-bordered" style={{ maxWidth: 800, border: "2px solid blue" }}>
           <tbody>
             <tr>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Tipo documento</th>
+              <td style={{ color: '#032770' }}>{cliente.tipoDocumento}</td>
+            </tr>
+            <tr>
               <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cédula</th>
               <td style={{ color: '#032770' }}>{cliente.cedula}</td>
             </tr>
@@ -189,6 +205,10 @@ const ClienteIndividual = ({ cliente }) => {
             <tr>
               <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Email</th>
               <td style={{ color: '#032770' }}>{cliente.email}</td>
+            </tr>
+            <tr>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Tipo Documento Codeudor</th>
+              <td style={{ color: '#032770' }}>{cliente.tipoDocumentoCod}</td>
             </tr>
             <tr>
               <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cédula Codeudor</th>

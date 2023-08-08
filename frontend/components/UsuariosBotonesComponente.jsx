@@ -106,7 +106,7 @@ const UsuariosBotonesComponente = () => {
                                 <div className="col-sm-12 col-md-6 blo2 my-1">
                                     <form action="" className="div-search">
                                         <input type="text" className="search-style form-control rounded-pill" value={busqueda} onChange={searchDate}
-                                            placeholder="Search" />
+                                            placeholder="Buscar" />
                                     </form>
                                 </div>
                             </div>

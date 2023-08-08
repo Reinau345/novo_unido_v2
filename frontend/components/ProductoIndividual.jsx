@@ -111,7 +111,19 @@ const ProductoIndividual = ({ producto }) => {
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        // Puedes mostrar una notificación o mensaje de éxito aquí si lo deseas
+        swal({
+          title: "Estado modificado correctamente",
+          icon: "success",
+          buttons: {
+            accept: {
+              text: "Aceptar",
+              value: true,
+              visible: true,
+              className: "btn-primary",
+              closeModal: true
+            }
+          }
+        })
       })
       .catch(error => {
         console.error('Error:', error);
@@ -138,7 +150,6 @@ const ProductoIndividual = ({ producto }) => {
       <td>{producto.nombre}</td>
       <td>{producto.cantidad}</td>
       <td>$ {parseFloat(producto.precioBase).toLocaleString('es-CO')}</td>
-      <td>{producto.imagen}</td>
       <td style={{ textAlign: 'center' }}>
         <Link onClick={toggleDetalles} >
           <i className="fa fa-circle-info" title="Detalle" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
@@ -194,9 +205,7 @@ const ProductoIndividual = ({ producto }) => {
                 <div style={{ wordWrap: 'break-word', whiteSpace: 'pre-wrap' }}>{producto.descripcion}</div>
               </td>
             </tr>
-            {/* <p>{producto.imagen}</p> */}
-
-            <p><img className='text-centerounded mx-auto d-block' src={`../uploads/products/${producto.imagen}`} ></img></p>
+            <p><img className='text-centerounded mx-auto d-block' width={200} height={200} src={`../uploads/products/${producto.imagen}`} ></img></p>
           </tbody>
         </table>
       </Modal>

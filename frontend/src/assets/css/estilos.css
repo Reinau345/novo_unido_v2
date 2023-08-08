@@ -716,10 +716,12 @@ main::-webkit-scrollbar-thumb {
 
 /* Estilo para fila cuando la cuota ha sido pagada */
 tr.row-pagada {
-    background-color: white; /* Cambiar el color de fondo a blanco para filas pagadas */
-  }
-  
-  /* Estilo para fila cuando la cuota no ha sido pagada */
-  tr.row-no-pagada {
-    background-color: #eee0e0; /* Cambiar el color de fondo a gris para filas no pagadas */
-  }
+    background-color: white;
+    /* Cambiar el color de fondo a blanco para filas pagadas */
+}
+
+/* Estilo para fila cuando la cuota no ha sido pagada */
+tr.row-no-pagada {
+    background-color: #eee0e0;
+    /* Cambiar el color de fondo a gris para filas no pagadas */
+}

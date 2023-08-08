@@ -133,18 +133,6 @@ const EditarNegociacion = () => {
         }
     }
 
-    const handleCantidadChange = (e, index) => {
-        const nuevosProductosSeleccionados = [...productosSeleccionados];
-        nuevosProductosSeleccionados[index].cantidad = Number(e.target.textContent);
-        setProductosSeleccionados(nuevosProductosSeleccionados);
-    };
-
-    const handlePrecioVentaChange = (e, index) => {
-        const nuevosProductosSeleccionados = [...productosSeleccionados];
-        nuevosProductosSeleccionados[index].precioVenta = e.target.textContent;
-        setProductosSeleccionados(nuevosProductosSeleccionados);
-    };
-
     //Función para actualizar
     const actualizarNegociacion = async () => {
 

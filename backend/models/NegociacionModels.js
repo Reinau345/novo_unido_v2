@@ -7,6 +7,10 @@ const schemaNegociacion = new Schema({
         type: Schema.Types.ObjectId,
         auto: true,
     },
+    fechaFacturacion: {
+        type: Date,
+        default: Date.now,
+    },
     cliente: {
         type: String,
         required: [true, 'Este campo es obligatorio'],
@@ -70,11 +74,12 @@ const schemaNegociacion = new Schema({
         default: 'Activo',
         trim: true
     },
-    cumplimientoPagos: {
+    cumplimientoCuotas: {
         type: [Boolean],
-        default: false,
+        default: function () {
+            return Array(this.numCuotas || 0).fill(false);
+        },
     },
-    
 })
 
 const ModeloNegociacion = mongoose.model('Negociacion', schemaNegociacion)
