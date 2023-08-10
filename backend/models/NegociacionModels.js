@@ -74,6 +74,7 @@ const schemaNegociacion = new Schema({
         default: 'Activo',
         trim: true
     },
+
     cumplimientoCuotas: {
         type: [Boolean],
         default: function () {

@@ -119,5 +119,6 @@ module.exports = {
     actualizarNegociacion,
     eliminarNegociacion,
     actualizarEstadoNegociacion,
-    actualizarCuota
+    actualizarCuota,
+
 }

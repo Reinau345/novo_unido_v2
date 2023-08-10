@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Link, useNavigate } from 'react-router-dom'
 import { FaTimes } from 'react-icons/fa';
-import { format, parseISO } from 'date-fns';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
-import { useNegociacionContext } from './NegociacionContext';
 
 const EditarNegociacion = () => {
     const navigate = useNavigate();
@@ -24,12 +22,35 @@ const EditarNegociacion = () => {
     const [interes, setInteres] = useState('');
     const [fechaGracia, setFechaGracia] = useState('');
     const [total, setTotal] = useState('');
-    const { productosSeleccionados, setProductosSeleccionados } = useNegociacionContext();
+    const [productosSeleccionados, setProductosSeleccionados] = useState([]);
     const { auth } = useAuth()
+    const [dataNegociaciones, setDataNegociaciones] = useState([]);
 
     const handleCancelar = () => {
         navigate(-1); // Regresa a la ubicación anterior
     };
+
+    //Función para traer los datos del cliente y poder enviar la notificación al correo
+
+    useEffect(() => {
+        fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                setDataNegociaciones(data);
+
+                // Encontrar la negociación a editar por su ID
+                const negociacionAEditar = data.find(negociacion => negociacion.id === id);
+
+                if (negociacionAEditar) {
+                    // Establecer los productos seleccionados de la negociación a editar
+                    setProductosSeleccionados(negociacionAEditar.productosSeleccionados);
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, [id]);
 
     useEffect(() => {
         fetch(`http://localhost:4000/api/negociacion/obtenerdatanegociacion/${id}`)
@@ -224,7 +245,6 @@ const EditarNegociacion = () => {
         }
     };
 
-    console.log(productosSeleccionados)
     return (
         <>
             <section className="d-flex">
@@ -366,7 +386,7 @@ const EditarNegociacion = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {productosSeleccionados.map((producto, index) => (
+                                    {dataNegociaciones.map((producto, index) => (
                                         <tr key={index}>
                                             <td>{producto.tipoMaquina}</td>
                                             <td>{producto.cantidad}</td>

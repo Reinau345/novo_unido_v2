@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral'
 
@@ -8,7 +8,6 @@ const CrearProducto = () => {
     //Hooks
     const [referencia, setReferencia] = useState('')
     const [nombre, setNombre] = useState('')
-    const [cantidad, setCantidad] = useState('')
     const [precioBase, setPrecioBase] = useState('')
     const [imagen, setImagen] = useState('')
     const [descripcion, setDescripcion] = useState('')
@@ -56,12 +55,11 @@ const CrearProducto = () => {
     }
 
     const agregarProducto = async (e) => {
-            e.preventDefault()
+        e.preventDefault()
         // Verificar que todos los campos sean llenados
         if (
             referencia === '' ||
             nombre === '' ||
-            cantidad === '' ||
             precioBase === '' ||
             imagen === '' ||
             descripcion === ''
@@ -75,12 +73,11 @@ const CrearProducto = () => {
             return;
         }
 
-        const cantidadNum = parseFloat(cantidad);
         const precioBaseNum = parseFloat(precioBase);
-        if (cantidadNum <= 0 || precioBaseNum <= 0 || isNaN(cantidadNum) || isNaN(precioBaseNum)) {
+        if (precioBaseNum <= 0 || isNaN(precioBaseNum)) {
             swal({
-                title: "Valores inválidos",
-                text: "La cantidad y el precio base deben ser mayores a 0",
+                title: "Valor inválido",
+                text: "El precio base debe ser mayor a 33.000.000",
                 icon: "warning",
                 button: "Aceptar"
             });
@@ -90,7 +87,6 @@ const CrearProducto = () => {
         const nuevoProducto = {
             referencia,
             nombre,
-            cantidad,
             precioBase,
             imagen,
             descripcion
@@ -99,18 +95,17 @@ const CrearProducto = () => {
         const formData = new FormData();
         formData.append('referencia', referencia);
         formData.append('nombre', nombre);
-        formData.append('cantidad', cantidad);
         formData.append('precioBase', precioBase);
         formData.append('imagen', imagen); // Agregar el archivo adjunto
         formData.append('descripcion', descripcion);
-        formData.append('nuevoProducto',JSON.stringify(nuevoProducto))
+        formData.append('nuevoProducto', JSON.stringify(nuevoProducto))
 
         try {
             const response = await fetch('http://localhost:4000/api/producto/agregarProducto', {
                 method: 'POST',
                 body: formData
             });
-            
+
             const data = await response.json();
 
             if (response.ok) {
@@ -133,9 +128,9 @@ const CrearProducto = () => {
                 });
             } else {
 
-                if(data.msg){
+                if (data.msg) {
                     throw new Error(data.msg);
-                }else{
+                } else {
                     throw new Error(data.error);
                 }
             }
@@ -168,13 +163,13 @@ const CrearProducto = () => {
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Cantidad</label>
-                                    <input type="text" className="form-control" placeholder="Cantidad" onKeyDown={validarNumericos} required value={cantidad} onChange={(e) => { setCantidad(e.target.value) }} />
+                                    <label className="form-label fw-bold">Precio base</label>
+                                    <input type="text" className="form-control" placeholder="Precio base" onKeyDown={validarNumericos} required value={precioBase} onChange={(e) => { setPrecioBase(e.target.value) }} />
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Imagen</label>
-                                    <input type="file" className="form-control" placeholder="Imagen" name='imagen' required onChange={handleFileChange} />
+                                    <label className="form-label fw-bold">Descripción</label>
+                                    <textarea className="form-control" placeholder="Descripción" required value={descripcion} onChange={(e) => { setDescripcion(e.target.value) }} />
                                 </div>
                             </div>
                             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
@@ -184,13 +179,8 @@ const CrearProducto = () => {
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Precio base</label>
-                                    <input type="text" className="form-control" placeholder="Precio base" onKeyDown={validarNumericos} required value={precioBase} onChange={(e) => { setPrecioBase(e.target.value) }} />
-                                </div>
-
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Descripción</label>
-                                    <textarea className="form-control" placeholder="Descripción" required value={descripcion} onChange={(e) => { setDescripcion(e.target.value) }} />
+                                    <label className="form-label fw-bold">Imagen</label>
+                                    <input type="file" className="form-control" placeholder="Imagen" name='imagen' required onChange={handleFileChange} />
                                 </div>
                             </div>
 

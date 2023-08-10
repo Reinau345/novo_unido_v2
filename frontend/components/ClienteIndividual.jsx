@@ -9,6 +9,7 @@ const ClienteIndividual = ({ cliente }) => {
   const { id } = useParams();
   const [isActivated, setIsActivated] = useState(false);
   const [estado, setEstado] = useState(cliente.estado);
+  const [mostrarDetalles, setMostrarDetalles] = useState(false); // Estado para controlar la ventana emergente
 
   //Función para eliminar el cliente
   const navegar = useNavigate();
@@ -60,8 +61,6 @@ const ClienteIndividual = ({ cliente }) => {
       }
     });
   };
-
-  const [mostrarDetalles, setMostrarDetalles] = useState(false); // Estado para controlar la ventana emergente
 
   const toggleDetalles = () => {
     setMostrarDetalles(!mostrarDetalles);
@@ -195,6 +194,10 @@ const ClienteIndividual = ({ cliente }) => {
               <td style={{ color: '#032770' }}>{cliente.nombre}</td>
             </tr>
             <tr>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Apellido</th>
+              <td style={{ color: '#032770' }}>{cliente.apellido}</td>
+            </tr>
+            <tr>
               <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Dirección</th>
               <td style={{ color: '#032770' }}>{cliente.direccion}</td>
             </tr>
@@ -205,6 +208,10 @@ const ClienteIndividual = ({ cliente }) => {
             <tr>
               <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Email</th>
               <td style={{ color: '#032770' }}>{cliente.email}</td>
+            </tr>
+            <tr>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Grupo</th>
+              <td style={{ color: '#032770' }}>{cliente.grupo}</td>
             </tr>
             <tr>
               <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Tipo Documento Codeudor</th>
@@ -219,12 +226,16 @@ const ClienteIndividual = ({ cliente }) => {
               <td style={{ color: '#032770' }}>{cliente.nombreCodeudor}</td>
             </tr>
             <tr>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Apellido Codeudor</th>
+              <td style={{ color: '#032770' }}>{cliente.apellidoCodeudor}</td>
+            </tr>
+            <tr>
               <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Teléfono Codeudor</th>
               <td style={{ color: '#032770' }}>{cliente.telefonoCodeudor}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Grupo</th>
-              <td style={{ color: '#032770' }}>{cliente.grupo}</td>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>País</th>
+              <td style={{ color: '#032770' }}>{cliente.pais}</td>
             </tr>
           </tbody>
         </table>

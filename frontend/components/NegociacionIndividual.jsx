@@ -15,6 +15,21 @@ const NegociacionIndividual = ({ negociacion }) => {
   const [showModal, setShowModal] = useState(false);
   const [showPlanPagoModal, setShowPlanPagoModal] = useState(false);
   const [cuotasPagadas, setCuotasPagadas] = useState({});
+  const [dataclientes, setDataClientes] = useState([]);
+
+  //Función para traer los datos del cliente y poder enviar la notificación
+  useEffect(() => {
+    fetch('http://localhost:4000/api/cliente/obtenerCliente')
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setDataClientes(data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+
   // Función para marcar una cuota como pagada
   const handleCuotaPagada = (numCuota) => {
     setCuotasPagadas((prevCuotas) => ({
@@ -40,7 +55,6 @@ const NegociacionIndividual = ({ negociacion }) => {
         // Aquí puedes mostrar una notificación o mensaje de error si lo deseas
       });
   };
-
 
   // Función para marcar una cuota como NO pagada
   const handleCuotaNoPagada = (numCuota) => {
@@ -70,15 +84,14 @@ const NegociacionIndividual = ({ negociacion }) => {
 
   useEffect(() => {
     // Obtén la lista de cuotas pagadas desde la negociación recibida
-    const cuotasPagadasDesdeNegociacion = negociacion.cumplimientoCuotas.reduce(
-      (cuotas, pagada, index) => {
+    const cuotasPagadasDesdeNegociacion = negociacion.cumplimientoCuotas
+      ? negociacion.cumplimientoCuotas.reduce((cuotas, pagada, index) => {
         if (pagada) {
           cuotas[index + 1] = true;
         }
         return cuotas;
-      },
-      {}
-    );
+      }, {})
+      : {};
 
     // Establece el estado cuotasPagadas con la lista de cuotas pagadas
     setCuotasPagadas(cuotasPagadasDesdeNegociacion);
@@ -302,9 +315,10 @@ const NegociacionIndividual = ({ negociacion }) => {
     return planDePago;
   };
 
-  const negociacionPlanPagoData = calcularPlanPago(); // Renombra la variable aquí
+  const negociacionPlanPagoData = calcularPlanPago();
 
   return (
+
     <>
       <tr>
         <td>{negociacion.cliente}</td>

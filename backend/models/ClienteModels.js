@@ -5,12 +5,12 @@ const ObjectId = mongoose.Types.ObjectId;
 const schemaCliente = new Schema({
     _id: {
         type: Schema.Types.ObjectId,
-        auto:true,
+        auto: true,
     },
     tipoDocumento: {
         type: String,
         required: [true, 'Este campo es obligatorio'],
-    }, 
+    },
     cedula: {
         type: Number,
         unique: true,
@@ -18,6 +18,11 @@ const schemaCliente = new Schema({
         trim: true
     },
     nombre: {
+        type: String,
+        required: [true, 'Este campo es obligatorio'],
+        trim: true
+    },
+    apellido: {
         type: String,
         required: [true, 'Este campo es obligatorio'],
         trim: true
@@ -40,13 +45,18 @@ const schemaCliente = new Schema({
     tipoDocumentoCod: {
         type: String,
         required: [true, 'Este campo es obligatorio'],
-    }, 
+    },
     cedulaCodeudor: {
         type: Number,
         required: [true, 'Este campo es obligatorio'],
         trim: true
     },
     nombreCodeudor: {
+        type: String,
+        required: [true, 'Este campo es obligatorio'],
+        trim: true
+    },
+    apellidoCodeudor: {
         type: String,
         required: [true, 'Este campo es obligatorio'],
         trim: true
@@ -58,6 +68,11 @@ const schemaCliente = new Schema({
     },
     grupo: {
         type: String,
+        trim: true
+    },
+    pais: {
+        type: String,
+        required: [true, 'Este campo es obligatorio'],
         trim: true
     },
     estado: {

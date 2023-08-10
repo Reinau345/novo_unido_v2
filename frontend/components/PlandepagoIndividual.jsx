@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import Modal from 'react-modal';
+import { FaTimes } from 'react-icons/fa';
 
-const PlandepagoIndividual = ({ plandePago,planPagoData }) => {
+const PlandepagoIndividual = ({ plandePago }) => {
     const { _id } = plandePago; // Obtén el _id del objeto Plan de Pago
     const { id } = useParams();
+    const [dataNegociaciones, setDataNegociaciones] = useState([]);
+
+    //Función para traer los datos del cliente y poder enviar la notificación al correo
+    useEffect(() => {
+        fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
+            .then(res => res.json())
+            .then(data => {
+                setDataNegociaciones(data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, []);
 
     //Función para eliminar el Plan de Pago
     const navegar = useNavigate();
@@ -29,21 +44,21 @@ const PlandepagoIndividual = ({ plandePago,planPagoData }) => {
     if (!plandePago) {
         return <div>No se ha proporcionado plan de pago válido</div>;
     }
-    return (
-        <tr>
-            <td>{plandePago.fechaPago}</td>
-            <td>{plandePago.valorPago}</td>
-            <td>{plandePago.cumplioPago}</td>
-            <td style={{ textAlign: 'center' }}>
-                <Link to={`/admin/editarplandepago/${plandePago._id}`}>
-                    <button className="btn btn-warning" style={{ marginRight: 10, color: 'white' }}><i className="fa fa-pencil" style={{ color: 'black' }}></i> | Editar</button>
-                </Link>
 
-                <Link onClick={eliminarPlandepago}>
-                        <button className="btn btn-danger"><i className="fa fa-trash" style={{ color: 'black' }}></i> | Eliminar</button>
-                </Link>
-            </td>
-        </tr>
+    return (
+        <>
+            {dataNegociaciones.map(negociacion => (
+                <tr key={negociacion._id}>
+                    <td>{negociacion.cliente}</td>
+                    <td>{negociacion.numFactura}</td>
+                    <td>{negociacion.fechaCuota}</td>
+
+                    <td style={{ textAlign: 'center' }}>
+                        {/* Agregar acciones específicas para cada fila si es necesario */}
+                    </td>
+                </tr>
+            ))}
+        </>
     );
 };
 

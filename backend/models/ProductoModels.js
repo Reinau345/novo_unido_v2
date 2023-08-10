@@ -17,11 +17,6 @@ const schemaProducto = new Schema({
         required: [true, 'Este campo es obligatorio'],
         trim: true
     },
-    cantidad: {
-        type: Number,
-        required: [true, 'Este campo es obligatorio'],
-        trim: true
-    },
     precioBase: {
         type: Number,
         required: [true, 'Este campo es obligatorio'],

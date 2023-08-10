@@ -15,6 +15,7 @@ const CrearCliente = () => {
   const [tipoDocumento, setTipoDocumento] = useState('');
   const [cedula, setCedula] = useState('');
   const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
   const [direccion, setDireccion] = useState('');
   const [telefono, setTelefono] = useState('');
   const [email, setEmail] = useState('');
@@ -22,7 +23,9 @@ const CrearCliente = () => {
   const [tipoDocumentoCod, setTipoDocumentoCod] = useState('');
   const [cedulaCodeudor, setCedulaCodeudor] = useState('');
   const [nombreCodeudor, setNombreCodeudor] = useState('');
+  const [apellidoCodeudor, setApellidoCodeudor] = useState('');
   const [telefonoCodeudor, setTelefonoCodeudor] = useState('');
+  const [pais, setPais] = useState('');
   const { auth } = useAuth()
 
   const handleCancelar = () => {
@@ -75,13 +78,16 @@ const CrearCliente = () => {
       tipoDocumento === '' ||
       cedula === '' ||
       nombre === '' ||
+      apellido === '' ||
       direccion === '' ||
       telefono === '' ||
       email === '' ||
       tipoDocumentoCod === '' ||
       cedulaCodeudor === '' ||
       nombreCodeudor === '' ||
-      telefonoCodeudor === ''
+      apellidoCodeudor === '' ||
+      telefonoCodeudor === '' ||
+      pais === ''
     ) {
       swal({
         title: "Campos vacíos",
@@ -96,6 +102,7 @@ const CrearCliente = () => {
       tipoDocumento,
       cedula,
       nombre,
+      apellido,
       direccion,
       telefono,
       email,
@@ -103,7 +110,9 @@ const CrearCliente = () => {
       tipoDocumentoCod,
       cedulaCodeudor,
       nombreCodeudor,
+      apellidoCodeudor,
       telefonoCodeudor,
+      pais
     };
 
     try {
@@ -181,15 +190,15 @@ const CrearCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Teléfono</label>
-                  <input type="text" className="form-control" placeholder="Teléfono" required onKeyDown={validarNumericos} value={telefono} onChange={(e) => { setTelefono(e.target.value) }} />
+                  <label className="form-label fw-bold">Dirección</label>
+                  <input type="text" className="form-control" placeholder="Dirección" required value={direccion} onChange={(e) => { setDireccion(e.target.value) }} />
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Grupo</label>
-                  <input type="text" className="form-control" placeholder="Grupo" required onInput={validarTexto} value={grupo} onChange={(e) => { setGrupo(e.target.value) }} />
+                  <label className="form-label fw-bold">Email</label>
+                  <input type="text" className="form-control" placeholder="Email" required value={email} onChange={(e) => { setEmail(e.target.value) }} />
                 </div>
-                <h2>Datos codeudor</h2>
+
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Tipo documento Codeudor</label>
                   <select id="cliente" className="form-select" required value={tipoDocumentoCod} onChange={(e) => { setTipoDocumentoCod(e.target.value) }}>
@@ -203,6 +212,11 @@ const CrearCliente = () => {
                   <input type="text" className="form-control" placeholder="Nombre Codeudor" required onInput={validarTexto} value={nombreCodeudor} onChange={(e) => { setNombreCodeudor(e.target.value) }} />
                 </div>
 
+                <div className="mb-3 w-100">
+                  <label className="form-label fw-bold">Teléfono Codeudor</label>
+                  <input type="text" className="form-control" placeholder="Teléfono Codeudor" required onKeyDown={validarNumericos} value={telefonoCodeudor} onChange={(e) => { setTelefonoCodeudor(e.target.value) }} />
+                </div>
+
               </div>
               <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                 <div className="mb-3 w-100">
@@ -211,13 +225,18 @@ const CrearCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Dirección</label>
-                  <input type="text" className="form-control" placeholder="Dirección" required value={direccion} onChange={(e) => { setDireccion(e.target.value) }} />
+                  <label className="form-label fw-bold">Apellido</label>
+                  <input type="text" className="form-control" id="apellido" placeholder="Apellido" required onInput={validarTexto} value={apellido} onChange={(e) => { setApellido(e.target.value) }} />
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Email</label>
-                  <input type="text" className="form-control" placeholder="Email" required value={email} onChange={(e) => { setEmail(e.target.value) }} />
+                  <label className="form-label fw-bold">Teléfono</label>
+                  <input type="text" className="form-control" placeholder="Teléfono" required onKeyDown={validarNumericos} value={telefono} onChange={(e) => { setTelefono(e.target.value) }} />
+                </div>
+
+                <div className="mb-3 w-100">
+                  <label className="form-label fw-bold">Grupo</label>
+                  <input type="text" className="form-control" placeholder="Grupo" required onInput={validarTexto} value={grupo} onChange={(e) => { setGrupo(e.target.value) }} />
                 </div>
 
                 <div className="mb-3 w-100">
@@ -226,8 +245,17 @@ const CrearCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Teléfono Codeudor</label>
-                  <input type="text" className="form-control" placeholder="Teléfono Codeudor" required onKeyDown={validarNumericos} value={telefonoCodeudor} onChange={(e) => { setTelefonoCodeudor(e.target.value) }} />
+                  <label className="form-label fw-bold">Apellido Codeudor</label>
+                  <input type="text" className="form-control" id="apellidoCod" placeholder="Apellido Codeudor" required onInput={validarTexto} value={apellidoCodeudor} onChange={(e) => { setApellidoCodeudor(e.target.value) }} />
+                </div>
+
+                <div className="mb-3 w-100">
+                  <label className="form-label fw-bold">País</label>
+                  <select className="form-select" required value={pais} onChange={(e) => { setPais(e.target.value) }}>
+                    <option value="">Seleccionar</option>
+                    <option value="Colombia">Colombia</option>
+                    <option value="Panamá">Panamá</option>
+                  </select>
                 </div>
               </div>
             </div>

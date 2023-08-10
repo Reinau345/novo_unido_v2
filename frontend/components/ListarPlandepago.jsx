@@ -60,7 +60,7 @@ const ListarPlandepago = () => {
 
                 <main className="d-flex flex-column  border border-primary m-3 rounded">
                     <div className="contenedor-tabla mx-3">
-                        <h3 className="py-0 pt-3 my-0">LISTADO PLANES DE PAGO</h3>
+                        <h3 className="py-0 pt-3 my-0">SEGUIMIENTO PLANES DE PAGO</h3>
                         <div className="contenerdor-boton-buscar my-4">
                             <div className="row">
                                 <div className="col-sm-12 col-md-6 blo1 my-1">
@@ -81,9 +81,11 @@ const ListarPlandepago = () => {
                         <table className="table table-hover mb-5 border">
                             <thead className="table-secondary">
                                 <tr>
+                                    <th scope="col">Cliente</th>
+                                    <th scope="col">Factura</th>
                                     <th scope="col">Fecha Pago</th>
-                                    <th scope="col">Valor</th>
-                                    <th scope="col">Cumplió</th>
+                                    <th scope="col">Valor Pago</th>
+
                                     <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
                                 </tr>
                             </thead>

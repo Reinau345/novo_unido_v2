@@ -4,8 +4,6 @@ import Modal from 'react-modal';
 import { FaTimes } from 'react-icons/fa';
 import { FaToggleOn } from 'react-icons/fa';
 
-
-
 const ProductoIndividual = ({ producto }) => {
   const { _id } = producto; // Obtén el _id del objeto cliente
   const { id } = useParams();
@@ -148,7 +146,6 @@ const ProductoIndividual = ({ producto }) => {
     <tr >
       <td>{producto.referencia}</td>
       <td>{producto.nombre}</td>
-      <td>{producto.cantidad}</td>
       <td>$ {parseFloat(producto.precioBase).toLocaleString('es-CO')}</td>
       <td style={{ textAlign: 'center' }}>
         <Link onClick={toggleDetalles} >
@@ -190,10 +187,6 @@ const ProductoIndividual = ({ producto }) => {
             <tr>
               <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Nombre</th>
               <td style={{ color: '#032770' }}>{producto.nombre}</td>
-            </tr>
-            <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cantidad</th>
-              <td style={{ color: '#032770' }}>{producto.cantidad}</td>
             </tr>
             <tr>
               <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Precio Base</th>

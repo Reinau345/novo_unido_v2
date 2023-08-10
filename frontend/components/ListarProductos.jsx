@@ -113,7 +113,6 @@ const ListarProductos = () => {
                                     <tr>
                                         <th scope="col">Referencia</th>
                                         <th scope="col">Nombre</th>
-                                        <th scope="col">Cantidad</th>
                                         <th scope="col">Precio Base</th>
                                         <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
                                     </tr>

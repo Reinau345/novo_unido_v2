@@ -9,7 +9,6 @@ const EditarProducto = () => {
     //Hooks
     const [referencia, setReferencia] = useState('')
     const [nombre, setNombre] = useState('')
-    const [cantidad, setCantidad] = useState('')
     const [precioBase, setPrecioBase] = useState('')
     const [imagen, setImagen] = useState('')
     const [descripcion, setDescripcion] = useState('')
@@ -61,7 +60,6 @@ const EditarProducto = () => {
             .then((dataproducto) => {
                 setReferencia(dataproducto.referencia)
                 setNombre(dataproducto.nombre)
-                setCantidad(dataproducto.cantidad)
                 setPrecioBase(dataproducto.precioBase)
                 setImagen(dataproducto.imagen)
                 setDescripcion(dataproducto.descripcion)
@@ -78,7 +76,6 @@ const EditarProducto = () => {
         if (
             referencia === '' ||
             nombre === '' ||
-            cantidad === '' ||
             precioBase === '' ||
             // imagen === '' ||
             descripcion === ''
@@ -95,7 +92,6 @@ const EditarProducto = () => {
         const productoActualizado = {
             referencia,
             nombre,
-            cantidad,
             precioBase,
             imagen,
             descripcion
@@ -168,13 +164,13 @@ const EditarProducto = () => {
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Cantidad</label>
-                                    <input type="text" className="form-control" placeholder="Cantidad" onKeyDown={validarNumericos} required value={cantidad} onChange={(e) => { setCantidad(e.target.value) }} />
+                                    <label className="form-label fw-bold">Precio base</label>
+                                    <input type="text" className="form-control" placeholder="Precio base" onKeyDown={validarNumericos} required value={precioBase} onChange={(e) => { setPrecioBase(e.target.value) }} />
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Imagen</label>
-                                    <input type="file" className="form-control" placeholder="Imagen" required onChange={(e) => { setImagen(e.target.files[0]) }} />
+                                    <label className="form-label fw-bold">Descripción</label>
+                                    <textarea className="form-control" placeholder="Descripción" required value={descripcion} onChange={(e) => { setDescripcion(e.target.value) }} />
                                 </div>
                             </div>
                             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
@@ -184,12 +180,8 @@ const EditarProducto = () => {
                                 </div>
 
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Precio base</label>
-                                    <input type="text" className="form-control" placeholder="Precio base" onKeyDown={validarNumericos} required value={precioBase} onChange={(e) => { setPrecioBase(e.target.value) }} />
-                                </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Descripción</label>
-                                    <textarea className="form-control" placeholder="Descripción" required value={descripcion} onChange={(e) => { setDescripcion(e.target.value) }} />
+                                    <label className="form-label fw-bold">Imagen</label>
+                                    <input type="file" className="form-control" placeholder="Imagen" required onChange={(e) => { setImagen(e.target.files[0]) }} />
                                 </div>
                             </div>
                         </div>
