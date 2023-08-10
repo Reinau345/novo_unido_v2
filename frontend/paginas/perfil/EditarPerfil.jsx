@@ -43,7 +43,7 @@ const EditarPerfil = () => {
         <>
             {/* <div>EditarPerfil componente</div> */}
 
-            <main className="d-flex   flex-column border border-primary m-4 rounded">
+            <main className="d-flex   flex-column border border-primary m-3 rounded" id="main">
 
                 <h3 className="py-0  px-4 pt-3 my-0">PERFIL</h3>
                 <br />

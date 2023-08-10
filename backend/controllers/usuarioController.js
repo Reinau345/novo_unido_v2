@@ -75,7 +75,7 @@ const autenticar = async (req, res) =>{
     const {email, password} = req.body
  
     const usuario = await Usuario.findOne({email})
- 
+
     if(!usuario){
      const error = new Error("El Usuario no existe");
      return res.status(404).json({msg: error.message});
@@ -90,14 +90,27 @@ const autenticar = async (req, res) =>{
     // revisar el password
     if( await usuario.comprobarPassword(password)){
 
-     res.json({
-        _id: usuario._id,
-        nombre: usuario.nombre,
-        apellido: usuario.apellido,
-        estado: usuario.estado, // cambiar por nombre
-        email: usuario.email,
-        token: generarJWT(usuario.id)
-     })
+        let estadoActivo = ''
+
+        if(usuario !== null && usuario.estado !== null && usuario.estado !== undefined){
+            estadoActivo = usuario.estado;
+        }
+
+        if(estadoActivo !== 'Activo'){
+            const error = new Error("Usuario Inactivo");
+            return res.status(403).json({msg: error.message});
+        }
+
+        res.json({
+            _id: usuario._id,
+            nombre: usuario.nombre,
+            apellido: usuario.apellido,
+            estado: usuario.estado, // cambiar por nombre
+            email: usuario.email,
+            token: generarJWT(usuario.id)
+        })
+
+     
 
     }else{
      const error = new Error("El password o email es incorrecto");
@@ -262,6 +275,67 @@ const actualizarEstadoUsuario = (req, res) => {
         });
 };
 
+const editarUsuario = async (req, res) => {
+
+    const id = req.params.id;
+    const usuario =  await Usuario.findById(id)
+    const {email,nombre,apellido} = req.body
+
+    const emailAnterior = usuario.email;
+    const emailNuevo = email;
+    // si token==null y confirmado== true
+    // ENVIA CORREO
+
+
+
+    if(!usuario){
+        return res.status(404).json({ msg: "No Encontrado", id})
+    }
+
+    if(id.toString() !== usuario._id.toString()){
+        return res.json({ msg: "Accion no válida" })
+    }
+
+
+
+    try {
+        usuario.nombre = req.body.nombre || usuario.nombre;
+        usuario.apellido = req.body.apellido || usuario.apellido;
+        usuario.email = req.body.email || usuario.email;
+
+        if(emailNuevo !== emailAnterior){
+
+            emailRegistro({
+                email,
+                nombre,
+                apellido,
+                token: usuario.token
+            })
+        }
+
+        await usuario.save()
+        res.json({msg: "Usuario Editado Correctamente...."})
+
+    } catch (error) {
+        console.log(error)
+    }
+
+
+}
+
+const obtenerUsuario = async (req, res) =>{
+    const { id } = req.params
+    Usuario.findById(id)
+        .then((results) => {
+            res.json(results);
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).json({ error: 'Error al obtener los productos' });
+        });
+
+} 
+
 
 module.exports = {
     registrar,
@@ -275,5 +349,7 @@ module.exports = {
     actualizarPassword,
     obtenerUsuarios,
     eliminarUsuario,
-    actualizarEstadoUsuario
+    actualizarEstadoUsuario,
+    editarUsuario,
+    obtenerUsuario
 }

@@ -13,11 +13,12 @@ const CambiarPassword = () => {
   const [alerta, setAlerta] = useState({})
   const [password, setPassword] = useState({
     passwordActual: '',
-    passwordNuevo: ''
+    passwordNuevo: '',
+    passwordRepetir: ''
   })
 
   const handleCancelar = () => {
-    navigate('/admin/usuarios'); // Regresa a la ubicación anterior
+    navigate('/admin/listar-usuarios'); // Regresa a la ubicación anterior
   };
 
   const handleSubmit = async e => {
@@ -31,9 +32,24 @@ const CambiarPassword = () => {
       return
     }
 
-    if (password.passwordNuevo.length < 6) {
+    if (password.passwordNuevo.length < 8) {
       setAlerta({
-        msg: 'El Password debe tener minimo 6 caracteres',
+        msg: 'El campo Password Nuevo debe tener mínimo 8 caracteres',
+        error: true
+      })
+      return
+    }
+    if (password.passwordRepetir.length < 8) {
+      setAlerta({
+        msg: 'El campo Reperir Password debe tener mínimo 8 caracteres',
+        error: true
+      })
+      return
+    }
+
+    if (password.passwordRepetir !== password.passwordNuevo) {
+      setAlerta({
+        msg: 'Los campos Password Nuevo y Repetir Password, No son Iguales',
         error: true
       })
       return
@@ -41,6 +57,7 @@ const CambiarPassword = () => {
 
     const respuesta = await guardarPassword(password)
     setAlerta(respuesta)
+    navigate('/admin/listar-usuarios'); // Regresa a la ubicación anterior
   }
 
 
@@ -51,7 +68,7 @@ const CambiarPassword = () => {
     <>
       {/* <div>CambiarPassword</div> */}
 
-      <main className="d-flex   flex-column border border-primary m-4 rounded">
+      <main className="d-flex   flex-column border border-primary m-3 rounded" id='main'>
 
         <h3 className="py-0  px-4 pt-3 my-0">EDITAR PASSWORD</h3>
         <br />
@@ -72,6 +89,22 @@ const CambiarPassword = () => {
                   aria-describedby="emailHelp"
                   name='passwordActual'
                   placeholder="Password Actual"
+                  required
+                  onChange={e => setPassword({
+                    ...password,
+                    [e.target.name]: e.target.value
+                  })}
+                />
+              </div>
+              <div className="mb-3 w-100">
+                <label htmlFor="passwordRepetir" className="form-label fw-bold">Repetir Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="passwordRepetir"
+                  aria-describedby="emailHelp"
+                  name='passwordRepetir'
+                  placeholder="Repetir Password"
                   required
                   onChange={e => setPassword({
                     ...password,

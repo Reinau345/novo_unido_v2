@@ -117,9 +117,14 @@ const UsuarioIndividual = ({ usuario }) => {
                         }}
                     />
                 </Link>
-                <Link onClick={eliminarUsuario}>
-                    <i className="fa fa-trash" title="Eliminar" style={{ marginRight: 10, color: '#dc3545', fontSize: 22 }} />
+
+                <Link to={`/admin/editar-usuario/${usuario._id}`}>
+                    <i className="fa fa-pencil" title="Editar" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
                 </Link>
+                
+                {/* <Link onClick={eliminarUsuario}>
+                    <i className="fa fa-trash" title="Eliminar" style={{ marginRight: 10, color: '#dc3545', fontSize: 22 }} />
+                </Link> */}
 
             </td>
         </tr>
