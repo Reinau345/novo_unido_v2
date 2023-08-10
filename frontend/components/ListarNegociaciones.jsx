@@ -5,6 +5,8 @@ import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
 import ClienteIndividual from './ClienteIndividual'
 
+import useNegociacion from '../hooks/useNegociacion';
+
 const ListarNegociaciones = () => {
     const [datanegociaciones, setdatanegociacion] = useState([]);
     const [busqueda, setBusqueda] = useState("");
@@ -12,6 +14,10 @@ const ListarNegociaciones = () => {
     const negociacionesPorPagina = 5;
     const [negociacionesFiltradas, setNegociacionesFiltradas] = useState([]);
     const { auth } = useAuth()
+    const { negociacion } = useNegociacion()
+
+
+
 
     useEffect(() => {
         fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')

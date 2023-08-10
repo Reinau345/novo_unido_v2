@@ -13,7 +13,7 @@ import FormCrearNegociacion from "../paginas/FormCrearNegociacion";
 import FormEditarNegociacion from '../paginas/FormEditarNegociacion';
 import AuthLayout from '../layout/AuthLayout'
 import AdminLayout from '../layout/AdminLayout'
-import { NegociacionProvider } from "../components/NegociacionContext";
+// import { NegociacionProvider } from "../components/NegociacionContext";
 import Login from '../paginas/Login'
 import Registrar from '../paginas/Registrar'
 import ConfirmarCuenta from '../paginas/ConfirmarCuenta'
@@ -26,6 +26,10 @@ import UsuariosBotones from '../paginas/usuarios/UsuariosBotones'
 import ListarUsuarios from "../paginas/ListarUsuario";
 import { AuthProvider } from '../context/AuthProvider'
 import EditarNegociacion from "../components/EditarNegociacion";
+import EditarUsuarios from "../components/EditarUsuarios";
+import FormEditarUsuario from "../paginas/FormEditarUsuario";
+
+import { NegociacionProvider } from "../context/NegociacionProvider";
 
 function App() {
   return (
@@ -48,6 +52,7 @@ function App() {
               <Route path='cambiar-password' element={<CambiarPasswordCarga />} />
               <Route path='usuarios' element={<UsuariosBotones />} />
               <Route path='listar-usuarios' element={<ListarUsuarios />} />
+              <Route path="editar-usuario/:id" element={<FormEditarUsuario/>} />
 
               {/* Clientes */}
               <Route path="listaclientes" element={<ListarClientes />}></Route>

@@ -200,7 +200,7 @@ header.header-expanded {
 
 .dropdown-menu[data-bs-popper] {
     top: 54px;
-    left: -150px;
+    left: -250px;
     z-index: 10 !important;
 }
 
@@ -208,9 +208,6 @@ header.header-expanded {
 .navbar-nav .dropdown-menu {
     position: absolute;
 }
-
-
-
 
 
 .icono-color-negro {

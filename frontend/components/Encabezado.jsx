@@ -20,7 +20,6 @@ const Encabezado = () => {
             //   main.style.backgroundColor = 'purple'
             //   console.log("cambiado main con mouse",width)
 
-
         };
 
         const cambiadoDivMain = () => {
@@ -29,10 +28,8 @@ const Encabezado = () => {
             // console.log("cambiado main con click", width)
         }
 
-
         window.addEventListener('resize', handleResize);
         window.addEventListener('resize', cambiadoDivMain)
-
 
         // Limpia el listener cuando el componente se desmonta
         return () => {
@@ -85,12 +82,11 @@ const Encabezado = () => {
                                 <Link className="text-decoration-none text-white " to="/">
                                     <div className="dropdown">
                                         {/* <img id="imgLogo" src={"https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg"} alt="Bootstrap" width="35" height="35" /> */}
-                                        <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            {/* Dropdown button */}
+                                        <button className="btn btn-secondary " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {/* Dropdown button dropdown-toggle*/}
                                             <p className='user-name'>{auth.nombre} {auth.apellido}</p>
-                                            {/* {auth.nombre} {auth.apellido} */}
-                                            {/* <img id="imgLogo" src={"https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg"} alt="Bootstrap" width="35" height="35" /> */}
-                                            <img className="rounded-circle perfil-imagen" src="https://images.yodibujo.es/_uploads/_tiny_galerie/20130414/homer-simpson-padre_ytb.jpg" alt="batman " title="batman" width="45" height="45" />
+                                            
+                                            {/* <img className="rounded-circle perfil-imagen" src="https://images.yodibujo.es/_uploads/_tiny_galerie/20130414/homer-simpson-padre_ytb.jpg" alt="batman " title="batman" width="45" height="45" /> */}
                                         </button>
                                         <ul className="dropdown-menu">
                                             <Link to="/admin/perfil">

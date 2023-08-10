@@ -13,7 +13,9 @@ const {
     actualizarPassword,
     obtenerUsuarios,
     eliminarUsuario,
-    actualizarEstadoUsuario
+    actualizarEstadoUsuario,
+    editarUsuario,
+    obtenerUsuario
 } = require('../controllers/usuarioController.js');
 const checkAuth = require('../middleware/authMiddleware.js');
 
@@ -29,5 +31,8 @@ router.put("/actualizar-password", checkAuth, actualizarPassword)
 router.get("/obtener-usuarios", obtenerUsuarios)
 router.delete("/eliminar-usuario/:id", eliminarUsuario)
 router.put('/actualizar-estado/:id', actualizarEstadoUsuario);
+
+router.put('/editar-usuario/:id', editarUsuario);
+router.get('/obtener-usuario/:id', obtenerUsuario);
 
 module.exports = router;

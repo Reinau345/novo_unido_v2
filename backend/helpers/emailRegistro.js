@@ -2,6 +2,7 @@
 const nodemailer = require('nodemailer')
 
 const emailRegistro = async (datos) => {
+<<<<<<< HEAD
   // const transporter = nodemailer.createTransport({
   //     host: process.env.EMAIL_HOST,
   //     port: process.env.EMAIL_PORT,
@@ -30,6 +31,8 @@ const emailRegistro = async (datos) => {
 
   // =================================
 
+=======
+>>>>>>> juan2
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -53,6 +56,7 @@ const emailRegistro = async (datos) => {
       `,
   });
 
+<<<<<<< HEAD
   console.log("Mensaje enviado: %s", info.messageId)
 
   // ==================================
@@ -81,8 +85,10 @@ const emailRegistro = async (datos) => {
   //   }
   // });
 
+=======
+      console.log("Mensaje enviado: %s", info.messageId)
+>>>>>>> juan2
 }
-
 
 
 module.exports = emailRegistro

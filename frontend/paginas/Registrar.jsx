@@ -33,14 +33,20 @@ const Registrar = () => {
     }
 
     if (password !== repetirPassword) {
-      console.log("Los password no son iguales")
+      // console.log("Los password no son iguales")
       setAlerta({ msg: "Los password no son igualess", error: true });
       return
     }
 
-    if(password.length < 6){
-      console.log('El password es muy corto')
-      setAlerta({ msg: "El password debe tener mas de 6 caracteres", error: true });
+    if(password.length < 8){
+      // console.log('El password es muy corto')
+      setAlerta({ msg: "El password debe tener mas de 8 caracteres", error: true });
+      return
+    }
+
+    if(password.length > 25){
+      // console.log('El password debe tener menos 25 caracteres')
+      setAlerta({ msg: "El password debe tener menos 25 caracteres", error: true });
       return
     }
 
@@ -87,7 +93,7 @@ const Registrar = () => {
 
         <MenuLateral></MenuLateral>
 
-        <main className="d-flex   flex-column border border-primary m-4 rounded">
+        <main className="d-flex   flex-column border border-primary m-3 rounded" id="main">
 
           <h3 className="py-0 text-center px-4 pt-3 my-0">CREAR USUARIO</h3>
           <br />
