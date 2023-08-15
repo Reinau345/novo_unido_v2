@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import swal from 'sweetalert';
-
+ 
 const Alerta = ({ alerta }) => {
   useEffect(() => {
     mostrarAlertaError();
