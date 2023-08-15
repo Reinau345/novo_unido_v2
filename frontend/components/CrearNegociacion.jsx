@@ -24,6 +24,13 @@ const CrearNegociacion = () => {
     const [fechaGracia, setFechaGracia] = useState('');
     const [total, setTotal] = useState('');
     const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+    const [numFacturaError, setNumFacturaError] = useState(false);
+    const [tasaError, setTasaError] = useState(false);
+    const [anticipoError, setAnticipoError] = useState(false);
+    const [interesesError, setInteresesError] = useState(false);
+    const [totalError, setTotalError] = useState(false);
+    const [cantidadError, setCantidadError] = useState(false);
+    const [precioVentaError, setPrecioVentaError] = useState(false);
 
     const handleCancelar = () => {
         navigate(-1); // Regresa a la ubicación anterior
@@ -99,7 +106,26 @@ const CrearNegociacion = () => {
                 button: "Aceptar"
             });
             return
-        } 
+        }
+
+        if (
+            numFacturaError ||
+            anticipoError ||
+            tasaError ||
+            interesesError ||
+            totalError ||
+            cantidadError ||
+            precioVentaError
+        ) {
+            swal({
+                title: "Longitudes incorrectas",
+                text: "Verifica los campos marcados en rojo",
+                icon: "error",
+                button: "Aceptar"
+            });
+            return;
+        }
+
         for (let i = 0; i < selectedProductos.length; i++) {
             if (!cantidad[i] || !precioVenta[i] || !productosSeleccionados[i]) {
                 swal({
@@ -164,9 +190,9 @@ const CrearNegociacion = () => {
                 });
             } else {
 
-                if(data.msg){
+                if (data.msg) {
                     throw new Error(data.msg);
-                }else{
+                } else {
                     throw new Error(data.error);
                 }
             }
@@ -177,7 +203,7 @@ const CrearNegociacion = () => {
                 text: "",
                 icon: "warning",
                 button: "Aceptar"
-              })
+            })
         }
     };
 
@@ -328,7 +354,15 @@ const CrearNegociacion = () => {
                                 <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Factura</label>
-                                        <input type="text" className="form-control" placeholder="Número de Factura" required value={numFactura} onChange={(e) => { setNumFactura(e.target.value) }} />
+                                        <input type="text"
+                                            className={`form-control ${numFacturaError ? 'is-invalid' : ''}`}
+                                            placeholder="Número de Factura"
+                                            required
+                                            maxLength={6}
+                                            onInput={(e) => setNumFacturaError(e.target.value.length < 6)}
+                                            value={numFactura}
+                                            onChange={(e) => { setNumFactura(e.target.value) }} />
+                                        {numFacturaError && <div className="invalid-feedback">El número de factura debe tener al menos 6 caracteres.</div>}
                                     </div>
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Tasa</label>
@@ -340,26 +374,36 @@ const CrearNegociacion = () => {
                                     </div>
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Total</label>
-                                        <input type="text" className="form-control" placeholder="$" required onKeyDown={validarNumericos} value={total} onChange={(e) => { setTotal(e.target.value) }} />
+                                        <input type="text"
+                                            className={`form-control ${totalError ? 'is-invalid' : ''}`}
+                                            placeholder="$"
+                                            required
+                                            maxLength={9}
+                                            onInput={(e) => setTotalError(e.target.value.length < 8)}
+                                            value={total}
+                                            onChange={(e) => { setTotal(e.target.value) }} />
+                                        {totalError && <div className="invalid-feedback">El total debe tener al menos 8 caracteres.</div>}
                                     </div>
+
                                     <div className="mb-3 w-100">
                                         {/* <label className="form-label fw-bold"></label>
                                         <input type="text" className="form-control" }} /> */}
                                         {/* <label className="form-label fw-bold"></label>
                                         <input type="text" className="form-control" }} /> */}
-                                        
+
                                     </div>
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Cantidad</label>
                                         {selectedProductos.length > 0 ? (
-                                            selectedProductos.map((producto, index) => (
+                                            selectedProductos.map((index) => (
                                                 <input
                                                     key={index}
                                                     type="text"
-                                                    className="form-control"
+                                                    className={`form-control ${cantidadError ? 'is-invalid' : ''}`}
                                                     placeholder="Cantidad"
                                                     required
-                                                    onKeyDown={validarNumericos}
+                                                    maxLength={2}
+                                                    onKeyDown={(e) => validarNumericos(e, setCantidadError, 1)}
                                                     value={cantidad[index] || ''}
                                                     onChange={(e) => {
                                                         const nuevosValores = [...cantidad];

@@ -74,14 +74,70 @@ const schemaNegociacion = new Schema({
         default: 'Activo',
         trim: true
     },
-
     cumplimientoCuotas: {
         type: [Boolean],
         default: function () {
             return Array(this.numCuotas || 0).fill(false);
         },
     },
+    estadoNegociacion: {
+        type: String
+    },
+    detalleCuotas: {
+        type: [
+            {
+                fecha: Date,   // Fecha de la cuota
+                valor: Number, // Valor de la cuota
+            }
+        ],
+        default: [],  // Inicialmente vacío
+    },
 })
+
+schemaNegociacion.pre("save", async function (next) {
+    if (this.numCuotas && this.fechaGracia && this.total) {
+        const valorCuota = this.total / this.numCuotas; // Calcula el valor de cada cuota
+
+        const fechaFinGracia = new Date(this.fechaGracia);
+        fechaFinGracia.setDate(fechaFinGracia.getDate() - 5); // 5 días antes de la fecha de gracia
+
+        const fechasYValoresCuotas = [
+            { fecha: fechaFinGracia, valor: valorCuota }
+        ];
+
+        for (let i = 1; i < this.numCuotas; i++) {
+            const fechaAnterior = fechasYValoresCuotas[i - 1].fecha;
+            const nuevaFecha = new Date(fechaAnterior);
+            nuevaFecha.setDate(nuevaFecha.getDate() + 25); // Siguiente fecha cada 25 días
+            fechasYValoresCuotas.push({ fecha: nuevaFecha, valor: valorCuota });
+        }
+
+        // Llena el array de cumplimiento con valores iniciales en `false`
+        const cumplimientoCuotas = Array(this.numCuotas).fill(false);
+
+        // Crea el array de fechas, valores y cumplimiento
+        const fechasYValoresCumplimiento = fechasYValoresCuotas.map((item, index) => {
+            return {
+                fecha: item.fecha,
+                valor: item.valor,
+                cumplida: cumplimientoCuotas[index],
+            };
+        });
+
+        this.detalleCuotas = fechasYValoresCumplimiento;
+    }
+
+    next();
+});
+
+schemaNegociacion.pre("save", function (next) {
+    if (this.cumplimientoCuotas.includes(false)) {
+        this.estadoNegociacion = "En mora";
+    } else {
+        this.estadoNegociacion = "En paz";
+    }
+    next();
+});
 
 const ModeloNegociacion = mongoose.model('Negociacion', schemaNegociacion)
 

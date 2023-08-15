@@ -12,14 +12,17 @@ const EditarProducto = () => {
     const [precioBase, setPrecioBase] = useState('')
     const [imagen, setImagen] = useState('')
     const [descripcion, setDescripcion] = useState('')
-    const [correoValido, setCorreoValida] = useState(true);
+    const [referenciaError, setReferenciaError] = useState(false)
+    const [nombreError, setNombreError] = useState(false)
+    const [precioBaseError, setPrecioBaseError] = useState(false)
+    const [descripcionError, setDescripcionError] = useState(false)
     const { auth } = useAuth()
 
     const handleCancelar = () => {
         navigate(-1); // Regresa a la ubicación anterior
     };
 
-    function validarTexto(event) {
+    function validarTexto(event, setErrorState, longitudMinima) {
         const inputText = event.target.value;
 
         // Remover caracteres especiales y números, permitiendo solo letras y la letra "ñ" (tanto en mayúscula como en minúscula)
@@ -27,9 +30,16 @@ const EditarProducto = () => {
 
         // Actualizar el valor del input con el texto sanitizado
         event.target.value = sanitizedText;
+
+        // Validar longitud mínima
+        if (sanitizedText.length < longitudMinima) {
+            setErrorState(true);
+        } else {
+            setErrorState(false);
+        }
     }
 
-    function validarNumericos(event) {
+    function validarNumericos(event, setErrorState, longitudMinima) {
         const charCode = event.keyCode || event.which;
         const char = String.fromCharCode(charCode);
 
@@ -38,14 +48,25 @@ const EditarProducto = () => {
             return;
         }
 
-        // Verificar si el carácter no es un número del 0 al 9 ni el punto decimal
-        if (/[\D/.-]/.test(char)) {
+        // Verificar si el carácter no es un número del 0 al 9
+        if (/\D/.test(char)) {
             event.preventDefault();
+            return;
         }
 
-        // Verificar que no haya más de un punto decimal
-        if (char === '.' && event.target.value.includes('.')) {
-            event.preventDefault();
+        const inputText = event.target.value;
+
+        // Remover caracteres no numéricos, excepto el punto decimal
+        const sanitizedText = inputText.replace(/[^\d.]/g, '');
+
+        // Actualizar el valor del input con el texto sanitizado
+        event.target.value = sanitizedText;
+
+        // Validar longitud mínima
+        if (sanitizedText.length < longitudMinima) {
+            setErrorState(true);
+        } else {
+            setErrorState(false);
         }
     }
 
@@ -86,6 +107,21 @@ const EditarProducto = () => {
                 icon: "warning",
                 button: "Aceptar"
             })
+            return;
+        }
+
+        if (
+            nombreError ||
+            precioBaseError ||
+            referenciaError ||
+            descripcionError
+        ) {
+            swal({
+                title: "Longitudes incorrectas",
+                text: "Verifica los campos marcados en rojo",
+                icon: "error",
+                button: "Aceptar"
+            });
             return;
         }
 
@@ -160,23 +196,60 @@ const EditarProducto = () => {
                             <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Referencia</label>
-                                    <input type="text" className="form-control" placeholder="Referencia" required value={referencia} onChange={(e) => { setReferencia(e.target.value) }} />
+                                    <input type="text"
+                                        className={`form-control ${referenciaError ? 'is-invalid' : ''}`}
+                                        placeholder="Referencia"
+                                        required
+                                        maxLength={3}
+                                        onInput={(e) => setReferenciaError(e.target.value.length < 3)}
+                                        value={referencia}
+                                        onChange={(e) => { setReferencia(e.target.value) }} />
+                                    {referenciaError && <div className="invalid-feedback">La referencia debe tener al menos 3 caracteres.</div>}
                                 </div>
 
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Precio base</label>
-                                    <input type="text" className="form-control" placeholder="Precio base" onKeyDown={validarNumericos} required value={precioBase} onChange={(e) => { setPrecioBase(e.target.value) }} />
+                                    <input type="text" className={`form-control ${precioBaseError ? 'is-invalid' : ''}`}
+                                        placeholder="Precio base" required maxLength={9}
+                                        onKeyDown={(e) => validarNumericos(e, setPrecioBaseError)}
+                                        value={precioBase}
+                                        onChange={(e) => {
+                                            setPrecioBase(e.target.value);
+                                        }}
+                                    />
+                                    {precioBase && <div className={`invalid-feedback ${parseFloat(precioBase) < 33000000 ? 'd-block' : 'd-none'}`}>El precio base debe ser mínimo $33.000.000</div>}
                                 </div>
 
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Descripción</label>
-                                    <textarea className="form-control" placeholder="Descripción" required value={descripcion} onChange={(e) => { setDescripcion(e.target.value) }} />
+                                    <textarea
+                                        className={`form-control ${descripcionError ? 'is-invalid' : ''}`}
+                                        placeholder="Descripción"
+                                        required
+                                        value={descripcion}
+                                        onInput={(e) => setDescripcionError(e.target.value.length < 10)}
+                                        onChange={(e) => { setDescripcion(e.target.value) }} />
+                                    {descripcionError && <div className="invalid-feedback">La descripción debe tener al menos 10 caracteres.</div>}
                                 </div>
                             </div>
+
                             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Nombre</label>
-                                    <input type="text" className="form-control" id="nombre" placeholder="Nombre" onInput={validarTexto} required value={nombre} onChange={(e) => { setNombre(e.target.value) }} />
+                                    <input
+                                        type="text"
+                                        className={`form-control ${nombreError ? 'is-invalid' : ''}`}
+                                        id="nombre"
+                                        placeholder="Nombre"
+                                        required
+                                        maxLength={40}
+                                        onInput={(e) => validarTexto(e, setNombreError, 3)}
+                                        value={nombre}
+                                        onChange={(e) => {
+                                            setNombre(e.target.value);
+                                        }}
+                                    />
+                                    {nombreError && <div className="invalid-feedback">El nombre debe tener al menos 3 caracteres.</div>}
                                 </div>
 
                                 <div className="mb-3 w-100">

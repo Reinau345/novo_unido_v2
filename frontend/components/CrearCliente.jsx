@@ -26,33 +26,54 @@ const CrearCliente = () => {
   const [apellidoCodeudor, setApellidoCodeudor] = useState('');
   const [telefonoCodeudor, setTelefonoCodeudor] = useState('');
   const [pais, setPais] = useState('');
+  const [nombreError, setNombreError] = useState(false);
+  const [apellidoError, setApellidoError] = useState(false);
+  const [direccionError, setDireccionError] = useState(false);
+  const [grupoError, setGrupoError] = useState(false);
+  const [nombreCodeudorError, setNombreCodeudorError] = useState(false);
+  const [apellidoCodeudorError, setApellidoCodeudorError] = useState(false);
+  const [cedulaError, setCedulaError] = useState(false);
+  const [telefonoError, setTelefonoError] = useState(false);
+  const [cedulaCodeudorError, setCedulaCodeudorError] = useState(false);
+  const [telefonoCodeudorError, setTelefonoCodeudorError] = useState(false);
   const { auth } = useAuth()
 
   const handleCancelar = () => {
     navigate(-1); // Regresa a la ubicación anterior
   };
 
-  function validarNumericos(event) {
+  function validarNumericos(event, setErrorState, longitudMinima) {
     const charCode = event.keyCode || event.which;
     const char = String.fromCharCode(charCode);
-
+  
     // Permitir la tecla de retroceso (backspace) y la tecla de suprimir (delete)
     if (charCode === 8 || charCode === 46 || charCode === 9) {
       return;
     }
-
-    // Verificar si el carácter no es un número del 0 al 9 ni el punto decimal
-    if (/[\D/.-]/.test(char)) {
+  
+    // Verificar si el carácter no es un número del 0 al 9
+    if (/\D/.test(char)) {
       event.preventDefault();
+      return;
     }
-
-    // Verificar que no haya más de un punto decimal
-    if (char === '.' && event.target.value.includes('.')) {
-      event.preventDefault();
+  
+    const inputText = event.target.value;
+  
+    // Remover caracteres no numéricos, excepto el punto decimal
+    const sanitizedText = inputText.replace(/[^\d.]/g, '');
+  
+    // Actualizar el valor del input con el texto sanitizado
+    event.target.value = sanitizedText;
+  
+    // Validar longitud mínima
+    if (sanitizedText.length < longitudMinima) {
+      setErrorState(true);
+    } else {
+      setErrorState(false);
     }
   }
 
-  function validarTexto(event) {
+  function validarTexto(event, setErrorState, longitudMinima) {
     const inputText = event.target.value;
 
     // Remover caracteres especiales y números, permitiendo solo letras y la letra "ñ" (tanto en mayúscula como en minúscula)
@@ -60,15 +81,13 @@ const CrearCliente = () => {
 
     // Actualizar el valor del input con el texto sanitizado
     event.target.value = sanitizedText;
-  }
 
-  function validarCorreo(event) {
-    const inputValue = event.target.value;
-
-    // Expresión regular para validar que haya al menos un carácter alfanumérico, seguido de "@", seguido de al menos un carácter alfanumérico, seguido de ".", seguido de al menos un carácter alfanumérico.
-    const regex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/;
-
-    setReferenciaValida(regex.test(inputValue));
+    // Validar longitud mínima
+    if (sanitizedText.length < longitudMinima) {
+      setErrorState(true);
+    } else {
+      setErrorState(false);
+    }
   }
 
   const agregarCliente = async () => {
@@ -93,6 +112,27 @@ const CrearCliente = () => {
         title: "Campos vacíos",
         text: "Todos los campos son obligatorios",
         icon: "warning",
+        button: "Aceptar"
+      });
+      return;
+    }
+
+    if (
+      nombreError ||
+      apellidoError ||
+      direccionError ||
+      grupoError ||
+      nombreCodeudorError ||
+      apellidoCodeudorError ||
+      cedulaError ||
+      telefonoError ||
+      cedulaCodeudorError ||
+      telefonoCodeudorError
+    ) {
+      swal({
+        title: "Longitudes incorrectas",
+        text: "Verifica los campos marcados en rojo",
+        icon: "error",
         button: "Aceptar"
       });
       return;
@@ -177,31 +217,59 @@ const CrearCliente = () => {
               <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Tipo documento</label>
-                  <select className="form-select" required value={tipoDocumento} onChange={(e) => { setTipoDocumento(e.target.value) }}>
+                  <select className="form-select" required value={tipoDocumento}
+                    onChange={(e) => { setTipoDocumento(e.target.value) }}>
                     <option value="">Seleccionar</option>
                     <option value="Cedula">Cédula</option>
                     <option value="Nit">Nit</option>
                   </select>
                 </div>
-
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Nombre</label>
-                  <input type="text" className="form-control" id="nombre" placeholder="Nombre" required onInput={validarTexto} value={nombre} onChange={(e) => { setNombre(e.target.value) }} />
+                  <input
+                    type="text"
+                    className={`form-control ${nombreError ? 'is-invalid' : ''}`}
+                    id="nombre"
+                    placeholder="Nombre"
+                    required
+                    maxLength={40}
+                    onInput={(e) => validarTexto(e, setNombreError, 3)}
+                    value={nombre}
+                    onChange={(e) => {
+                      setNombre(e.target.value);
+                    }}
+                  />
+                  {nombreError && <div className="invalid-feedback">El nombre debe tener al menos 3 caracteres.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Dirección</label>
-                  <input type="text" className="form-control" placeholder="Dirección" required value={direccion} onChange={(e) => { setDireccion(e.target.value) }} />
+                  <input
+                    type="text"
+                    className={`form-control ${direccionError ? 'is-invalid' : ''}`}
+                    id="direccion"
+                    placeholder="Dirección"
+                    required
+                    maxLength={80}
+                    onInput={(e) => setDireccionError(e.target.value.length < 6)}
+                    value={direccion}
+                    onChange={(e) => {
+                      setDireccion(e.target.value);
+                    }}
+                  />
+                  {direccionError && <div className="invalid-feedback">La dirección debe tener al menos 6 caracteres.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Email</label>
-                  <input type="text" className="form-control" placeholder="Email" required value={email} onChange={(e) => { setEmail(e.target.value) }} />
+                  <input type="text" className="form-control" placeholder="Email" required maxLength={60}
+                    value={email} onChange={(e) => { setEmail(e.target.value) }} />
                 </div>
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Tipo documento Codeudor</label>
-                  <select id="cliente" className="form-select" required value={tipoDocumentoCod} onChange={(e) => { setTipoDocumentoCod(e.target.value) }}>
+                  <select id="cliente" className="form-select" required value={tipoDocumentoCod}
+                    onChange={(e) => { setTipoDocumentoCod(e.target.value) }}>
                     <option value="">Seleccionar</option>
                     <option value="Cedula">Cédula</option>
                     <option value="Nit">Nit</option>
@@ -209,49 +277,149 @@ const CrearCliente = () => {
                 </div>
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Nombre Codeudor</label>
-                  <input type="text" className="form-control" placeholder="Nombre Codeudor" required onInput={validarTexto} value={nombreCodeudor} onChange={(e) => { setNombreCodeudor(e.target.value) }} />
+                  <input
+                    type="text"
+                    className={`form-control ${nombreCodeudorError ? 'is-invalid' : ''}`}
+                    id="nombreCodeudor"
+                    placeholder="Nombre Codeudor"
+                    required
+                    maxLength={40}
+                    onInput={(e) => validarTexto(e, setNombreCodeudorError, 3)}
+                    value={nombreCodeudor}
+                    onChange={(e) => {
+                      setNombreCodeudor(e.target.value);
+                    }}
+                  />
+                  {nombreCodeudorError && <div className="invalid-feedback">El nombre del codeudor debe tener al menos 3 caracteres.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Teléfono Codeudor</label>
-                  <input type="text" className="form-control" placeholder="Teléfono Codeudor" required onKeyDown={validarNumericos} value={telefonoCodeudor} onChange={(e) => { setTelefonoCodeudor(e.target.value) }} />
+                  <input
+                    type="text"
+                    className={`form-control ${telefonoCodeudorError ? 'is-invalid' : ''}`}
+                    placeholder="Teléfono Codeudor"
+                    required
+                    maxLength={11}
+                    onKeyDown={(e) => validarNumericos(e, setTelefonoCodeudorError, 7)}
+                    value={telefonoCodeudor}
+                    onChange={(e) => {
+                      setTelefonoCodeudor(e.target.value);
+                    }}
+                  />
+                  {telefonoCodeudorError && <div className="invalid-feedback">El teléfono del codeudor debe tener al menos 7 caracteres numéricos.</div>}
                 </div>
 
               </div>
               <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Cédula</label>
-                  <input type="text" className="form-control" id="cedula" placeholder="Cédula" maxLength={10} minLength={6} required onKeyDown={validarNumericos} value={cedula} onChange={(e) => { setCedula(e.target.value) }} />
+                  <label className="form-label fw-bold">Documento</label>
+                  <input
+                    type="text"
+                    className={`form-control ${cedulaError ? 'is-invalid' : ''}`}
+                    placeholder="Cédula"
+                    required
+                    maxLength={11}
+                    onKeyDown={(e) => validarNumericos(e, setCedulaError, 6)}
+                    onChange={(e) => {
+                      setCedula(e.target.value);
+                    }}
+                  />
+                  {cedulaError && <div className="invalid-feedback">El documento debe tener al menos 6 caracteres numéricos.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Apellido</label>
-                  <input type="text" className="form-control" id="apellido" placeholder="Apellido" required onInput={validarTexto} value={apellido} onChange={(e) => { setApellido(e.target.value) }} />
+                  <input
+                    type="text"
+                    className={`form-control ${apellidoError ? 'is-invalid' : ''}`}
+                    id="apellido"
+                    placeholder="Apellido"
+                    required
+                    maxLength={40}
+                    onInput={(e) => validarTexto(e, setApellidoError, 3)}
+                    value={apellido}
+                    onChange={(e) => {
+                      setApellido(e.target.value);
+                    }}
+                  />
+                  {apellidoError && <div className="invalid-feedback">El apellido debe tener al menos 3 caracteres.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Teléfono</label>
-                  <input type="text" className="form-control" placeholder="Teléfono" required onKeyDown={validarNumericos} value={telefono} onChange={(e) => { setTelefono(e.target.value) }} />
+                  <input
+                    type="text"
+                    className={`form-control ${telefonoError ? 'is-invalid' : ''}`}
+                    placeholder="Teléfono"
+                    required
+                    maxLength={11}
+                    onKeyDown={(e) => validarNumericos(e, setTelefonoError, 7)}
+                    value={telefono}
+                    onChange={(e) => {
+                      setTelefono(e.target.value);
+                    }}
+                  />
+                  {telefonoError && <div className="invalid-feedback">El teléfono debe tener al menos 7 caracteres numéricos.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Grupo</label>
-                  <input type="text" className="form-control" placeholder="Grupo" required onInput={validarTexto} value={grupo} onChange={(e) => { setGrupo(e.target.value) }} />
+                  <input
+                    type="text"
+                    className={`form-control ${grupoError ? 'is-invalid' : ''}`}
+                    id="grupo"
+                    placeholder="Grupo"
+                    required
+                    maxLength={30}
+                    onInput={(e) => setGrupoError(e.target.value.length < 3)}
+                    value={grupo}
+                    onChange={(e) => {
+                      setGrupo(e.target.value);
+                    }}
+                  />
+                  {grupoError && <div className="invalid-feedback">El grupo debe tener al menos 3 caracteres.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Cédula Codeudor</label>
-                  <input type="text" className="form-control" placeholder="Cédula Codeudor" required onKeyDown={validarNumericos} value={cedulaCodeudor} onChange={(e) => { setCedulaCodeudor(e.target.value) }} />
+                  <label className="form-label fw-bold">Documento Codeudor</label>
+                  <input
+                    type="text"
+                    className={`form-control ${cedulaCodeudorError ? 'is-invalid' : ''}`}
+                    placeholder="Cédula Codeudor"
+                    required
+                    maxLength={11}
+                    onKeyDown={(e) => validarNumericos(e, setCedulaCodeudorError, 6)}
+                    value={cedulaCodeudor}
+                    onChange={(e) => {
+                      setCedulaCodeudor(e.target.value);
+                    }}
+                  />
+                  {cedulaCodeudorError && <div className="invalid-feedback">El documento del codeudor debe tener al menos 6 caracteres numéricos.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Apellido Codeudor</label>
-                  <input type="text" className="form-control" id="apellidoCod" placeholder="Apellido Codeudor" required onInput={validarTexto} value={apellidoCodeudor} onChange={(e) => { setApellidoCodeudor(e.target.value) }} />
+                  <input
+                    type="text"
+                    className={`form-control ${apellidoCodeudorError ? 'is-invalid' : ''}`}
+                    id="apellidoCodeudor"
+                    placeholder="Apellido Codeudor"
+                    required
+                    maxLength={40}
+                    onInput={(e) => validarTexto(e, setApellidoCodeudorError, 3)}
+                    value={apellidoCodeudor}
+                    onChange={(e) => {
+                      setApellidoCodeudor(e.target.value);
+                    }}
+                  />
+                  {apellidoCodeudorError && <div className="invalid-feedback">El apellido del codeudor debe tener al menos 3 caracteres.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">País</label>
-                  <select className="form-select" required value={pais} onChange={(e) => { setPais(e.target.value) }}>
+                  <select className="form-select" required value={pais}
+                    onChange={(e) => { setPais(e.target.value) }}>
                     <option value="">Seleccionar</option>
                     <option value="Colombia">Colombia</option>
                     <option value="Panamá">Panamá</option>

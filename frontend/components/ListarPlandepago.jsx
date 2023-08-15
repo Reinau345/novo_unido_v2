@@ -80,6 +80,7 @@ const ListarPlandepago = () => {
 
                         <table className="table table-hover mb-5 border">
                             <thead className="table-secondary">
+                                
                                 <tr>
                                     <th scope="col">Cliente</th>
                                     <th scope="col">Factura</th>

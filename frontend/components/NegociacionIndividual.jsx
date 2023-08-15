@@ -6,7 +6,7 @@ import { isValid, format, parseISO } from 'date-fns';
 import { FaToggleOn } from 'react-icons/fa';
 
 const NegociacionIndividual = ({ negociacion }) => {
-  const { _id } = negociacion; // Obtén el _id del objeto cliente
+  const { _id } = negociacion; 
   const { id } = useParams();
   // const { auth } = useAuth()
   const [isActivated, setIsActivated] = useState(false);
@@ -22,7 +22,6 @@ const NegociacionIndividual = ({ negociacion }) => {
     fetch('http://localhost:4000/api/cliente/obtenerCliente')
       .then(res => res.json())
       .then(data => {
-        console.log(data)
         setDataClientes(data);
       })
       .catch(err => {
@@ -61,6 +60,7 @@ const NegociacionIndividual = ({ negociacion }) => {
     setCuotasPagadas((prevCuotas) => ({
       ...prevCuotas,
       [numCuota]: false,
+
     }));
 
     // Envía la solicitud al servidor para actualizar el estado de la cuota en la base de datos
@@ -326,6 +326,7 @@ const NegociacionIndividual = ({ negociacion }) => {
         <td>{negociacion.numCuotas}</td>
         <td>{fechaFormateada}</td>
         <td>$ {parseFloat(negociacion.total).toLocaleString('es-CO')}</td>
+        <td>{negociacion.estadoNegociacion}</td>
         <td style={{ textAlign: 'center' }}>
           <Link onClick={setShowModal}>
             <i className="fa fa-shopping-cart" style={{ fontSize: '1.5rem', color: '#212529' }} />
@@ -480,6 +481,7 @@ const NegociacionIndividual = ({ negociacion }) => {
                   <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Fecha</th>
                   <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Valor</th>
                   <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Cumplió</th>
+                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Notificar</th>
                 </tr>
               </thead>
               <tbody>
@@ -495,17 +497,22 @@ const NegociacionIndividual = ({ negociacion }) => {
                       <span>
                         {/* Marcar como pagada */}
                         <FaCheck
-                          className={`green-icon ${cuotasPagadas[item.numCuota] ? 'active' : ''}`}
+                          className={`green-icon ${cuotasPagadas[item.numCuota] ? 'active' : ''}`} title="Pagada"
                           style={{ fontSize: 20, cursor: 'pointer', color: '#699F29' }}
                           onClick={() => handleCuotaPagada(item.numCuota)} // Asegúrate de pasar el número de cuota aquí
                         />
                         {/* Marcar como no pagada */}
                         <FaTimes
-                          className={`red-icon ${!cuotasPagadas[item.numCuota] ? 'active' : ''}`}
+                          className={`red-icon ${!cuotasPagadas[item.numCuota] ? 'active' : ''}`} title="No pagada"
                           style={{ fontSize: 22, marginLeft: 30, cursor: 'pointer', color: '#ED3131' }}
                           onClick={() => handleCuotaNoPagada(item.numCuota)}
                         />
                       </span>
+                    </td>
+                    <td style={{ textAlign: 'center' }}>
+                      <Link onClick={toggleDetalles} >
+                        <i className="fa fa-bell" title="Notificar" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
+                      </Link>
                     </td>
                   </tr>
                 ))}

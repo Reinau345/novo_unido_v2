@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Link, useNavigate } from 'react-router-dom'
-import { FaTimes } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
 
@@ -23,29 +22,20 @@ const EditarNegociacion = () => {
     const [fechaGracia, setFechaGracia] = useState('');
     const [total, setTotal] = useState('');
     const [productosSeleccionados, setProductosSeleccionados] = useState([]);
+    const [precioBase, setPrecioBase] = useState('');
+
     const { auth } = useAuth()
-    const [dataNegociaciones, setDataNegociaciones] = useState([]);
+    const [datanegociaciones, setdatanegociacion] = useState([]);
 
     const handleCancelar = () => {
         navigate(-1); // Regresa a la ubicación anterior
     };
 
-    //Función para traer los datos del cliente y poder enviar la notificación al correo
-
     useEffect(() => {
         fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-                setDataNegociaciones(data);
-
-                // Encontrar la negociación a editar por su ID
-                const negociacionAEditar = data.find(negociacion => negociacion.id === id);
-
-                if (negociacionAEditar) {
-                    // Establecer los productos seleccionados de la negociación a editar
-                    setProductosSeleccionados(negociacionAEditar.productosSeleccionados);
-                }
+                setdatanegociacion(data);
             })
             .catch(err => {
                 console.log(err);
@@ -65,14 +55,24 @@ const EditarNegociacion = () => {
                 setNumFactura(datanegociacion.numFactura)
                 setSelectedProductos(datanegociacion.tipoMaquina);
                 setCantidad(datanegociacion.cantidad);
+                setPrecioBase(datanegociacion.precioBase)
                 setPrecioVenta(datanegociacion.precioVenta);
                 setNumCuotas(datanegociacion.numCuotas);
                 setTasa(datanegociacion.tasa);
                 setAnticipo(datanegociacion.anticipo);
                 setInteres(datanegociacion.interes);
-                setFechaGracia(datanegociacion.fechaGracia);
-                setTotal(datanegociacion.total)
+                // Convertir la fecha al formato "YYYY-MM-DD" antes de asignarla al estado
+                if (datanegociacion.fechaGracia) {
+                    const fechaGraciaFormatted = new Date(datanegociacion.fechaGracia)
+                        .toISOString()
+                        .slice(0, 10);
+                    setFechaGracia(fechaGraciaFormatted);
+                } else {
+                    setFechaGracia('');
+                }
 
+                setTotal(datanegociacion.total);
+                setProductosSeleccionados(datanegociacion.productosSeleccionados);
             })
             .catch((err) => {
                 console.error(err);
@@ -101,38 +101,47 @@ const EditarNegociacion = () => {
             });
     }, []);
 
-    const agregarProducto = () => {
-        if (selectedProductos.length === 0 || cantidad === '' || precioVenta === '') {
-            console.log('Debe seleccionar un producto, ingresar una cantidad y un precio de venta');
-            return;
-        }
-
-        const nuevoProducto = {
-            tipoMaquina: selectedProductos,
-            cantidad: Number(cantidad),
-            precioBase: obtenerPrecioBase(selectedProductos),
-            precioVenta: precioVenta, // Utilizar el valor del estado precioVenta
+        // Define una función para actualizar los valores editados en la tabla
+        const handleProductoEdit = (index, field, value) => {
+            const productosActualizados = [...selectedProductos];
+            productosActualizados[index][field] = value;
+            setSelectedProductos(productosActualizados);
         };
 
-        setProductosSeleccionados((prevProductos) => [...prevProductos, nuevoProducto]);
-    };
+    // const agregarProducto = () => {
+    //     if (selectedProductos.length === 0 || cantidad === '' || precioVenta === '') {
+    //         console.log('Debe seleccionar un producto, ingresar una cantidad y un precio de venta');
+    //         return;
+    //     }
 
-    const obtenerPrecioBase = (producto) => {
-        const productoEncontrado = dataproductos.find((p) => p.nombre === producto);
-        return productoEncontrado ? productoEncontrado.precioBase : '';
-    };
+    //     const obtenerPrecioBase = (producto) => {
+    //         const productoEncontrado = dataproductos.find((p) => p.nombre === producto);
+    //         return productoEncontrado ? productoEncontrado.precioBase : '';
 
-    const eliminarProducto = (index) => {
-        const nuevosProductosSeleccionados = [...productosSeleccionados];
-        nuevosProductosSeleccionados.splice(index, 1);
-        setProductosSeleccionados(nuevosProductosSeleccionados);
-    };
+    //     };
 
-    const limpiarCampos = () => {
-        setSelectedProductos([]);
-        setCantidad([]);
-        setPrecioVenta([]);
-    };
+    //     const nuevoProducto = {
+    //         tipoMaquina: selectedProductos,
+    //         cantidad: Number(cantidad),
+    //         precioBase: obtenerPrecioBase(selectedProductos),
+    //         precioVenta: precioVenta, // Utilizar el valor del estado precioVenta
+    //     };
+
+    //     setProductosSeleccionados((prevProductos) => [...prevProductos, nuevoProducto]);
+    // };
+
+    //Eliminar los productos del listado de comprados
+    // function eliminarProducto(index) {
+    //     const productosActualizados = [...productosSeleccionados];
+    //     productosActualizados.splice(index, 1);
+    //     setProductosSeleccionados(productosActualizados);
+    // }
+
+    // const limpiarCampos = () => {
+    //     setSelectedProductos([]);
+    //     setCantidad([]);
+    //     setPrecioVenta([]);
+    // };
 
     function validarNumericos(event) {
         const charCode = event.keyCode || event.which;
@@ -191,7 +200,9 @@ const EditarNegociacion = () => {
             anticipo,
             interes,
             fechaGracia,
-            total
+            total,
+            productosSeleccionados,
+            precioBase
         };
 
         //Petición usando fetch
@@ -284,8 +295,7 @@ const EditarNegociacion = () => {
                                     <label className="form-label fw-bold">Fecha Fin Gracia</label>
                                     <input type="date" className="form-control" placeholder="Fecha de Facturacion" required value={fechaGracia} onChange={(e) => { setFechaGracia(e.target.value) }} />
                                 </div>
-                                <br />
-                                <h2>Agregar Nuevos Productos</h2>
+                                {/* <h2>Agregar Nuevos Productos</h2>
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Producto</label>
                                     <select
@@ -321,7 +331,7 @@ const EditarNegociacion = () => {
                                             disabled
                                         />
                                     )}
-                                </div>
+                                </div> */}
                             </div>
                             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                                 <div className="mb-3 w-100">
@@ -347,8 +357,7 @@ const EditarNegociacion = () => {
                                     {/* <label className="form-label fw-bold"></label>
                                         <input type="text" className="form-control"/> */}
                                 </div>
-                                <br />
-                                <div className="mb-3 w-100">
+                                {/* <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Cantidad</label>
                                     {selectedProductos.length > 0 ? (
                                         <input
@@ -371,7 +380,7 @@ const EditarNegociacion = () => {
                                 <div>
                                     <button type="button" className="btn btn-dark " id="producto" required value={selectedProductos} onChange={e => setSelectedProductos(e.target.value)} onClick={agregarProducto} style={{ marginRight: 10 }}><i className="fa fa-add" /></button>
                                     <button type="button" className="btn btn-dark" onClick={limpiarCampos}><i className="fa fa-broom" /></button>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -382,17 +391,23 @@ const EditarNegociacion = () => {
                                         <th scope="col">Cantidad</th>
                                         <th scope="col">Precio Base</th>
                                         <th scope="col">Precio Venta</th>
-                                        <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
+                                        {/* <th scope="col" style={{ textAlign: 'center' }}>Acciones</th> */}
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {dataNegociaciones.map((producto, index) => (
+                                {/* <tbody>
+                                    {selectedProductos.map((producto, index) => (
                                         <tr key={index}>
-                                            <td>{producto.tipoMaquina}</td>
-                                            <td>{producto.cantidad}</td>
-                                            <td>{producto.precioBase}</td>
-                                            <td>{producto.precioVenta}</td>
-                                            <td style={{ textAlign: 'center' }}>
+                                            <td>{producto}</td>
+                                            <td>
+                                                {Array.isArray(cantidad) ? cantidad[index] : cantidad}
+                                            </td>
+                                            <td>
+                                                {Array.isArray(precioBase) ? precioBase[index] : precioBase}
+                                            </td>
+                                            <td>
+                                                {Array.isArray(precioVenta) ? precioVenta[index] : precioVenta}
+                                            </td>
+                                             <td style={{ textAlign: 'center' }}>
                                                 <Link>
                                                     <FaTimes
                                                         size={35}
@@ -400,7 +415,32 @@ const EditarNegociacion = () => {
                                                         onClick={() => eliminarProducto(index)}
                                                     />
                                                 </Link>
+                                            </td> 
+                                        </tr>
+                                    ))}
+                                </tbody> */}
+                                 <tbody>
+                                    {selectedProductos.map((producto, index) => (
+                                        <tr key={index}>
+                                            <td>{producto}</td>
+                                            <td>
+                                                {Array.isArray(cantidad) ? cantidad[index] : cantidad}
                                             </td>
+                                            <td>
+                                                {Array.isArray(precioBase) ? precioBase[index] : precioBase}
+                                            </td>
+                                            <td>
+                                                {Array.isArray(precioVenta) ? precioVenta[index] : precioVenta}
+                                            </td>
+                                             {/* <td style={{ textAlign: 'center' }}>
+                                                <Link>
+                                                    <FaTimes
+                                                        size={35}
+                                                        style={{ color: 'black' }}
+                                                        onClick={() => eliminarProducto(index)}
+                                                    />
+                                                </Link>
+                                            </td>  */}
                                         </tr>
                                     ))}
                                 </tbody>

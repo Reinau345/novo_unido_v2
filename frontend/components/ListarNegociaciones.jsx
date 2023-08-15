@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import NegociacionIndividual from './NegociacionIndividual';
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
-import ClienteIndividual from './ClienteIndividual'
 
 import useNegociacion from '../hooks/useNegociacion';
 
@@ -14,10 +13,7 @@ const ListarNegociaciones = () => {
     const negociacionesPorPagina = 5;
     const [negociacionesFiltradas, setNegociacionesFiltradas] = useState([]);
     const { auth } = useAuth()
-    const { negociacion } = useNegociacion()
-
-
-
+    const { negociaciones } = useNegociacion()
 
     useEffect(() => {
         fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
@@ -93,6 +89,7 @@ const ListarNegociaciones = () => {
 
     return (
         <>
+        
             <section className="d-flex">
                 <MenuLateral></MenuLateral>
 
@@ -125,6 +122,7 @@ const ListarNegociaciones = () => {
                                         <th scope="col">Cuotas</th>
                                         <th scope="col">Fecha Fin Gracia</th>
                                         <th scope="col">Total</th>
+                                        <th scope="col">Estado</th>
                                         <th scope="col" style={{ textAlign: 'center' }}>Productos</th>
                                         <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
                                     </tr>
@@ -139,9 +137,16 @@ const ListarNegociaciones = () => {
                                 {paginador}
                             </ul>
                         </nav>
+                        {/* <div style={{textAlign:'end'}}>
+                            <button className="btn btn-primary m-3" >
+                                Generar Reportes
+                            </button>
+                        </div> */}
+                        
                     </div>
                 </main>
             </section>
+            
         </>
     );
 };

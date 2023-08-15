@@ -85,8 +85,6 @@ const Encabezado = () => {
                                         <button className="btn btn-secondary " type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             {/* Dropdown button dropdown-toggle*/}
                                             <p className='user-name'>{auth.nombre} {auth.apellido}</p>
-                                            
-                                            {/* <img className="rounded-circle perfil-imagen" src="https://images.yodibujo.es/_uploads/_tiny_galerie/20130414/homer-simpson-padre_ytb.jpg" alt="batman " title="batman" width="45" height="45" /> */}
                                         </button>
                                         <ul className="dropdown-menu">
                                             <Link to="/admin/perfil">

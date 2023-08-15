@@ -156,9 +156,6 @@ const ClienteIndividual = ({ cliente }) => {
         <Link to={`/admin/editarcliente/${cliente._id}`}>
           <i className="fa fa-pencil" title="Editar" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
         </Link>
-        {/* <Link onClick={eliminarCliente}>
-          <i className="fa fa-trash" title="Eliminar" style={{ color: '#dc3545', fontSize: 22 }} />
-        </Link> */}
         <Link onClick={toggleActivation}>
           <FaToggleOn
             title="Activar-Desactivar"
@@ -170,6 +167,9 @@ const ClienteIndividual = ({ cliente }) => {
               transform: isActivated ? 'rotateY(180deg)' : 'rotateY(0deg)', // Aplica el giro horizontal según el estado
             }}
           />
+        </Link>
+        <Link onClick={eliminarCliente}>
+          <i className="fa fa-trash" title="Eliminar" style={{ color: '#dc3545', fontSize: 22 }} />
         </Link>
       </td>
       <Modal isOpen={mostrarDetalles} onRequestClose={toggleDetalles} style={customStyles} >
@@ -186,7 +186,7 @@ const ClienteIndividual = ({ cliente }) => {
               <td style={{ color: '#032770' }}>{cliente.tipoDocumento}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cédula</th>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Documento</th>
               <td style={{ color: '#032770' }}>{cliente.cedula}</td>
             </tr>
             <tr>
@@ -218,7 +218,7 @@ const ClienteIndividual = ({ cliente }) => {
               <td style={{ color: '#032770' }}>{cliente.tipoDocumentoCod}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Cédula Codeudor</th>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Documento Codeudor</th>
               <td style={{ color: '#032770' }}>{cliente.cedulaCodeudor}</td>
             </tr>
             <tr>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import Modal from 'react-modal';
-import { FaTimes } from 'react-icons/fa';
+import { isValid, format, parseISO } from 'date-fns';
 
 const PlandepagoIndividual = ({ plandePago }) => {
     const { _id } = plandePago; // Obtén el _id del objeto Plan de Pago
@@ -13,6 +12,7 @@ const PlandepagoIndividual = ({ plandePago }) => {
         fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
             .then(res => res.json())
             .then(data => {
+                console.log(data)
                 setDataNegociaciones(data);
             })
             .catch(err => {
@@ -20,43 +20,32 @@ const PlandepagoIndividual = ({ plandePago }) => {
             });
     }, []);
 
-    //Función para eliminar el Plan de Pago
-    const navegar = useNavigate();
-    function eliminarPlandepago() {
-        fetch(`http://localhost:4000/api/plandepago/eliminarplandepago/${_id}`, {  // Corrección en la ruta
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(res => res.json())
-            .then(data => {
-                // console.log(data);
-                alert(data.message); // Mostrar el mensaje específico del objeto
-                navegar(0);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error al eliminar el Plan de Pago');
-            });
-    }
-
-    if (!plandePago) {
-        return <div>No se ha proporcionado plan de pago válido</div>;
-    }
-
     return (
         <>
             {dataNegociaciones.map(negociacion => (
-                <tr key={negociacion._id}>
-                    <td>{negociacion.cliente}</td>
-                    <td>{negociacion.numFactura}</td>
-                    <td>{negociacion.fechaCuota}</td>
-
-                    <td style={{ textAlign: 'center' }}>
-                        {/* Agregar acciones específicas para cada fila si es necesario */}
-                    </td>
-                </tr>
+                <React.Fragment key={negociacion._id}>
+                    {negociacion.detalleCuotas.map((cuota, index) => (
+                        <tr key={index}>
+                            {index === 0 && (
+                                <>
+                                    <td rowSpan={negociacion.detalleCuotas.length}>{negociacion.cliente}</td>
+                                    <td rowSpan={negociacion.detalleCuotas.length}>{negociacion.numFactura}</td>
+                                </>
+                            )}
+                            <td>
+                                {isValid(parseISO(cuota.fecha)) ? (
+                                    format(parseISO(cuota.fecha), 'dd/MM/yyyy')
+                                ) : (
+                                    'Fecha inválida'
+                                )}
+                            </td>
+                            <td>${parseFloat(cuota.valor).toLocaleString('es-CO')}</td>
+                            <td>
+                                {/* Acciones específicas */}
+                            </td>
+                        </tr>
+                    ))}
+                </React.Fragment>
             ))}
         </>
     );

@@ -16,7 +16,8 @@ const Registrar = () => {
   const [apellido, setApellido] = useState('');
   const [password, setPassword] = useState('')
   const [repetirPassword, setRepetirPassword] = useState('')
-
+  const [nombreError, setNombreError] = useState(false);
+  const [apellidoError, setApellidoError] = useState(false);
   const [alerta, setAlerta] = useState({})
 
 
@@ -24,32 +25,48 @@ const Registrar = () => {
     navigate(-1); // Regresa a la ubicación anterior
   };
 
+  function validarTexto(event, setErrorState, longitudMinima) {
+    const inputText = event.target.value;
+
+    // Remover caracteres especiales y números, permitiendo solo letras y la letra "ñ" (tanto en mayúscula como en minúscula)
+    const sanitizedText = inputText.replace(/[^a-zA-ZñÑ\s]/g, '');
+
+    // Actualizar el valor del input con el texto sanitizado
+    event.target.value = sanitizedText;
+
+    // Validar longitud mínima
+    if (sanitizedText.length < longitudMinima) {
+      setErrorState(true);
+    } else {
+      setErrorState(false);
+    }
+  }
+
   const handleSubmit = async e => {
     e.preventDefault()
 
     if ([email, nombre, apellido, password, repetirPassword].includes('')) {
-      setAlerta({ msg: "hay campos vacios", error: true });
+      setAlerta({ msg: "Campos vacios", error: true });
       return;
     }
 
     if (password !== repetirPassword) {
       // console.log("Los password no son iguales")
-      setAlerta({ msg: "Los password no son igualess", error: true });
+      setAlerta({ msg: "Los password no coinciden", error: true });
       return
     }
 
-    if(password.length < 8){
+    if (password.length < 8) {
       // console.log('El password es muy corto')
-      setAlerta({ msg: "El password debe tener mas de 8 caracteres", error: true });
+      setAlerta({ msg: "El password debe tener más de 8 caracteres", error: true });
       return
     }
 
-    if(password.length > 25){
+    if (password.length > 25) {
       // console.log('El password debe tener menos 25 caracteres')
-      setAlerta({ msg: "El password debe tener menos 25 caracteres", error: true });
+      setAlerta({ msg: "El password debe tener 25 o más caracteres", error: true });
       return
     }
-
 
     setAlerta({})
 
@@ -67,12 +84,12 @@ const Registrar = () => {
       swal({
         title: `Creado Correctamente`,
         text: "",
-        icon: "warning",
+        icon: "success",
         button: "Aceptar"
-    });
+      });
 
-    navigate("/admin/listar-usuarios")
-      
+      navigate("/admin/listar-usuarios")
+
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
@@ -107,14 +124,18 @@ const Registrar = () => {
                   <label htmlFor="nombre" className="form-label fw-bold">Nombre</label>
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${nombreError ? 'is-invalid' : ''}`}
                     id="nombre"
-                    aria-describedby="emailHelp"
                     placeholder="Nombre"
                     required
+                    maxLength={40}
+                    onInput={(e) => validarTexto(e, setNombreError, 3)}
                     value={nombre}
-                    onChange={e => setNombre(e.target.value)}
+                    onChange={(e) => {
+                      setNombre(e.target.value);
+                    }}
                   />
+                  {nombreError && <div className="invalid-feedback">El nombre debe tener al menos 3 caracteres.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
@@ -137,7 +158,6 @@ const Registrar = () => {
                     type="password"
                     className="form-control"
                     id="descripcion"
-                    aria-describedby="emailHelp"
                     placeholder="Repetir Password"
                     required
                     value={repetirPassword}
@@ -146,7 +166,7 @@ const Registrar = () => {
                 </div>
 
                 <div className="mb-3 w-100">
- 
+
                 </div>
               </div>
 
@@ -155,14 +175,18 @@ const Registrar = () => {
                   <label htmlFor="apellido" className="form-label fw-bold">Apellido</label>
                   <input
                     type="text"
-                    className="form-control"
-                    id="nombre"
-                    aria-describedby="emailHelp"
+                    className={`form-control ${apellidoError ? 'is-invalid' : ''}`}
+                    id="apellido"
                     placeholder="Apellido"
                     required
+                    maxLength={40}
+                    onInput={(e) => validarTexto(e, setApellidoError, 3)}
                     value={apellido}
-                    onChange={e => setApellido(e.target.value)}
+                    onChange={(e) => {
+                      setApellido(e.target.value);
+                    }}
                   />
+                  {apellidoError && <div className="invalid-feedback">El apellido debe tener al menos 3 caracteres.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
@@ -171,7 +195,6 @@ const Registrar = () => {
                     type="password"
                     className="form-control"
                     id="password"
-                    aria-describedby="emailHelp"
                     placeholder="Password"
                     required
                     value={password}

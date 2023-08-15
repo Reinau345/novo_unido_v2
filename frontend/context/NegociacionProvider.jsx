@@ -4,7 +4,7 @@ const NegociacionContext = createContext();
 
 const NegociacionProvider = ({ children }) => {
 
-    const [negociacion, setNegociacion] = useState({})
+    const [negociaciones, setNegociaciones] = useState({})
 
     useEffect(() => {
         const obtenerNegociacion = async () => {
@@ -16,7 +16,7 @@ const NegociacionProvider = ({ children }) => {
                     return res.json();
                 })
                 .then((data) => {
-                    setNegociacion(data)
+                    setNegociaciones(data)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -28,8 +28,8 @@ const NegociacionProvider = ({ children }) => {
     return(
         <NegociacionContext.Provider
             value={{
-                negociacion,
-                setNegociacion
+                negociaciones,
+                setNegociaciones
             }}
         >
             {children}
