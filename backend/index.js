@@ -37,7 +37,7 @@ app.use('/api/negociacion', rutaNegociacion)
 app.use('/api/usuarios', usuarioRouter)
 
 // Configurar CORS con las opciones personalizadas
-const dominiosPermitidos = ['http://localhost:5173']; // Agrega aquí los dominios permitidos
+const dominiosPermitidos = ['http://localhost:5173','https://chipper-boba-0e3a05.netlify.app']; // Agrega aquí los dominios permitidos
 const corsOptions = {
   origin: function (origin, callback) {
     if (dominiosPermitidos.indexOf(origin) !== -1) {
