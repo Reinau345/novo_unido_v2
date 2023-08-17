@@ -13,7 +13,16 @@ const ListarNegociaciones = () => {
     const negociacionesPorPagina = 5;
     const [negociacionesFiltradas, setNegociacionesFiltradas] = useState([]);
     const { auth } = useAuth()
+<<<<<<< HEAD
     const { negociaciones } = useNegociacion()
+=======
+
+    const { negociacion } = useNegociacion()
+
+    // console.log(negociacion)
+
+
+>>>>>>> juan3
 
     useEffect(() => {
         fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
@@ -39,11 +48,8 @@ const ListarNegociaciones = () => {
 
         const filteredNegociaciones = datanegociaciones.filter((negociacion) => {
             return (
-                (negociacion.numFactura && negociacion.numFactura.toLowerCase().includes(searchValue.toLowerCase())) ||
-                (negociacion.cliente && negociacion.cliente.toString().includes(searchValue)) ||
-                (negociacion.numCuotas && negociacion.numCuotas.toString().includes(searchValue)) ||
-                (negociacion.fechaGracia && negociacion.fechaGracia.includes(searchValue)) ||
-                (negociacion.total && negociacion.total.toString().includes(searchValue))
+                negociacion.numFactura && negociacion.numFactura.toLowerCase().includes(searchValue.toLowerCase()) ||
+                negociacion.cliente && negociacion.cliente.toString().includes(searchValue)
             );
         })
 
@@ -119,11 +125,15 @@ const ListarNegociaciones = () => {
                                     <tr>
                                         <th scope="col">Cliente</th>
                                         <th scope="col">Factura</th>
+                                        <th scope="col" style={{ textAlign: 'center' }}>Productos</th>
                                         <th scope="col">Cuotas</th>
                                         <th scope="col">Fecha Fin Gracia</th>
                                         <th scope="col">Total</th>
+<<<<<<< HEAD
                                         <th scope="col">Estado</th>
                                         <th scope="col" style={{ textAlign: 'center' }}>Productos</th>
+=======
+>>>>>>> juan3
                                         <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
                                     </tr>
                                 </thead>

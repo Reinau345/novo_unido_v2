@@ -11,14 +11,14 @@ const emailOlvidePassword = async (datos) => {
         },
       });
 
-      const {email, estado, token} = datos;
+      const {email, nombre, apellido, token} = datos;
 
       const info = await transporter.sendMail({
         from: "Novotic - Notificacion envio de Mail",
         to: email,
         subject: "Restablecer contraseña - novotic",
         text: "Reestablece tu password",
-        html: `<p>Hola: ${estado}, Has solicitado reestablecer tu contraseña</p>
+        html: `<p>Hola: ${nombre}, Has solicitado reestablecer tu contraseña</p>
         <p>Sigue el siguiente enlace para generar una nueva contraseña:
         <a href="${process.env.FRONTEND_URL}/olvide-password/${token}">Restablecer Contraseña</a></p>
 

@@ -1,5 +1,9 @@
 const Producto = require('../models/ProductoModels');
 const path = require('path')
+// const generarId = require('../helpers/generarId')
+
+const  { v4: uuidv4 } = require('uuid');
+
 
 const registrarProducto = async (req, res) => {
 
@@ -9,8 +13,18 @@ const registrarProducto = async (req, res) => {
       }
     
       const {imagen} = req.files;
-    
-      const uploadPath = path.join( __dirname, '../../frontend/public/uploads/products/', imagen.name);
+      const nombreCortado = imagen.name.split('.')
+      const extension = nombreCortado[ nombreCortado.length - 1 ]
+
+      const extensionesValidas = ['png','jpg','jpeg'];
+      if(!extensionesValidas.includes(extension)){
+        return res.status(400).json({ msg: `La exension ${extension} no es permitida, extensiones validas ${extensionesValidas}` })
+      }
+
+      const nombreFinal = uuidv4() + '.' + extension
+      const uploadPath = path.join( __dirname, '../../frontend/public/uploads/products/', nombreFinal);
+
+  
     
       imagen.mv(uploadPath, (err) => {
         if (err) {
@@ -33,8 +47,9 @@ const registrarProducto = async (req, res) => {
         const nuevoProducto = new Producto();
         nuevoProducto.referencia = req.body.referencia || nuevoProducto.referencia;
         nuevoProducto.nombre = req.body.nombre || nuevoProducto.nombre;
-        // nuevoProducto.imagen = uploadPath || nuevoProducto.imagen;
-        nuevoProducto.imagen = imagen.name || nuevoProducto.imagen;
+        nuevoProducto.imagen = nombreFinal || nuevoProducto.imagen;
+        nuevoProducto.path = uploadPath || nuevoProducto.path;
+        // nuevoProducto.imagen = imagen.name || nuevoProducto.imagen;
         nuevoProducto.cantidad = req.body.cantidad || nuevoProducto.cantidad;
         nuevoProducto.precioBase = req.body.precioBase || nuevoProducto.precioBase;
         nuevoProducto.descripcion = req.body.descripcion || nuevoProducto.descripcion;

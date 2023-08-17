@@ -9,7 +9,8 @@ const CrearNegociacion = () => {
     const navigate = useNavigate();
 
     const [dataclientes, setDataClientes] = useState([]);
-    const [selectedCliente, setSelectedCliente] = useState('');
+    const [selectedCliente, setSelectedCliente] = useState({ _id: '', nombre: ''});
+    // const [selectedCliente, setSelectedCliente] = useState('');
     const [numFactura, setNumFactura] = useState('');
     const [dataproductos, setDataProductos] = useState([]);
     const [selectedProductos, setSelectedProductos] = useState([]);
@@ -144,7 +145,11 @@ const CrearNegociacion = () => {
         const precioVentaArray = productosSeleccionados.map((producto) => Number(producto.precioVenta));
 
         const nuevaNegociacion = {
-            cliente: selectedCliente,
+            // cliente: selectedCliente,
+            cliente: {
+                _id: selectedCliente._id,
+                nombre: selectedCliente.nombre,
+            },
             numFactura,
             tipoMaquina: tipoMaquinaArray,
             cantidad: cantidadArray,
@@ -269,10 +274,23 @@ const CrearNegociacion = () => {
                             <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Cliente</label>
-                                    <select id="cliente" className="form-select" value={selectedCliente} onChange={(e) => setSelectedCliente(e.target.value)}>
+                                    <select 
+                                        id="cliente" 
+                                        className="form-select" 
+                                        value={selectedCliente._id} 
+                                        onChange={
+                                                // (e) => setSelectedCliente(e.target.value)
+                                                (e) => {
+                                                    const selectedId = e.target.value;
+                                                    const selectedName = e.target.options[e.target.selectedIndex].text;
+                                                    setSelectedCliente({ _id: selectedId, nombre: selectedName });
+                                                }
+                                            }
+                                        >
                                         <option value="">Seleccionar cliente</option>
                                         {dataclientes.map(cliente => (
-                                            <option key={cliente.id} value={cliente.nombre}>
+                                            // <option key={cliente.id} value={cliente.nombre}>
+                                            <option key={cliente._id} value={cliente._id}>
                                                 {cliente.nombre}
                                             </option>
                                         ))}
