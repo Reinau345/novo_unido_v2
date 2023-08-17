@@ -1,4 +1,9 @@
+const schedule = require('node-schedule');
 const Negociacion = require('../models/NegociacionModels');
+const Cliente = require('../models/ClienteModels');
+const obtenerCliente = require('../helpers/obteneCliente')
+const enviarNoficacion = require('../helpers/enviarNoficacion')
+
 
 const registrarNegociacion = async (req, res) => {
 
@@ -12,6 +17,24 @@ const registrarNegociacion = async (req, res) => {
 
     try {
         const nuevaNegociacion = new Negociacion(req.body);
+
+        nuevaNegociacion.cliente = req.body.cliente.nombre || nuevaNegociacion.cliente.nombre 
+        nuevaNegociacion.clienteData = req.body.cliente._id || nuevaNegociacion.cliente._id 
+
+        nuevaNegociacion.numFactura = req.body.numFactura || nuevaNegociacion.numFactura 
+        nuevaNegociacion.tipoMaquina = req.body.tipoMaquina || nuevaNegociacion.tipoMaquina 
+        nuevaNegociacion.precioBase = req.body.precioBase || nuevaNegociacion.precioBase 
+        nuevaNegociacion.precioVenta = req.body.precioVenta || nuevaNegociacion.precioVenta 
+        nuevaNegociacion.numCuotas = req.body.numCuotas || nuevaNegociacion.numCuotas 
+        nuevaNegociacion.tasa = req.body.tasa || nuevaNegociacion.tasa 
+        nuevaNegociacion.anticipo = req.body.anticipo || nuevaNegociacion.anticipo 
+        nuevaNegociacion.interes = req.body.interes || nuevaNegociacion.interes 
+        nuevaNegociacion.fechaGracia = req.body.fechaGracia || nuevaNegociacion.fechaGracia 
+        nuevaNegociacion.total = req.body.total || nuevaNegociacion.total 
+        nuevaNegociacion.estado = req.body.estado || nuevaNegociacion.estado 
+        nuevaNegociacion.fechaFacturacion = req.body.fechaFacturacion || nuevaNegociacion.fechaFacturacion 
+
+
 
         await nuevaNegociacion.save();
         res.json({ message: 'Negociación agregada correctamente' });
@@ -111,6 +134,78 @@ const actualizarCuota = async (req, res) => {
         return res.status(500).json({ error: 'Error al actualizar la cuota' });
     }
 };
+
+const enviarNotificacion = async () => {
+    try {
+        const results = await Negociacion.find();
+
+        const date = new Date()
+        const dia = date.getDay()
+        const mes = date.getMonth() + 1
+        const ano = date.getFullYear()
+        const actualLatina = `${dia}/${mes}/${ano}`
+        const isoDataMongo = date.toISOString()
+
+
+        results.forEach(async result => {
+            console.log("Cliente:", result.cliente);
+
+            result.detalleCuotas.forEach(async detalle => {
+                // const date = new Date(detalle.fecha)
+                const formateada = date.toLocaleDateString('es-Es')
+                //fecha mongo
+                const fechaMongo = detalle.fecha
+                //feccha actual
+                const fechaActual = date.toISOString()
+
+                const fMongo  = new Date(fechaMongo)
+                const fActual = new Date(fechaActual)
+                // diferencia
+                const diferenciaMilisegundos = Math.abs(fActual - fMongo)
+                const diferenciaDias = Math.ceil(diferenciaMilisegundos / (24 * 60 * 60 * 1000)) 
+
+                // console.log(" ")
+                // console.log("FechaMongo:",fMongo)
+                // console.log("FechaHoy:  ",fActual)
+
+                console.log(detalle.fecha, " = ", formateada, " Diferencia en dias: ", diferenciaDias)
+                // console.log("Detalle F:", detalle.fecha)
+
+                if(diferenciaDias === 6){
+
+
+                    try {
+                        console.log( " YA TIENE 5 DIAS")
+                        // console.log("Cliente:", result)
+                        const clio = await obtenerCliente(result.clienteData)
+                        // console.log(clio)
+                        // console.log("====")
+
+                        const fecha = new Date( fechaMongo )
+                        const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+                        const dia = fecha.getDate()
+                        const mes = fecha.getMonth()
+                        const ano = fecha.getFullYear()
+                        const fechaFormateada = `${dia}/${mes}/${ano}`
+                        const fechaTexto = fecha.toLocaleDateString('es-ES', options)
+
+                        enviarNoficacion( { clio, fechaFormateada, fechaTexto })
+
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
+            })
+        });
+        // Realiza las operaciones necesarias con los resultados aquí
+    } catch (error) {
+        console.error(error);
+        // Maneja el error de manera adecuada
+    }
+};
+// / Programa la función para que se ejecute todos los días a la misma hora (ejemplo: a las 10:00 AM)
+// const notificacionJob = schedule.scheduleJob('minutos hora * * *', enviarNotificacion);
+const notificacionJob = schedule.scheduleJob('52 18 * * *', enviarNotificacion);
 
 module.exports = {
     registrarNegociacion,

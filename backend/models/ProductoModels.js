@@ -27,6 +27,11 @@ const schemaProducto = new Schema({
         required: [true, 'Este campo es obligatorio'],
         trim: true
     },
+    path: {
+        type: String,
+        required: [true, 'Este campo es obligatorio'],
+        trim: true
+    },
     descripcion: {
         type: String,
         required: [true, 'Este campo es obligatorio'],

@@ -3,6 +3,8 @@ import { useParams, Link } from "react-router-dom"
 import Alerta from "../components/Alerta"
 import clienteAxios from "../config/axios"
 
+import logo from '../public/img/Logo_10.png'
+
   const NuevoPassword = () => {
 
   const [password, setPassword] = useState('')
@@ -68,14 +70,15 @@ import clienteAxios from "../config/axios"
     return (
       
       <>
-      <div>NuevoPassword dfdf</div>
+      {/* <div>NuevoPassword dfdf</div> */}
 
 
       <div className="contenedor">
 
       <div className="contenedor-formulario">
           <div>
-              <img className="logoLogin" src="https://www.novomatic.com/sites/default/files/2017-05/Logo_N-Shortbrand.png" alt="logo" />
+              {/* <img className="logoLogin" src="https://www.novomatic.com/sites/default/files/2017-05/Logo_N-Shortbrand.png" alt="logo" /> */}
+              <img className="logoLogin" src={logo} alt="logo" />
           </div>
         <p className="tituloLogin">Restablecer su contraseña</p>
 
@@ -108,7 +111,7 @@ import clienteAxios from "../config/axios"
         )}
 
         {passswordModificado && 
-          <Link to="/">Iniciar Sesión</Link>
+          <Link className="tituloLogin text-white"  to="/">Iniciar Sesión</Link>
         }
         
 

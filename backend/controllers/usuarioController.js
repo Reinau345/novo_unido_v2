@@ -15,7 +15,11 @@ const obtenerUsuarios = async (req, res) => {
 
 const registrar = async (req, res) =>{
 
-    const {email,estado,nombre,apellido} = req.body
+    const {estado,nombre,apellido} = req.body
+    let {email} = req.body;
+    email = email.toLowerCase()
+
+    
 
     const existeUsuario = await Usuario.findOne({email})
 
@@ -27,6 +31,8 @@ const registrar = async (req, res) =>{
     try {
         // guradar nuevo Usuario
         const usuario = new Usuario(req.body);
+        usuario.email = req.body.email.toLowerCase() || usuario.email.toLowerCase();
+
         const usuarioGuardado = await usuario.save();
 
         emailRegistro({
@@ -72,9 +78,12 @@ const confirmar = async (req, res) =>{
 }
 
 const autenticar = async (req, res) =>{
-    const {email, password} = req.body
+    const {password} = req.body
+    let {email} =  req.body
+    email = email.toLowerCase()
  
     const usuario = await Usuario.findOne({email})
+    usuario.email = usuario.email.toLowerCase()
 
     if(!usuario){
      const error = new Error("El Usuario no existe");
@@ -119,7 +128,9 @@ const autenticar = async (req, res) =>{
  }
 
  const olvidePassword = async (req, res)=>{
-    const { email } = req.body;
+    let { email } = req.body;
+    email = email.toLowerCase()
+
 
     const existeUsuario = await Usuario.findOne({email})
 
@@ -130,6 +141,7 @@ const autenticar = async (req, res) =>{
 
     try {
         existeUsuario.token = generarId();
+        existeUsuario.email = req.body.email.toLowerCase() || existeUsuario.email.toLowerCase();
         await existeUsuario.save()
 
         //enviar email con instrucciones
@@ -185,13 +197,16 @@ const nuevoPassword = async (req, res)=>{
 
 const actualizarPerfil = async (req, res) => {
     const usuario = await Usuario.findById(req.params.id)
+
     if(!usuario){
         const error = new Error('Hubo un error')
         return res.status(400).json({msg: error.message})
     }
 
-    const { email } = req.body
-    if(usuario.email !== req.body.email){
+    let { email } = req.body
+    email = email.toLowerCase()
+
+    if(usuario.email.toLowerCase() !== req.body.email.toLowerCase()){
         const existeEmail = await Usuario.findOne({email})
         if(existeEmail){
             const error = new Error('Ese email ya esta en uso')
@@ -202,7 +217,7 @@ const actualizarPerfil = async (req, res) => {
     try {
         usuario.nombre = req.body.nombre || usuario.nombre;
         usuario.apellido = req.body.apellido || usuario.apellido;
-        usuario.email = req.body.email || usuario.email;
+        usuario.email = req.body.email.toLowerCase() || usuario.email.toLowerCase();
 
         const usuarioActualizado = await usuario.save()
         res.json(usuarioActualizado)
@@ -279,9 +294,12 @@ const editarUsuario = async (req, res) => {
 
     const id = req.params.id;
     const usuario =  await Usuario.findById(id)
-    const {email,nombre,apellido} = req.body
 
-    const emailAnterior = usuario.email;
+    const { nombre,apellido } = req.body
+    let { email } = req.body
+    email = email.toLowerCase()
+
+    const emailAnterior = usuario.email.toLowerCase();
     const emailNuevo = email;
     // si token==null y confirmado== true
     // ENVIA CORREO
@@ -301,7 +319,7 @@ const editarUsuario = async (req, res) => {
     try {
         usuario.nombre = req.body.nombre || usuario.nombre;
         usuario.apellido = req.body.apellido || usuario.apellido;
-        usuario.email = req.body.email || usuario.email;
+        usuario.email = req.body.email.toLowerCase() || usuario.email.toLowerCase();
 
         if(emailNuevo !== emailAnterior){
 

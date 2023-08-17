@@ -1,7 +1,6 @@
-
 const nodemailer = require('nodemailer')
 
-const emailRegistro = async (datos) => {
+const enviarNoficacion = async (datos) => {
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -11,15 +10,15 @@ const emailRegistro = async (datos) => {
     },
   });
 
-  const { email, nombre, apellido, estado, token } = datos;
+//   const { email, nombre, apellido, fechaFormateada } = datos;
+  const { clio, fechaFormateada, fechaTexto } = datos;
 
   const info = await transporter.sendMail({
     from: "Novotic - Notificacion envío de Mail",
-    to: email,
-    subject: "Comprobar cuenta en novotic",
-    html: `<p>Hola: ${nombre}, comprueba tu email</p>
-        <p>Tu cuesta está lista, comprobar en el siguiente enlace:
-        <a href="${process.env.FRONTEND_URL}/confirmar/${token}">Comprobar cuenta</a></p>
+    to: clio.email,
+    subject: "Notificaión de Pago - Novotic",
+    html: `<p>Hola: ${clio.nombre} ${clio.apellido}, comprueba tu email</p>
+        <p>Se acerca tu fecha de pago <b> ${fechaTexto} </b>
 
         <p>Si no eres quien ha creado la cuenta, ignora este mensaje</p>
       `,
@@ -28,5 +27,4 @@ const emailRegistro = async (datos) => {
       console.log("Mensaje enviado: %s", info.messageId)
 }
 
-
-module.exports = emailRegistro
+module.exports = enviarNoficacion

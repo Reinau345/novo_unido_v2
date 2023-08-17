@@ -79,10 +79,10 @@ const Encabezado = () => {
                         <ul className="navbar-nav d-flex justify-content-center align-items-center gap-1 gap-lg-4 my-0">
                             <li className="nav-item hover-header py-0 ">
 
-                                <Link className="text-decoration-none text-white " to="/">
+                                <Link className="text-decoration-none text-white " >
                                     <div className="dropdown">
                                         {/* <img id="imgLogo" src={"https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg"} alt="Bootstrap" width="35" height="35" /> */}
-                                        <button className="btn btn-secondary " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             {/* Dropdown button dropdown-toggle*/}
                                             <p className='user-name'>{auth.nombre} {auth.apellido}</p>
                                             

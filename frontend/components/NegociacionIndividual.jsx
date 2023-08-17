@@ -22,7 +22,7 @@ const NegociacionIndividual = ({ negociacion }) => {
     fetch('http://localhost:4000/api/cliente/obtenerCliente')
       .then(res => res.json())
       .then(data => {
-        console.log(data)
+        // console.log(data)
         setDataClientes(data);
       })
       .catch(err => {
@@ -293,6 +293,8 @@ const NegociacionIndividual = ({ negociacion }) => {
     const numCuotas = parseInt(negociacion.numCuotas, 10);
     const valorCuota = parseFloat(negociacion.total) / numCuotas;
 
+    // console.log(fechaGracia)
+
     const planDePago = [];
 
     let fechaPago = new Date(fechaGracia); // Inicializar fechaPago con la fecha de gracia
@@ -316,6 +318,7 @@ const NegociacionIndividual = ({ negociacion }) => {
   };
 
   const negociacionPlanPagoData = calcularPlanPago();
+
 
   return (
 
