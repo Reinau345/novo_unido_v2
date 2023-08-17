@@ -13,16 +13,7 @@ const ListarNegociaciones = () => {
     const negociacionesPorPagina = 5;
     const [negociacionesFiltradas, setNegociacionesFiltradas] = useState([]);
     const { auth } = useAuth()
-<<<<<<< HEAD
-    const { negociaciones } = useNegociacion()
-=======
 
-    const { negociacion } = useNegociacion()
-
-    // console.log(negociacion)
-
-
->>>>>>> juan3
 
     useEffect(() => {
         fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
@@ -129,11 +120,8 @@ const ListarNegociaciones = () => {
                                         <th scope="col">Cuotas</th>
                                         <th scope="col">Fecha Fin Gracia</th>
                                         <th scope="col">Total</th>
-<<<<<<< HEAD
                                         <th scope="col">Estado</th>
                                         <th scope="col" style={{ textAlign: 'center' }}>Productos</th>
-=======
->>>>>>> juan3
                                         <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
                                     </tr>
                                 </thead>

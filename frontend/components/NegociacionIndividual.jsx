@@ -22,10 +22,7 @@ const NegociacionIndividual = ({ negociacion }) => {
     fetch('http://localhost:4000/api/cliente/obtenerCliente')
       .then(res => res.json())
       .then(data => {
-<<<<<<< HEAD
-=======
         // console.log(data)
->>>>>>> juan3
         setDataClientes(data);
       })
       .catch(err => {

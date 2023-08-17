@@ -74,15 +74,12 @@ const schemaNegociacion = new Schema({
         default: 'Activo',
         trim: true
     },
-<<<<<<< HEAD
-=======
 
     clienteData:{
         type:mongoose.Schema.Types.ObjectId,
         ref: 'Cliente'
     },
 
->>>>>>> juan3
     cumplimientoCuotas: {
         type: [Boolean],
         default: function () {

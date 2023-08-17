@@ -164,19 +164,16 @@ const enviarNotificacion = async () => {
                 const diferenciaMilisegundos = Math.abs(fActual - fMongo)
                 const diferenciaDias = Math.ceil(diferenciaMilisegundos / (24 * 60 * 60 * 1000)) 
 
-                // console.log(" ")
-                // console.log("FechaMongo:",fMongo)
-                // console.log("FechaHoy:  ",fActual)
 
-                console.log(detalle.fecha, " = ", formateada, " Diferencia en dias: ", diferenciaDias)
-                // console.log("Detalle F:", detalle.fecha)
+
+                // console.log(detalle.fecha, " = ", formateada, " Diferencia en dias: ", diferenciaDias)
+
 
                 if(diferenciaDias === 6){
 
 
                     try {
-                        console.log( " YA TIENE 5 DIAS")
-                        // console.log("Cliente:", result)
+                        // console.log( " YA TIENE 5 DIAS")
                         const clio = await obtenerCliente(result.clienteData)
                         // console.log(clio)
                         // console.log("====")
