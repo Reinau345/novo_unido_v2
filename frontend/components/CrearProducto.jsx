@@ -126,7 +126,9 @@ const CrearProducto = () => {
         formData.append('nuevoProducto', JSON.stringify(nuevoProducto))
 
         try {
-            const response = await fetch('http://localhost:4000/api/producto/agregarProducto', {
+            const url = `producto/agregarProducto`
+            // const response = await fetch('http://localhost:4000/api/producto/agregarProducto', {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
                 method: 'POST',
                 body: formData
             });

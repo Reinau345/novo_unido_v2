@@ -156,7 +156,9 @@ const CrearCliente = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:4000/api/cliente/agregarCliente', {
+      const url = `cliente/agregarCliente`
+      // const response = await fetch('http://localhost:4000/api/cliente/agregarCliente', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

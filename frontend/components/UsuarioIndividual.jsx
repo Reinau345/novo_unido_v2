@@ -21,7 +21,8 @@ const UsuarioIndividual = ({ usuario }) => {
             dangerMode: true
         }).then(isConfirmed => {
             if (isConfirmed) {
-                fetch(`http://localhost:4000/api/usuarios/eliminar-usuario/${_id}`, {  // Corrección en la ruta
+                const url = `usuarios/eliminar-usuario/${_id}`;
+                fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {  // Corrección en la ruta
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json'
@@ -64,7 +65,8 @@ const UsuarioIndividual = ({ usuario }) => {
         setEstado(newEstado);
 
         // Envía la solicitud al servidor para actualizar el estado en la base de datos
-        fetch(`http://localhost:4000/api/usuarios/actualizar-estado/${_id}`, {
+        const url = `usuarios/actualizar-estado/${_id}`;
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

@@ -71,7 +71,8 @@ const EditarProducto = () => {
     }
 
     useEffect(() => {
-        fetch(`http://localhost:4000/api/producto/obtenerdataproducto/${id}`)
+        const url = `producto/obtenerdataproducto/${id}`;
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
             .then((res) => {
                 if (!res.ok) {
                     throw new Error('Error al obtener los datos del producto');
@@ -134,7 +135,9 @@ const EditarProducto = () => {
         };
 
         try {
-            const response = await fetch(`http://localhost:4000/api/producto/actualizarProducto/${id}`, {
+            const url = `producto/actualizarProducto/${id}`;
+            // const response = await fetch(`http://localhost:4000/api/producto/actualizarProducto/${id}`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

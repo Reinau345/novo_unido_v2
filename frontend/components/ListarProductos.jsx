@@ -13,7 +13,9 @@ const ListarProductos = () => {
     const [productosFiltrados, setProductosFiltrados] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:4000/api/producto/obtenerProducto')
+        const url = `producto/obtenerProducto`;
+        // fetch('http://localhost:4000/api/producto/obtenerProducto')
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
             .then((res) => {
                 if (!res.ok) {
                     throw new Error('Error al obtener los datos del producto');

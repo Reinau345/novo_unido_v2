@@ -12,7 +12,9 @@ const Editarplandepago = () => {
     const { auth } = useAuth()
 
     useEffect(() => {
-        fetch(`http://localhost:4000/api/plandepago/obtenerdataplandepago/${id}`)
+        const url = `plandepago/obtenerdataplandepago/${id}`;
+        // fetch(`http://localhost:4000/api/plandepago/obtenerdataplandepago/${id}`)
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
             .then((res) => {
                 if (!res.ok) {
                     throw new Error('Error al obtener los datos del plan de pago');
@@ -47,7 +49,8 @@ const Editarplandepago = () => {
         };
 
         try {
-            const response = await fetch(`http://localhost:4000/api/plandepago/actualizarplandepago/${id}`, {
+            const url = `plandepago/actualizarplandepago/${id}`;
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

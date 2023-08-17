@@ -24,7 +24,8 @@ const ProductoIndividual = ({ producto }) => {
       dangerMode: true
     }).then(isConfirmed => {
       if (isConfirmed) {
-        fetch(`http://localhost:4000/api/producto/eliminarproducto/${_id}`, {  // Corrección en la ruta
+        const url = `producto/eliminarproducto/${_id}`
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {  // Corrección en la ruta
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
@@ -99,7 +100,8 @@ const ProductoIndividual = ({ producto }) => {
     setEstado(newEstado);
 
     // Envía la solicitud al servidor para actualizar el estado en la base de datos
-    fetch(`http://localhost:4000/api/producto/actualizar-estado/${_id}`, {
+    const url = `producto/actualizar-estado/${_id}`;
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

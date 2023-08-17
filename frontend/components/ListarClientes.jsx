@@ -13,7 +13,9 @@ const ListarClientes = () => {
   const [clientesFiltrados, setClientesFiltrados] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/cliente/obtenerCliente')
+    const url = `cliente/obtenerCliente`;
+    // fetch('http://localhost:4000/api/cliente/obtenerCliente')
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error('Error al obtener los datos del cliente');

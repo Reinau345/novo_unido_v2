@@ -25,7 +25,9 @@ const ClienteIndividual = ({ cliente }) => {
       dangerMode: true
     }).then(isConfirmed => {
       if (isConfirmed) {
-        fetch(`http://localhost:4000/api/cliente/eliminarcliente/${_id}`, {
+        const url = `cliente/eliminarcliente/${_id}`
+        // fetch(`http://localhost:4000/api/cliente/eliminarcliente/${_id}`, {
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
@@ -98,7 +100,9 @@ const ClienteIndividual = ({ cliente }) => {
     setEstado(newEstado);
 
     // Envía la solicitud al servidor para actualizar el estado en la base de datos
-    fetch(`http://localhost:4000/api/cliente/actualizar-estado/${_id}`, {
+    const url = `cliente/actualizar-estado/${_id}`
+    // fetch(`http://localhost:4000/api/cliente/actualizar-estado/${_id}`, {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

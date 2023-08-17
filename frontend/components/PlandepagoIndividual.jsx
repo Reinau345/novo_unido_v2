@@ -9,7 +9,8 @@ const PlandepagoIndividual = ({ plandePago }) => {
 
     //Función para traer los datos del cliente y poder enviar la notificación al correo
     useEffect(() => {
-        fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
+        const url = `negociacion/obtenerNegociaciones`;
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data)

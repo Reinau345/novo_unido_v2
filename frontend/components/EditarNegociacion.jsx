@@ -32,7 +32,9 @@ const EditarNegociacion = () => {
     };
 
     useEffect(() => {
-        fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
+        const url = `negociacion/obtenerNegociaciones`;
+        // fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
             .then(res => res.json())
             .then(data => {
                 setdatanegociacion(data);
@@ -43,7 +45,8 @@ const EditarNegociacion = () => {
     }, [id]);
 
     useEffect(() => {
-        fetch(`http://localhost:4000/api/negociacion/obtenerdatanegociacion/${id}`)
+        const url = `negociacion/obtenerdatanegociacion/${id}`
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
             .then((res) => {
                 if (!res.ok) {
                     throw new Error('Error al obtener los datos de la negociación');
@@ -80,7 +83,9 @@ const EditarNegociacion = () => {
     }, [id]);
 
     useEffect(() => {
-        fetch('http://localhost:4000/api/cliente/obtenerCliente')
+        const url = ``;
+        // fetch('http://localhost:4000/api/cliente/obtenerCliente')
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
             .then((res) => res.json())
             .then((data) => {
                 setDataClientes(data);
@@ -91,7 +96,9 @@ const EditarNegociacion = () => {
     }, []);
 
     useEffect(() => {
-        fetch('http://localhost:4000/api/producto/obtenerProducto')
+        const url = `producto/obtenerProducto`;
+        // fetch('http://localhost:4000/api/producto/obtenerProducto')
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
             .then((res) => res.json())
             .then((data) => {
                 setDataProductos(data);
@@ -207,7 +214,8 @@ const EditarNegociacion = () => {
 
         //Petición usando fetch
         try {
-            const response = await fetch(`http://localhost:4000/api/negociacion/actualizarNegociacion/${id}`, {
+            const url = `negociacion/actualizarNegociacion/${id}`
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

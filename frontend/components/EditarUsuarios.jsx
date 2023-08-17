@@ -31,7 +31,9 @@ const EditarUsuarios = () => {
   }
 
   useEffect(() => {
-    fetch(`http://localhost:4000/api/usuarios/obtener-usuario/${id}`)
+    const url = `usuarios/obtener-usuario/${id}`;
+    // fetch(`http://localhost:4000/api/usuarios/obtener-usuario/${id}`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error('Error al obtener usuario');
@@ -71,7 +73,8 @@ const EditarUsuarios = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:4000/api/usuarios/editar-usuario/${id}`, {
+      const url = `usuarios/editar-usuario/${id}`;
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

@@ -87,7 +87,8 @@ const EditarCliente = () => {
   }
 
   useEffect(() => {
-    fetch(`http://localhost:4000/api/cliente/obtenerdatacliente/${id}`)
+    const url = `cliente/obtenerdatacliente/${id}`
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
       .then((res) => {
         if (!res.ok) {
           throw new Error('Error al obtener los datos del cliente');
@@ -183,7 +184,8 @@ const EditarCliente = () => {
     };
 
     try {
-      const response = await fetch(`http://localhost:4000/api/cliente/actualizarCliente/${id}`, {
+      const url = `cliente/actualizarCliente/${id}`
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

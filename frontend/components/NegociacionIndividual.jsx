@@ -19,7 +19,8 @@ const NegociacionIndividual = ({ negociacion }) => {
 
   //Función para traer los datos del cliente y poder enviar la notificación
   useEffect(() => {
-    fetch('http://localhost:4000/api/cliente/obtenerCliente')
+    const url = `cliente/obtenerCliente`;
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
       .then(res => res.json())
       .then(data => {
         // console.log(data)
@@ -38,7 +39,9 @@ const NegociacionIndividual = ({ negociacion }) => {
     }));
 
     // Envía la solicitud al servidor para actualizar el estado de la cuota en la base de datos
-    fetch(`http://localhost:4000/api/negociacion/actualizar-cuota/${_id}/${numCuota}`, {
+    const url = `negociacion/actualizar-cuota/${_id}/${numCuota}`;
+    // fetch(`http://localhost:4000/api/negociacion/actualizar-cuota/${_id}/${numCuota}`, {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -65,7 +68,9 @@ const NegociacionIndividual = ({ negociacion }) => {
     }));
 
     // Envía la solicitud al servidor para actualizar el estado de la cuota en la base de datos
-    fetch(`http://localhost:4000/api/negociacion/actualizar-cuota/${_id}/${numCuota}`, {
+    const url = `negociacion/actualizar-cuota/${_id}/${numCuota}`
+    // fetch(`http://localhost:4000/api/negociacion/actualizar-cuota/${_id}/${numCuota}`, {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -175,7 +180,8 @@ const NegociacionIndividual = ({ negociacion }) => {
       dangerMode: true
     }).then(isConfirmed => {
       if (isConfirmed) {
-        fetch(`http://localhost:4000/api/negociacion/eliminarnegociacion/${_id}`, {
+        const url = `negociacion/eliminarnegociacion/${_id}`;
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
@@ -227,7 +233,9 @@ const NegociacionIndividual = ({ negociacion }) => {
     setEstado(newEstado);
 
     // Envía la solicitud al servidor para actualizar el estado en la base de datos
-    fetch(`http://localhost:4000/api/negociacion/actualizar-estado/${_id}`, {
+    const url = `negociacion/actualizar-estado/${_id}`
+    // fetch(`http://localhost:4000/api/negociacion/actualizar-estado/${_id}`, {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

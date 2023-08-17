@@ -39,7 +39,9 @@ const CrearNegociacion = () => {
     const { auth } = useAuth()
 
     useEffect(() => {
-        fetch('http://localhost:4000/api/cliente/obtenerCliente')
+        const url = `cliente/obtenerCliente`
+        // fetch('http://localhost:4000/api/cliente/obtenerCliente')
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
             .then(res => res.json())
             .then(data => {
                 setDataClientes(data);
@@ -50,7 +52,9 @@ const CrearNegociacion = () => {
     }, []);
 
     useEffect(() => {
-        fetch('http://localhost:4000/api/producto/obtenerProducto')
+        const url = `producto/obtenerProducto`
+        // fetch('http://localhost:4000/api/producto/obtenerProducto')
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
             .then(res => res.json())
             .then(data => {
                 setDataProductos(data);
@@ -165,7 +169,9 @@ const CrearNegociacion = () => {
         };
 
         try {
-            const response = await fetch('http://localhost:4000/api/negociacion/agregarNegociacion', {
+            const url = `negociacion/agregarNegociacion`
+            // const response = await fetch(`http://localhost:4000/api/negociacion/agregarNegociacion`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

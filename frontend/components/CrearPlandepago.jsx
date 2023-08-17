@@ -25,7 +25,9 @@ const CrearPlandepago = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:4000/api/plandepago/agregarPlandepago', {
+      const url = `plandepago/agregarPlandepago`
+      // const response = await fetch('http://localhost:4000/api/plandepago/agregarPlandepago', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

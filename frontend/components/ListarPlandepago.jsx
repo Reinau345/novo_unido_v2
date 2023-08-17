@@ -10,7 +10,9 @@ const ListarPlandepago = () => {
     const { auth } = useAuth()
 
     useEffect(() => {
-        fetch('http://localhost:4000/api/plandepago/obtenerplandepago')
+        const url = `plandepago/obtenerplandepago`;
+        // fetch('http://localhost:4000/api/plandepago/obtenerplandepago')
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
             .then((res) => {
                 if (!res.ok) {
                     throw new Error('Error al obtener los datos del plan de pago');

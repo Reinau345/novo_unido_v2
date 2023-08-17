@@ -15,7 +15,9 @@ const ListarUsuarios = () => {
 
 
     useEffect(() => {
-        fetch('http://localhost:4000/api/usuarios/obtener-usuarios')
+        const url = `usuarios/obtener-usuarios`;
+        // fetch('http://localhost:4000/api/usuarios/obtener-usuarios')
+        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
             .then((res) => {
                 if(!res.ok){
                     throw new Error('Error al obtener los datos del usuario');
