@@ -17,22 +17,6 @@ const CrearProducto = () => {
     const [descripcionError, setDescripcionError] = useState(false)
     const { auth } = useAuth()
 
-    function validarTexto(event, setErrorState, longitudMinima) {
-        const inputText = event.target.value;
-
-        // Remover caracteres especiales y números, permitiendo solo letras y la letra "ñ" (tanto en mayúscula como en minúscula)
-        const sanitizedText = inputText.replace(/[^a-zA-ZñÑ\s]/g, '');
-
-        // Actualizar el valor del input con el texto sanitizado
-        event.target.value = sanitizedText;
-
-        // Validar longitud mínima
-        if (sanitizedText.length < longitudMinima) {
-            setErrorState(true);
-        } else {
-            setErrorState(false);
-        }
-    }
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -75,6 +59,23 @@ const CrearProducto = () => {
         }
     }
 
+    function validarTexto(event, setErrorState, longitudMinima) {
+        const inputText = event.target.value;
+
+        // Remover caracteres especiales y números, permitiendo solo letras y la letra "ñ" (tanto en mayúscula como en minúscula)
+        const sanitizedText = inputText.replace(/[^a-zA-ZñÑ\s]/g, '');
+
+        // Actualizar el valor del input con el texto sanitizado
+        event.target.value = sanitizedText;
+
+        // Validar longitud mínima
+        if (sanitizedText.length < longitudMinima) {
+            setErrorState(true);
+        } else {
+            setErrorState(false);
+        }
+    }
+
     const agregarProducto = async (e) => {
         e.preventDefault()
         // Verificar que todos los campos sean llenados
@@ -96,8 +97,8 @@ const CrearProducto = () => {
 
         if (
             nombreError ||
-            precioBaseError ||
             referenciaError ||
+            precioBaseError ||
             descripcionError
         ) {
             swal({
@@ -184,20 +185,31 @@ const CrearProducto = () => {
                             <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100">
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Referencia</label>
-                                    <input type="text"
+                                    <input
+                                        type="text"
                                         className={`form-control ${referenciaError ? 'is-invalid' : ''}`}
                                         placeholder="Referencia"
                                         required
-                                        maxLength={3}
-                                        onInput={(e) => setReferenciaError(e.target.value.length < 3)}
                                         value={referencia}
-                                        onChange={(e) => { setReferencia(e.target.value) }} />
+                                        maxLength={80}
+                                        onChange={(e) => {
+                                            const inputText = e.target.value;
+                                            const sanitizedText = inputText.replace(/[^a-zA-Z0-9ñÑ\s]/g, '');
+                                            setReferencia(sanitizedText);
+
+                                            if (sanitizedText.length < 3) {
+                                                setReferenciaError(true);
+                                            } else {
+                                                setReferenciaError(false);
+                                            }
+                                        }}
+                                    />
                                     {referenciaError && <div className="invalid-feedback">La referencia debe tener al menos 3 caracteres.</div>}
                                 </div>
 
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Precio base</label>
-                                    <input type="text" className={`form-control ${precioBaseError ? 'is-invalid' : ''}`}
+                                    <input type="text" className={`form-control ${precioBaseError || (precioBase && parseFloat(precioBase) < 33000000) ? 'is-invalid' : ''}`}
                                         placeholder="Precio base" required maxLength={9}
                                         onKeyDown={(e) => validarNumericos(e, setPrecioBaseError)}
                                         value={precioBase}
@@ -205,7 +217,7 @@ const CrearProducto = () => {
                                             setPrecioBase(e.target.value);
                                         }}
                                     />
-                                    {precioBase && <div className={`invalid-feedback ${parseFloat(precioBase) < 33000000 ? 'd-block' : 'd-none'}`}>El precio base debe ser mínimo $33.000.000</div>}
+                                    {precioBase && parseFloat(precioBase) < 33000000 && <div className="invalid-feedback">El precio base debe ser mínimo $33000000</div>}
                                 </div>
 
                                 <div className="mb-3 w-100">
@@ -214,13 +226,23 @@ const CrearProducto = () => {
                                         className={`form-control ${descripcionError ? 'is-invalid' : ''}`}
                                         placeholder="Descripción"
                                         required
+                                        maxLength={250}
                                         value={descripcion}
-                                        onInput={(e) => setDescripcionError(e.target.value.length < 10)}
-                                        onChange={(e) => { setDescripcion(e.target.value) }} />
+                                        onChange={(e) => {
+                                            const inputText = e.target.value;
+                                            const sanitizedText = inputText.replace(/[^a-zA-Z0-9ñÑ\s]/g, '');
+                                            setDescripcion(sanitizedText);
+
+                                            if (sanitizedText.length < 10) {
+                                                setDescripcionError(true);
+                                            } else {
+                                                setDescripcionError(false);
+                                            }
+                                        }}
+                                    />
                                     {descripcionError && <div className="invalid-feedback">La descripción debe tener al menos 10 caracteres.</div>}
                                 </div>
                             </div>
-
                             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Nombre</label>

@@ -18,6 +18,9 @@ const Registrar = () => {
   const [repetirPassword, setRepetirPassword] = useState('')
   const [nombreError, setNombreError] = useState(false);
   const [apellidoError, setApellidoError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [repetirPasswordError, setRepetirPasswordError] = useState(false);
   const [alerta, setAlerta] = useState({})
 
 
@@ -97,11 +100,45 @@ const Registrar = () => {
       })
     }
 
-    // navigate("/admin/listar-usuarios")
-
   }
 
   const { msg } = alerta
+
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    if (newPassword.length >= 8) {
+      setPasswordError(false);
+    } else {
+      setPasswordError(true);
+    }
+  };
+
+  const handleRepetirPasswordChange = (e) => {
+    const newRepetirPassword = e.target.value;
+    setRepetirPassword(newRepetirPassword);
+
+    if (newRepetirPassword === password) {
+      setRepetirPasswordError(false);
+    } else {
+      setRepetirPasswordError(true);
+    }
+  };
+
+  const validateEmail = (email) => {
+    // Expresión regular para validar el formato del correo
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    const isValidEmail = validateEmail(newEmail);
+    setEmailError(!isValidEmail);
+  };
 
   return (
     <>
@@ -142,27 +179,30 @@ const Registrar = () => {
                   <label htmlFor="email" className="form-label fw-bold">Email</label>
                   <input
                     type="email"
-                    className="form-control"
+                    className={`form-control ${emailError ? 'is-invalid' : ''}`}
                     id="email"
                     aria-describedby="emailHelp"
                     placeholder="Email"
                     required
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={handleEmailChange}
                   />
+                  {emailError && <div className="invalid-feedback">Ingrese un correo válido.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
                   <label htmlFor="descripcion" className="form-label fw-bold">Repetir Password</label>
                   <input
                     type="password"
-                    className="form-control"
+                    className={`form-control ${repetirPasswordError ? 'is-invalid' : ''}`}
                     id="descripcion"
                     placeholder="Repetir Password"
                     required
+                    maxLength={25}
                     value={repetirPassword}
-                    onChange={e => setRepetirPassword(e.target.value)}
+                    onChange={handleRepetirPasswordChange}
                   />
+                  {repetirPasswordError && <div className="invalid-feedback">Las contraseñas no coinciden.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
@@ -193,13 +233,16 @@ const Registrar = () => {
                   <label htmlFor="password" className="form-label fw-bold">Password</label>
                   <input
                     type="password"
-                    className="form-control"
+                    className={`form-control ${passwordError ? 'is-invalid' : ''}`}
                     id="password"
-                    placeholder="Password"
+                    placeholder="Contraseña"
                     required
+                    maxLength={25}
                     value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={handlePasswordChange}
                   />
+                  {passwordError && <div className="invalid-feedback">El password debe tener al menos 8 caracteres.</div>}
+
                 </div>
 
                 <div className="mb-3 w-100">

@@ -10,10 +10,30 @@ const ClienteIndividual = ({ cliente }) => {
   const [isActivated, setIsActivated] = useState(false);
   const [estado, setEstado] = useState(cliente.estado);
   const [mostrarDetalles, setMostrarDetalles] = useState(false); // Estado para controlar la ventana emergente
+  const [datanegociaciones, setDataNegociaciones] = useState([]);
 
   //Función para eliminar el cliente
   const navegar = useNavigate();
+
   const eliminarCliente = () => {
+    if (tieneNegociacionesActivas()) {
+      swal({
+        title: "No se puede eliminar",
+        text: "El cliente tiene negociaciones activas",
+        icon: "warning",
+        buttons: {
+          accept: {
+            text: "Aceptar",
+            value: true,
+            visible: true,
+            className: "btn-danger",
+            closeModal: true
+          }
+        }
+      });
+      return;
+    }
+
     swal({
       title: "Eliminar",
       text: "¿Estás seguro de eliminar el registro?",
@@ -62,6 +82,22 @@ const ClienteIndividual = ({ cliente }) => {
     });
   };
 
+
+  useEffect(() => {
+    fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
+      .then(res => res.json())
+      .then(data => {
+        setDataNegociaciones(data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+
+  const tieneNegociacionesActivas = () => {
+    return datanegociaciones.some(negociacion => negociacion.cliente === cliente.nombre && negociacion.estado === 'Activo');
+  };
+
   const toggleDetalles = () => {
     setMostrarDetalles(!mostrarDetalles);
   };
@@ -92,10 +128,29 @@ const ClienteIndividual = ({ cliente }) => {
   }, [estado]);
 
   const toggleActivation = () => {
+    if (isActivated && tieneNegociacionesActivas()) {
+      swal({
+        title: "No se puede desactivar",
+        text: "El cliente tiene negociaciones activas",
+        icon: "warning",
+        buttons: {
+          accept: {
+            text: "Aceptar",
+            value: true,
+            visible: true,
+            className: "btn-danger",
+            closeModal: true
+          }
+        }
+      });
+      return;
+    }
+
     setIsActivated(!isActivated);
 
     const newEstado = estado === 'Activo' ? 'Inactivo' : 'Activo';
     setEstado(newEstado);
+
 
     // Envía la solicitud al servidor para actualizar el estado en la base de datos
     fetch(`http://localhost:4000/api/cliente/actualizar-estado/${_id}`, {

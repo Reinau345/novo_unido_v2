@@ -36,21 +36,21 @@ const ListarNegociaciones = () => {
     function searchData(event) {
         const searchValue = event.target.value;
         setBusqueda(searchValue);
-
+    
         const filteredNegociaciones = datanegociaciones.filter((negociacion) => {
             return (
                 (negociacion.numFactura && negociacion.numFactura.toLowerCase().includes(searchValue.toLowerCase())) ||
-                (negociacion.cliente && negociacion.cliente.toString().includes(searchValue)) ||
+                (negociacion.cliente && negociacion.cliente.toString().toLowerCase().includes(searchValue.toLowerCase())) ||
                 (negociacion.numCuotas && negociacion.numCuotas.toString().includes(searchValue)) ||
                 (negociacion.fechaGracia && negociacion.fechaGracia.includes(searchValue)) ||
                 (negociacion.total && negociacion.total.toString().includes(searchValue))
             );
-        })
-
+        });
+    
         setNegociacionesFiltradas(searchValue ? filteredNegociaciones : datanegociaciones);
         setPaginaActual(1);
     }
-
+    
     const indexOfLastNegociacion = paginaActual * negociacionesPorPagina;
     const indexOfFirstNegociacion = indexOfLastNegociacion - negociacionesPorPagina;
     const negociacionesPaginadas = negociacionesFiltradas.slice(indexOfFirstNegociacion, indexOfLastNegociacion);

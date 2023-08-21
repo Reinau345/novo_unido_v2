@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Modal from 'react-modal';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import { isValid, format, parseISO } from 'date-fns';
 import { FaToggleOn } from 'react-icons/fa';
 
 const NegociacionIndividual = ({ negociacion }) => {
-  const { _id } = negociacion; 
+  const { _id } = negociacion;
   const { id } = useParams();
   // const { auth } = useAuth()
   const [isActivated, setIsActivated] = useState(false);
@@ -16,18 +16,6 @@ const NegociacionIndividual = ({ negociacion }) => {
   const [showPlanPagoModal, setShowPlanPagoModal] = useState(false);
   const [cuotasPagadas, setCuotasPagadas] = useState({});
   const [dataclientes, setDataClientes] = useState([]);
-
-  //Función para traer los datos del cliente y poder enviar la notificación
-  useEffect(() => {
-    fetch('http://localhost:4000/api/cliente/obtenerCliente')
-      .then(res => res.json())
-      .then(data => {
-        setDataClientes(data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }, []);
 
   // Función para marcar una cuota como pagada
   const handleCuotaPagada = (numCuota) => {
@@ -42,16 +30,28 @@ const NegociacionIndividual = ({ negociacion }) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ numCuota: numCuota, pagada: true }) // Aquí pasamos el número de cuota como propiedad en el objeto
+      body: JSON.stringify({ numCuota: numCuota, pagada: true })
     })
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        // Aquí puedes mostrar una notificación o mensaje de éxito si lo deseas
       })
       .catch(error => {
         console.error('Error:', error);
-        // Aquí puedes mostrar una notificación o mensaje de error si lo deseas
+        swal({
+          title: "Error",
+          text: "Ha ocurrido un error al marcar la cuota como pagada.",
+          icon: "error",
+          buttons: {
+            accept: {
+              text: "Aceptar",
+              value: true,
+              visible: true,
+              className: "btn-danger",
+              closeModal: true
+            }
+          }
+        });
       });
   };
 
@@ -74,11 +74,23 @@ const NegociacionIndividual = ({ negociacion }) => {
       .then(res => res.json())
       .then(data => {
         console.log(data);
-        // Aquí puedes mostrar una notificación o mensaje de éxito si lo deseas
       })
       .catch(error => {
         console.error('Error:', error);
-        // Aquí puedes mostrar una notificación o mensaje de error si lo deseas
+        swal({
+          title: "Error",
+          text: "Ha ocurrido un error al marcar la cuota como no pagada.",
+          icon: "error",
+          buttons: {
+            accept: {
+              text: "Aceptar",
+              value: true,
+              visible: true,
+              className: "btn-danger",
+              closeModal: true
+            }
+          }
+        });
       });
   };
 
@@ -160,57 +172,6 @@ const NegociacionIndividual = ({ negociacion }) => {
     },
   };
 
-  //Función para eliminar la negociacion
-  const navegar = useNavigate()
-  function eliminarnegociacion() {
-    swal({
-      title: "Eliminar",
-      text: "¿Estás seguro de eliminar el registro?",
-      icon: "warning",
-      buttons: {
-        cancel: "NO",
-        confirm: "SI"
-      },
-      dangerMode: true
-    }).then(isConfirmed => {
-      if (isConfirmed) {
-        fetch(`http://localhost:4000/api/negociacion/eliminarnegociacion/${_id}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(res => res.json())
-          .then(data => {
-            console.log(data);
-            swal({
-              title: "Negociación eliminada con éxito",
-              icon: "success"
-            }).then(() => {
-              navegar(0);
-            });
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            swal({
-              title: "Error al eliminar la negociación",
-              text: "Ha ocurrido un error al eliminar la negociación.",
-              icon: "error",
-              buttons: {
-                accept: {
-                  text: "Aceptar",
-                  value: true,
-                  visible: true,
-                  className: "btn-danger",
-                  closeModal: true
-                }
-              }
-            });
-          });
-      }
-    });
-  };
-
   if (!negociacion) {
     return <div>No se ha proporcionado una negociación válida</div>;
   }
@@ -273,7 +234,8 @@ const NegociacionIndividual = ({ negociacion }) => {
   let fechaFormateada = '';
   if (isValid(parseISO(negociacion.fechaGracia))) {
     const fechaGracia = new Date(negociacion.fechaGracia);
-    fechaFormateada = format(fechaGracia, 'dd/MM/yyyy');
+    const fechaLocal = new Date(fechaGracia.getTime() + fechaGracia.getTimezoneOffset() * 60000); // Ajuste de zona horaria
+    fechaFormateada = format(fechaLocal, 'dd/MM/yyyy');
   } else {
     fechaFormateada = 'Fecha inválida';
   }
@@ -341,10 +303,6 @@ const NegociacionIndividual = ({ negociacion }) => {
             <i className="fa fa-pencil" title="Editar" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
           </Link>
 
-          {/* <Link onClick={eliminarnegociacion}>
-            <i className="fa fa-trash" title="Eliminar" style={{ marginRight: 10, color: '#dc3545', fontSize: 22 }} />
-          </Link> */}
-
           <Link onClick={toggleActivation}>
             <FaToggleOn
               title="Activar-Desactivar"
@@ -382,12 +340,14 @@ const NegociacionIndividual = ({ negociacion }) => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: negociacion.tipoMaquina.join('<br />') }}></td>
-                  <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: negociacion.cantidad.join('<br />') }}></td>
-                  <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioBase) ? negociacion.precioBase.map((precio) => `$ ${parseFloat(precio).toLocaleString('es-CO')}`).join('<br />') : '' }}></td>
-                  <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioVenta) ? negociacion.precioVenta.map((precio) => `$ ${parseFloat(precio).toLocaleString('es-CO')}`).join('<br />') : '' }}></td>
-                </tr>
+                {negociacion.tipoMaquina.map((producto, index) => (
+                  <tr key={index}>
+                    <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: producto }}></td>
+                    <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: negociacion.cantidad[index] }}></td>
+                    <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioBase) ? `$ ${parseFloat(negociacion.precioBase[index]).toLocaleString('es-CO')}` : '' }}></td>
+                    <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioVenta) ? `$ ${parseFloat(negociacion.precioVenta[index]).toLocaleString('es-CO')}` : '' }}></td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -455,12 +415,18 @@ const NegociacionIndividual = ({ negociacion }) => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: negociacion.tipoMaquina.join('<br />') }}></td>
-                <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: negociacion.cantidad.join('<br />') }}></td>
-                <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioBase) ? negociacion.precioBase.map((precio) => `$ ${parseFloat(precio).toLocaleString('es-CO')}`).join('<br />') : '' }}></td>
-                <td style={{ color: '#032770' }} dangerouslySetInnerHTML={{ __html: Array.isArray(negociacion.precioVenta) ? negociacion.precioVenta.map((precio) => `$ ${parseFloat(precio).toLocaleString('es-CO')}`).join('<br />') : '' }}></td>
-              </tr>
+              {negociacion.tipoMaquina.map((producto, index) => (
+                <tr key={index}>
+                  <td style={{ color: '#032770' }}>{producto}</td>
+                  <td style={{ color: '#032770' }}>{negociacion.cantidad[index]}</td>
+                  <td style={{ color: '#032770' }}>
+                    $ {parseFloat(negociacion.precioBase[index]).toLocaleString('es-CO')}
+                  </td>
+                  <td style={{ color: '#032770' }}>
+                    $ {parseFloat(negociacion.precioVenta[index]).toLocaleString('es-CO')}
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </Modal>

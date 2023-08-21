@@ -29,8 +29,8 @@ const CrearNegociacion = () => {
     const [anticipoError, setAnticipoError] = useState(false);
     const [interesesError, setInteresesError] = useState(false);
     const [totalError, setTotalError] = useState(false);
-    const [cantidadError, setCantidadError] = useState(false);
-    const [precioVentaError, setPrecioVentaError] = useState(false);
+    const [cantidadError, setCantidadError] = useState([]);
+    const [precioVentaError, setPrecioVentaError] = useState([]);
 
     const handleCancelar = () => {
         navigate(-1); // Regresa a la ubicación anterior
@@ -59,7 +59,7 @@ const CrearNegociacion = () => {
             });
     }, []);
 
-    function validarNumericos(event) {
+    function validarNumericos(event, setErrorState, longitudMinima) {
         const charCode = event.keyCode || event.which;
         const char = String.fromCharCode(charCode);
 
@@ -68,14 +68,25 @@ const CrearNegociacion = () => {
             return;
         }
 
-        // Verificar si el carácter no es un número del 0 al 9 ni el punto decimal
-        if (/[\D/.-]/.test(char)) {
+        // Verificar si el carácter no es un número del 0 al 9
+        if (/\D/.test(char)) {
             event.preventDefault();
+            return;
         }
 
-        // Verificar que no haya más de un punto decimal
-        if (char === '.' && event.target.value.includes('.')) {
-            event.preventDefault();
+        const inputText = event.target.value;
+
+        // Remover caracteres no numéricos, excepto el punto decimal
+        const sanitizedText = inputText.replace(/[^\d.]/g, '');
+
+        // Actualizar el valor del input con el texto sanitizado
+        event.target.value = sanitizedText;
+
+        // Validar longitud mínima
+        if (sanitizedText.length < longitudMinima) {
+            setErrorState(true);
+        } else {
+            setErrorState(false);
         }
     }
 
@@ -291,11 +302,32 @@ const CrearNegociacion = () => {
                                     <label className="form-label fw-bold">Anticipo</label>
                                     <input
                                         type="text"
-                                        className="form-control"
+                                        className={`form-control ${anticipoError ? 'is-invalid' : ''}`}
                                         placeholder="Porcentaje anticipo"
-                                        required value={anticipo}
-                                        onChange={(e) => { setAnticipo(e.target.value) }}
+                                        required
+                                        maxLength={4}
+                                        value={anticipo}
+                                        onChange={(e) => {
+                                            const inputValue = e.target.value;
+                                            setAnticipo(inputValue);
+                                            setAnticipoError(inputValue < 0.01 || inputValue > 1);
+                                        }}
+                                        onKeyDown={(e) => {
+                                            // Obtener el carácter presionado
+                                            const charTyped = e.key;
+
+                                            // Permitir solo números y un punto decimal
+                                            if (
+                                                (charTyped < '0' || charTyped > '9') && // Números
+                                                charTyped !== '.' && // Punto decimal
+                                                charTyped !== 'Backspace' && // Tecla de retroceso (backspace)
+                                                charTyped !== 'Tab' // Tecla de tabulación (tab)
+                                            ) {
+                                                e.preventDefault();
+                                            }
+                                        }}
                                     />
+                                    {anticipoError && <div className="invalid-feedback">El anticipo debe estar entre 0.01 y 1.</div>}
                                 </div>
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Fecha Fin Gracia</label>
@@ -315,7 +347,7 @@ const CrearNegociacion = () => {
                                             )}>
                                         <option value="">Seleccionar producto</option>
                                         {dataproductos.map((producto) => (
-                                            <option key={producto.codigo} value={producto.nombre}>
+                                            <option key={producto.id} value={producto.nombre}>
                                                 {producto.nombre}
                                             </option>
                                         ))}
@@ -324,21 +356,29 @@ const CrearNegociacion = () => {
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Precio venta</label>
                                     {selectedProductos.length > 0 ? (
-                                        selectedProductos.map((producto, index) => (
-                                            <input
-                                                key={index}
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="$"
-                                                required
-                                                onKeyDown={validarNumericos}
-                                                value={precioVenta[index] || ''}
-                                                onChange={(e) => {
-                                                    const nuevosValores = [...precioVenta];
-                                                    nuevosValores[index] = e.target.value;
-                                                    setPrecioVenta(nuevosValores);
-                                                }}
-                                            />
+                                        selectedProductos.map((index) => (
+                                            <div key={index}>
+                                                <input
+                                                    type="text"
+                                                    className={`form-control ${precioVentaError[index] ? 'is-invalid' : ''}`}
+                                                    placeholder="$"
+                                                    required
+                                                    maxLength={9}
+                                                    value={precioVenta[index] || ''}
+                                                    onChange={(e) => {
+
+                                                        const nuevosValores = [...precioVenta];
+                                                        const inputValue = parseFloat(e.target.value);
+                                                        nuevosValores[index] = isNaN(inputValue) ? '' : inputValue; // Evitar NaN
+                                                        setPrecioVenta(nuevosValores);
+
+                                                        const nuevosErrores = [...precioVentaError];
+                                                        nuevosErrores[index] = e.target.value.length < 8;
+                                                        setPrecioVentaError(nuevosErrores);
+                                                    }}
+                                                />
+                                                {precioVentaError[index] && <div className="invalid-feedback">El precio de venta debe tener al menos 8 caracteres.</div>}
+                                            </div>
                                         ))
                                     ) : (
                                         <input
@@ -354,34 +394,108 @@ const CrearNegociacion = () => {
                                 <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Factura</label>
-                                        <input type="text"
+                                        <input
+                                            type="text"
                                             className={`form-control ${numFacturaError ? 'is-invalid' : ''}`}
                                             placeholder="Número de Factura"
                                             required
                                             maxLength={6}
-                                            onInput={(e) => setNumFacturaError(e.target.value.length < 6)}
                                             value={numFactura}
-                                            onChange={(e) => { setNumFactura(e.target.value) }} />
+                                            onChange={(e) => {
+                                                const inputText = e.target.value;
+                                                const sanitizedText = inputText.replace(/[^a-zA-Z0-9]/g, '');
+                                                setNumFactura(sanitizedText);
+
+                                                if (sanitizedText.length < 6) {
+                                                    setNumFacturaError(true);
+                                                } else {
+                                                    setNumFacturaError(false);
+                                                }
+                                            }}
+                                        />
                                         {numFacturaError && <div className="invalid-feedback">El número de factura debe tener al menos 6 caracteres.</div>}
                                     </div>
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Tasa</label>
-                                        <input type="text" className="form-control" placeholder="Porcentaje tasa" required value={tasa} onChange={(e) => { setTasa(e.target.value) }} />
+                                        <input
+                                            type="text" // Cambiar de "number" a "text"
+                                            className={`form-control ${tasaError ? 'is-invalid' : ''}`}
+                                            placeholder="Porcentaje tasa"
+                                            required
+                                            maxLength={4}
+                                            value={tasa}
+                                            onChange={(e) => {
+                                                const inputValue = e.target.value;
+                                                setTasa(inputValue);
+                                                setTasaError(inputValue < 0.01 || inputValue > 1);
+                                            }}
+                                            onKeyDown={(e) => {
+                                                // Obtener el carácter presionado
+                                                const charTyped = e.key;
+    
+                                                // Permitir solo números y un punto decimal
+                                                if (
+                                                    (charTyped < '0' || charTyped > '9') && // Números
+                                                    charTyped !== '.' && // Punto decimal
+                                                    charTyped !== 'Backspace' && // Tecla de retroceso (backspace)
+                                                    charTyped !== 'Tab' // Tecla de tabulación (tab)
+                                                ) {
+                                                    e.preventDefault();
+                                                }
+                                            }}
+                                        />
+                                        {tasaError && <div className="invalid-feedback">La tasa debe estar entre 0.01 y 1.</div>}
                                     </div>
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Interes</label>
-                                        <input type="text" className="form-control" placeholder="Porcentaje interes" required value={interes} onChange={(e) => { setInteres(e.target.value) }} />
-                                    </div>
+                                        <input
+                                            type="text"
+                                            className={`form-control ${interesesError ? 'is-invalid' : ''}`}
+                                            placeholder="Porcentaje interes"
+                                            required
+                                            maxLength={4}
+                                            value={interes}
+                                            onChange={(e) => {
+                                                const inputValue = e.target.value;
+                                                setInteres(inputValue);
+                                                setInteresesError(inputValue < 0.01 || inputValue > 1);
+                                            }}
+                                            onKeyDown={(e) => {
+                                                // Obtener el carácter presionado
+                                                const charTyped = e.key;
+    
+                                                // Permitir solo números y un punto decimal
+                                                if (
+                                                    (charTyped < '0' || charTyped > '9') && // Números
+                                                    charTyped !== '.' && // Punto decimal
+                                                    charTyped !== 'Backspace' && // Tecla de retroceso (backspace)
+                                                    charTyped !== 'Tab' // Tecla de tabulación (tab)
+                                                ) {
+                                                    e.preventDefault();
+                                                }
+                                            }}
+                                        />
+                                        {interesesError && <div className="invalid-feedback">El interés debe estar entre 0.01 y 1.</div>}                                    
+                                        </div>
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Total</label>
-                                        <input type="text"
+                                        <input
+                                            type="text"
                                             className={`form-control ${totalError ? 'is-invalid' : ''}`}
                                             placeholder="$"
                                             required
                                             maxLength={9}
-                                            onInput={(e) => setTotalError(e.target.value.length < 8)}
+                                            onInput={(e) => validarNumericos(e, setTotalError, 8)}
                                             value={total}
-                                            onChange={(e) => { setTotal(e.target.value) }} />
+                                            onChange={(e) => {
+                                                setTotal(e.target.value);
+                                                if (e.target.value.length < 8) {
+                                                    setTotalError(true);
+                                                } else {
+                                                    setTotalError(false);
+                                                }
+                                            }}
+                                        />
                                         {totalError && <div className="invalid-feedback">El total debe tener al menos 8 caracteres.</div>}
                                     </div>
 
@@ -390,27 +504,38 @@ const CrearNegociacion = () => {
                                         <input type="text" className="form-control" }} /> */}
                                         {/* <label className="form-label fw-bold"></label>
                                         <input type="text" className="form-control" }} /> */}
-
                                     </div>
+                                    
                                     <div className="mb-3 w-100">
                                         <label className="form-label fw-bold">Cantidad</label>
                                         {selectedProductos.length > 0 ? (
-                                            selectedProductos.map((index) => (
-                                                <input
-                                                    key={index}
-                                                    type="text"
-                                                    className={`form-control ${cantidadError ? 'is-invalid' : ''}`}
-                                                    placeholder="Cantidad"
-                                                    required
-                                                    maxLength={2}
-                                                    onKeyDown={(e) => validarNumericos(e, setCantidadError, 1)}
-                                                    value={cantidad[index] || ''}
-                                                    onChange={(e) => {
-                                                        const nuevosValores = [...cantidad];
-                                                        nuevosValores[index] = e.target.value;
-                                                        setCantidad(nuevosValores);
-                                                    }}
-                                                />
+                                            selectedProductos.map((producto, index) => (
+                                                <div key={index}>
+                                                    <input
+                                                        type="text"
+                                                        className={`form-control ${cantidadError[index] ? 'is-invalid' : ''}`}
+                                                        placeholder="Cantidad"
+                                                        required
+                                                        maxLength={2}
+                                                        onKeyDown={(e) => validarNumericos(e, (isValid) => {
+                                                            const nuevosErrores = [...cantidadError];
+                                                            nuevosErrores[index] = !isValid || e.target.value.length === 0;
+                                                            setCantidadError(nuevosErrores);
+                                                        }, 1)}
+                                                        value={cantidad[index] || ''}
+                                                        onChange={(e) => {
+                                                            const nuevosValores = [...cantidad];
+                                                            nuevosValores[index] = e.target.value;
+                                                            setCantidad(nuevosValores);
+
+                                                            // Aquí aplicamos la validación para actualizar el estado de error
+                                                            const nuevosErrores = [...cantidadError];
+                                                            nuevosErrores[index] = e.target.value.length === 0 || parseFloat(e.target.value) <= 0;
+                                                            setCantidadError(nuevosErrores);
+                                                        }}
+                                                    />
+                                                    {cantidadError[index] && <div className="invalid-feedback">La cantidad debe ser mayor a 0.</div>}
+                                                </div>
                                             ))
                                         ) : (
                                             <input
@@ -446,8 +571,8 @@ const CrearNegociacion = () => {
                                         <tr key={producto.id || index}>
                                             <td>{producto.tipoMaquina}</td>
                                             <td>{producto.cantidad}</td>
-                                            <td>{producto.precioBase}</td>
-                                            <td>{producto.precioVenta}</td>
+                                            <td>$ {parseFloat(producto.precioBase).toLocaleString('es-CO')}</td>
+                                            <td>$ {parseFloat(producto.precioVenta).toLocaleString('es-CO')}</td>
                                             <td style={{ textAlign: 'center' }}>
                                                 <Link>
                                                     <FaTimes size={35} style={{ color: 'black' }} onClick={() => eliminarProducto(index)} />
