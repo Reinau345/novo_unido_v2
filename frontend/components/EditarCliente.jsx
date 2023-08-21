@@ -29,6 +29,7 @@ const EditarCliente = () => {
   const [nombreCodeudorError, setNombreCodeudorError] = useState(false);
   const [apellidoCodeudorError, setApellidoCodeudorError] = useState(false);
   const [cedulaError, setCedulaError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
   const [telefonoError, setTelefonoError] = useState(false);
   const [cedulaCodeudorError, setCedulaCodeudorError] = useState(false);
   const [telefonoCodeudorError, setTelefonoCodeudorError] = useState(false);
@@ -85,6 +86,20 @@ const EditarCliente = () => {
       setErrorState(false);
     }
   }
+
+  const validateEmail = (email) => {
+    // Expresión regular para validar el formato del correo
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    const isValidEmail = validateEmail(newEmail);
+    setEmailError(!isValidEmail);
+  };
 
   useEffect(() => {
     const url = `cliente/obtenerdatacliente/${id}`
@@ -153,6 +168,7 @@ const EditarCliente = () => {
       nombreCodeudorError ||
       apellidoCodeudorError ||
       cedulaError ||
+      emailError ||
       telefonoError ||
       cedulaCodeudorError ||
       telefonoCodeudorError
@@ -292,8 +308,17 @@ const EditarCliente = () => {
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Email</label>
-                  <input type="text" className="form-control" placeholder="Email" required maxLength={60}
-                    value={email} onChange={(e) => { setEmail(e.target.value) }} />
+                  <input
+                    type="email"
+                    className={`form-control ${emailError ? 'is-invalid' : ''}`}
+                    id="email"
+                    aria-describedby="emailHelp"
+                    placeholder="Email"
+                    required
+                    value={email}
+                    onChange={handleEmailChange}
+                  />
+                  {emailError && <div className="invalid-feedback">Ingrese un correo válido.</div>}
                 </div>
 
                 <div className="mb-3 w-100">
@@ -347,7 +372,7 @@ const EditarCliente = () => {
                   <input
                     type="text"
                     className={`form-control ${cedulaError ? 'is-invalid' : ''}`}
-                    placeholder="Cédula"
+                    placeholder="Documento"
                     required
                     maxLength={11}
                     onKeyDown={(e) => validarNumericos(e, setCedulaError, 6)}
@@ -402,7 +427,7 @@ const EditarCliente = () => {
                     placeholder="Grupo"
                     required
                     maxLength={30}
-                    onInput={(e) => setGrupoError(e.target.value.length < 3)}
+                    onInput={(e) => validarTexto(e, setGrupoError, 3)} 
                     value={grupo}
                     onChange={(e) => {
                       setGrupo(e.target.value);
@@ -416,7 +441,7 @@ const EditarCliente = () => {
                   <input
                     type="text"
                     className={`form-control ${cedulaCodeudorError ? 'is-invalid' : ''}`}
-                    placeholder="Cédula Codeudor"
+                    placeholder="Documento Codeudor"
                     required
                     maxLength={11}
                     onKeyDown={(e) => validarNumericos(e, setCedulaCodeudorError, 6)}

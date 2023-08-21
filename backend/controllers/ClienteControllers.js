@@ -5,23 +5,23 @@ const registrarCliente = async (req, res) => {
 
     const { cedula } = req.body;
 
-    const existeCedula = await Cliente.findOne({cedula})
+    const existeCedula = await Cliente.findOne({ cedula })
 
 
-    if(existeCedula){
+    if (existeCedula) {
         const error = new Error("Cedula ya registrada..")
-        return res.status(400).json({msg: error.message})
+        return res.status(400).json({ msg: error.message })
     }
 
     try {
         const nuevoCliente = new Cliente(req.body);
-     
+
 
         await nuevoCliente.save();
         res.json({ message: 'Cliente agregado correctamente' });
     } catch (error) {
         console.error(error);
-       return res.status(500).json({ error: 'Error al agregar el cliente' });
+        return res.status(500).json({ error: 'Error al agregar el cliente' });
     }
 };
 

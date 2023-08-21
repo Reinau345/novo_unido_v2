@@ -11,7 +11,7 @@ const EditarPerfil = () => {
     const [alerta, setAlerta] = useState({})
 
     const handleCancelar = () => {
-        navigate('/admin/listar-usuarios'); // Regresa a la ubicación anterior
+        navigate('/admin'); // Regresa a la ubicación anterior
     };
 
     useEffect(() => {

@@ -12,6 +12,11 @@ const EditarUsuarios = () => {
   const [email, setEmail] = useState('')
   const [nombreError, setNombreError] = useState(false);
   const [apellidoError, setApellidoError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+
+  const handleCancelar = () => {
+    navigate(-1); // Regresa a la ubicación anterior
+  };
 
   function validarTexto(event, setErrorState, longitudMinima) {
     const inputText = event.target.value;
@@ -29,6 +34,20 @@ const EditarUsuarios = () => {
       setErrorState(false);
     }
   }
+
+  const validateEmail = (email) => {
+    // Expresión regular para validar el formato del correo
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
+  const handleEmailChange = (e) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    const isValidEmail = validateEmail(newEmail);
+    setEmailError(!isValidEmail);
+  };
 
   useEffect(() => {
     const url = `usuarios/obtener-usuario/${id}`;
@@ -157,14 +176,17 @@ const EditarUsuarios = () => {
 
                 <div className="mb-3 w-100">
                   <label className="form-label fw-bold">Email</label>
-                  <input type="email"
-                    className="form-control"
-                    id='email'
+                  <input
+                    type="email"
+                    className={`form-control ${emailError ? 'is-invalid' : ''}`}
+                    id="email"
+                    aria-describedby="emailHelp"
                     placeholder="Email"
                     required
                     value={email}
-                    onChange={(e) => { setEmail(e.target.value) }}
+                    onChange={handleEmailChange}
                   />
+                  {emailError && <div className="invalid-feedback">Ingrese un correo válido.</div>}
                 </div>
 
               </div>
@@ -196,7 +218,7 @@ const EditarUsuarios = () => {
               </div>
               <div className="d-flex justify-content-center w-100">
                 <div className="div_botones me-sm-0 w-100 d-flex justify-content-center">
-                  <button type="button" className="btn btn-dark btn-styles" >Cancelar</button>
+                  <button type="button" className="btn btn-dark btn-styles" onClick={handleCancelar}>Cancelar</button>
                 </div>
               </div>
             </div>

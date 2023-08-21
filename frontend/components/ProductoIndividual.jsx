@@ -1,72 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import { FaTimes } from 'react-icons/fa';
 import { FaToggleOn } from 'react-icons/fa';
 
 const ProductoIndividual = ({ producto }) => {
-  const { _id } = producto; // Obtén el _id del objeto cliente
+  const { _id } = producto; // Obtener el _id del objeto cliente
   const { id } = useParams();
   const [isActivated, setIsActivated] = useState(false);
   const [estado, setEstado] = useState(producto.estado);
-
-  const navegar = useNavigate()
-
-  function eliminarproducto() {
-    swal({
-      title: "Eliminar",
-      text: "¿Estás seguro de eliminar el registro?",
-      icon: "warning",
-      buttons: {
-        cancel: "NO",
-        confirm: "SI"
-      },
-      dangerMode: true
-    }).then(isConfirmed => {
-      if (isConfirmed) {
-        const url = `producto/eliminarproducto/${_id}`
-        fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {  // Corrección en la ruta
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
-          .then(res => res.json())
-          .then(data => {
-            console.log(data);
-            swal({
-              title: "Producto eliminado con éxito",
-              icon: "success"
-            }).then(() => {
-              navegar(0);
-            });
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            swal({
-              title: "Error al eliminar el producto",
-              text: "Ha ocurrido un error al eliminar el producto.",
-              icon: "error",
-              buttons: {
-                accept: {
-                  text: "Aceptar",
-                  value: true,
-                  visible: true,
-                  className: "btn-danger",
-                  closeModal: true
-                }
-              }
-            });
-          });
-      }
-    });
-  };
-
   const [mostrarDetalles, setMostrarDetalles] = useState(false); // Estado para controlar la ventana emergente
+  const [datanegociaciones, setDataNegociaciones] = useState([]);
 
   const toggleDetalles = () => {
     setMostrarDetalles(!mostrarDetalles);
   };
+
+  useEffect(() => {
+    fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
+      .then(res => res.json())
+      .then(data => {
+        setDataNegociaciones(data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
 
   const customStyles = {
     content: {
@@ -89,11 +48,35 @@ const ProductoIndividual = ({ producto }) => {
     return <div>No se ha proporcionado un producto válido</div>;
   }
 
+const tieneNegociacionesActivas = () => {
+  return datanegociaciones.some((negociacion) => {
+    return negociacion.estado === 'Activo' && negociacion.tipoMaquina.includes(producto.nombre);
+  });
+};
+
   useEffect(() => {
     setIsActivated(estado === 'Activo');
   }, [estado]);
 
   const toggleActivation = () => {
+    if (isActivated && tieneNegociacionesActivas()) {
+      swal({
+        title: "No se puede desactivar",
+        text: "El producto tiene negociaciones activas",
+        icon: "warning",
+        buttons: {
+          accept: {
+            text: "Aceptar",
+            value: true,
+            visible: true,
+            className: "btn-danger",
+            closeModal: true
+          }
+        }
+      });
+      return;
+    }
+
     setIsActivated(!isActivated);
 
     const newEstado = estado === 'Activo' ? 'Inactivo' : 'Activo';
@@ -123,7 +106,7 @@ const ProductoIndividual = ({ producto }) => {
               closeModal: true
             }
           }
-        })
+        });
       })
       .catch(error => {
         console.error('Error:', error);
@@ -156,9 +139,6 @@ const ProductoIndividual = ({ producto }) => {
         <Link to={`/admin/editarproducto/${producto._id}`}>
           <i className="fa fa-pencil" title="Editar" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
         </Link>
-        {/* <Link onClick={eliminarproducto}>
-          <i className="fa fa-trash" title="Eliminar" style={{ color: '#dc3545', fontSize: 22 }} />
-        </Link> */}
         <Link onClick={toggleActivation}>
           <FaToggleOn
             title="Activar-Desactivar"

@@ -3,6 +3,8 @@ import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import MenuLateral from './MenuLateral';
+import Encabezado from './Encabezado';
+import Pie from './Pie';
 
 const EditarNegociacion = () => {
     const navigate = useNavigate();
@@ -23,7 +25,13 @@ const EditarNegociacion = () => {
     const [total, setTotal] = useState('');
     const [productosSeleccionados, setProductosSeleccionados] = useState([]);
     const [precioBase, setPrecioBase] = useState('');
-
+    const [numFacturaError, setNumFacturaError] = useState(false);
+    const [tasaError, setTasaError] = useState(false);
+    const [anticipoError, setAnticipoError] = useState(false);
+    const [interesesError, setInteresesError] = useState(false);
+    const [totalError, setTotalError] = useState(false);
+    const [cantidadError, setCantidadError] = useState(false);
+    const [precioVentaError, setPrecioVentaError] = useState(false);
     const { auth } = useAuth()
     const [datanegociaciones, setdatanegociacion] = useState([]);
 
@@ -108,48 +116,6 @@ const EditarNegociacion = () => {
             });
     }, []);
 
-        // Define una función para actualizar los valores editados en la tabla
-        const handleProductoEdit = (index, field, value) => {
-            const productosActualizados = [...selectedProductos];
-            productosActualizados[index][field] = value;
-            setSelectedProductos(productosActualizados);
-        };
-
-    // const agregarProducto = () => {
-    //     if (selectedProductos.length === 0 || cantidad === '' || precioVenta === '') {
-    //         console.log('Debe seleccionar un producto, ingresar una cantidad y un precio de venta');
-    //         return;
-    //     }
-
-    //     const obtenerPrecioBase = (producto) => {
-    //         const productoEncontrado = dataproductos.find((p) => p.nombre === producto);
-    //         return productoEncontrado ? productoEncontrado.precioBase : '';
-
-    //     };
-
-    //     const nuevoProducto = {
-    //         tipoMaquina: selectedProductos,
-    //         cantidad: Number(cantidad),
-    //         precioBase: obtenerPrecioBase(selectedProductos),
-    //         precioVenta: precioVenta, // Utilizar el valor del estado precioVenta
-    //     };
-
-    //     setProductosSeleccionados((prevProductos) => [...prevProductos, nuevoProducto]);
-    // };
-
-    //Eliminar los productos del listado de comprados
-    // function eliminarProducto(index) {
-    //     const productosActualizados = [...productosSeleccionados];
-    //     productosActualizados.splice(index, 1);
-    //     setProductosSeleccionados(productosActualizados);
-    // }
-
-    // const limpiarCampos = () => {
-    //     setSelectedProductos([]);
-    //     setCantidad([]);
-    //     setPrecioVenta([]);
-    // };
-
     function validarNumericos(event) {
         const charCode = event.keyCode || event.which;
         const char = String.fromCharCode(charCode);
@@ -174,27 +140,44 @@ const EditarNegociacion = () => {
     const actualizarNegociacion = async () => {
 
         // Verificar que todos los campos sean llenados
-        // if (
-        //     selectedCliente === '' ||
-        //     numFactura === '' ||
-        //     selectedProductos === '' ||
-        //     cantidad === '' ||
-        //     precioVenta === '' ||
-        //     numCuotas === '' ||
-        //     tasa === '' ||
-        //     anticipo === '' ||
-        //     interes === '' ||
-        //     fechaGracia === '' ||
-        //     total === '' ||
-        //     productosSeleccionados === ''
-        // ) {
-        //     swal({
-        //         title: "Campos vacíos",
-        //         text: "Todos los campos son obligatorios",
-        //         icon: "warning",
-        //         button: "Aceptar"
-        //     })
-        // }
+        if (
+            selectedCliente === '' ||
+            numFactura === '' ||
+            numCuotas === '' ||
+            cantidad === '' ||
+            precioVenta === '' ||
+            tasa === '' ||
+            anticipo === '' ||
+            interes === '' ||
+            fechaGracia === '' ||
+            total === ''
+        ) {
+            swal({
+                title: "1 Campo vacíos",
+                text: "Todos los campos son obligatorios",
+                icon: "warning",
+                button: "Aceptar"
+            });
+            return
+        }
+
+        if (
+            numFacturaError ||
+            anticipoError ||
+            tasaError ||
+            interesesError ||
+            totalError ||
+            cantidadError ||
+            precioVentaError
+        ) {
+            swal({
+                title: "Longitudes incorrectas",
+                text: "Verifica los campos marcados en rojo",
+                icon: "error",
+                button: "Aceptar"
+            });
+            return;
+        }
 
         const negociacionActualizada = {
             cliente: selectedCliente,
@@ -267,6 +250,8 @@ const EditarNegociacion = () => {
     return (
         <>
             <section className="d-flex">
+
+                <Encabezado></Encabezado>
                 <MenuLateral></MenuLateral>
 
                 <main className="d-flex flex-column  border border-primary m-3 rounded">
@@ -297,98 +282,148 @@ const EditarNegociacion = () => {
                                 </div>
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Anticipo</label>
-                                    <input type="number" className="form-control" id="anticipo" aria-describedby="emailHelp" placeholder="anticipo" required value={anticipo} onChange={(e) => { setAnticipo(e.target.value) }} />
+                                    <input
+                                        type="text"
+                                        className={`form-control ${anticipoError ? 'is-invalid' : ''}`}
+                                        placeholder="Porcentaje anticipo"
+                                        required
+                                        maxLength={4}
+                                        value={anticipo}
+                                        onChange={(e) => {
+                                            const inputValue = e.target.value;
+                                            setAnticipo(inputValue);
+                                            setAnticipoError(inputValue < 0.01 || inputValue > 1);
+                                        }}
+                                        onKeyDown={(e) => {
+                                            // Obtener el carácter presionado
+                                            const charTyped = e.key;
+
+                                            // Permitir solo números y un punto decimal
+                                            if (
+                                                (charTyped < '0' || charTyped > '9') && // Números
+                                                charTyped !== '.' && // Punto decimal
+                                                charTyped !== 'Backspace' && // Tecla de retroceso (backspace)
+                                                charTyped !== 'Tab' // Tecla de tabulación (tab)
+                                            ) {
+                                                e.preventDefault();
+                                            }
+                                        }}
+                                    />
+                                    {anticipoError && <div className="invalid-feedback">El anticipo debe estar entre 0.01 y 1.</div>}
                                 </div>
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Fecha Fin Gracia</label>
-                                    <input type="date" className="form-control" placeholder="Fecha de Facturacion" required value={fechaGracia} onChange={(e) => { setFechaGracia(e.target.value) }} />
+                                    <input type="date" className="form-control" placeholder="Fecha Facturación" required value={fechaGracia} onChange={(e) => { setFechaGracia(e.target.value) }} />
                                 </div>
-                                {/* <h2>Agregar Nuevos Productos</h2>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Producto</label>
-                                    <select
-                                        id="producto"
-                                        className="form-select"
-                                        required
-                                        value={selectedProductos} // Utiliza el valor seleccionado directamente
-                                        onChange={(e) => setSelectedProductos(e.target.value)}>
-                                        <option value="">Seleccionar producto</option>
-                                        {dataproductos.map((producto) => (
-                                            <option key={producto.codigo} value={producto.nombre}>
-                                                {producto.nombre}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Precio venta</label>
-                                    {selectedProductos.length > 0 ? (
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Precio venta"
-                                            required
-                                            onChange={(e) => setPrecioVenta(e.target.value)}
-                                            onKeyDown={validarNumericos}
-                                        />
-                                    ) : (
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Precio venta"
-                                            disabled
-                                        />
-                                    )}
-                                </div> */}
                             </div>
                             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0 w-100">
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Factura</label>
-                                    <input type="text" className="form-control" placeholder="Número de la Factura" required value={numFactura} onChange={(e) => { setNumFactura(e.target.value) }} />
+                                    <input
+                                        type="text"
+                                        className={`form-control ${numFacturaError ? 'is-invalid' : ''}`}
+                                        placeholder="Número de Factura"
+                                        required
+                                        maxLength={6}
+                                        value={numFactura}
+                                        onChange={(e) => {
+                                            const inputText = e.target.value;
+                                            const sanitizedText = inputText.replace(/[^a-zA-Z0-9]/g, '');
+                                            setNumFactura(sanitizedText);
+
+                                            if (sanitizedText.length < 6) {
+                                                setNumFacturaError(true);
+                                            } else {
+                                                setNumFacturaError(false);
+                                            }
+                                        }}
+                                    />
+                                    {numFacturaError && <div className="invalid-feedback">El número de factura debe tener al menos 6 caracteres.</div>}
                                 </div>
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Tasa</label>
-                                    <input type="text" className="form-control" placeholder="Porcentaje tasa" required value={tasa} onChange={(e) => { setTasa(e.target.value) }} />
+                                    <input
+                                        type="text"
+                                        className={`form-control ${tasaError ? 'is-invalid' : ''}`}
+                                        placeholder="Porcentaje tasa"
+                                        required
+                                        maxLength={4}
+                                        value={tasa}
+                                        onChange={(e) => {
+                                            const inputValue = e.target.value;
+                                            setTasa(inputValue);
+                                            setTasaError(inputValue < 0.01 || inputValue > 1);
+                                        }}
+                                        onKeyDown={(e) => {
+                                            // Obtener el carácter presionado
+                                            const charTyped = e.key;
+
+                                            // Permitir solo números y un punto decimal
+                                            if (
+                                                (charTyped < '0' || charTyped > '9') && // Números
+                                                charTyped !== '.' && // Punto decimal
+                                                charTyped !== 'Backspace' && // Tecla de retroceso (backspace)
+                                                charTyped !== 'Tab' // Tecla de tabulación (tab)
+                                            ) {
+                                                e.preventDefault();
+                                            }
+                                        }}
+                                    />
+                                    {tasaError && <div className="invalid-feedback">La tasa debe estar entre 0.01 y 1.</div>}
                                 </div>
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Interes</label>
-                                    <input type="number" className="form-control" placeholder="Interes" required value={interes} onChange={(e) => { setInteres(e.target.value) }} />
+                                    <input
+                                        type="text"
+                                        className={`form-control ${interesesError ? 'is-invalid' : ''}`}
+                                        placeholder="Porcentaje interes"
+                                        required
+                                        maxLength={4}
+                                        value={interes}
+                                        onChange={(e) => {
+                                            const inputValue = parseFloat(e.target.value);
+                                            setInteres(inputValue);
+                                            setInteresesError(inputValue < 0.01 || inputValue > 1);
+                                        }}
+                                        onKeyDown={(e) => {
+                                            // Obtener el carácter presionado
+                                            const charTyped = e.key;
+
+                                            // Permitir solo números y un punto decimal
+                                            if (
+                                                (charTyped < '0' || charTyped > '9') && // Números
+                                                charTyped !== '.' && // Punto decimal
+                                                charTyped !== 'Backspace' && // Tecla de retroceso (backspace)
+                                                charTyped !== 'Tab' // Tecla de tabulación (tab)
+                                            ) {
+                                                e.preventDefault();
+                                            }
+                                        }}
+                                    />
+                                    {interesesError && <div className="invalid-feedback">El interés debe estar entre 0.01 y 1.</div>}
                                 </div>
                                 <div className="mb-3 w-100">
                                     <label className="form-label fw-bold">Total</label>
-                                    <input type="text" className="form-control" placeholder="Total" required value={total} onChange={(e) => { setTotal(e.target.value) }} />
+                                    <input
+                                        type="text"
+                                        className={`form-control ${totalError ? 'is-invalid' : ''}`}
+                                        placeholder="$"
+                                        required
+                                        maxLength={9}
+                                        onInput={(e) => validarNumericos(e, setTotalError, 8)}
+                                        value={total}
+                                        onChange={(e) => {
+                                            setTotal(e.target.value);
+                                            if (e.target.value.length < 8) {
+                                                setTotalError(true);
+                                            } else {
+                                                setTotalError(false);
+                                            }
+                                        }}
+                                    />
+                                    {totalError && <div className="invalid-feedback">El total debe tener al menos 8 caracteres.</div>}
                                 </div>
                                 <br />
-                                <div className="mb-3 w-100">
-                                    {/* <label className="form-label fw-bold"></label>
-                                        <input type="text" className="form-control" }} /> */}
-                                    {/* <label className="form-label fw-bold"></label>
-                                        <input type="text" className="form-control"/> */}
-                                </div>
-                                {/* <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Cantidad</label>
-                                    {selectedProductos.length > 0 ? (
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Cantidad"
-                                            required
-                                            onChange={(e) => { setCantidad(e.target.value) }}
-                                            onKeyDown={validarNumericos}
-                                        />
-                                    ) : (
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Cantidad"
-                                            disabled
-                                        />
-                                    )}
-                                </div>
-                                <div>
-                                    <button type="button" className="btn btn-dark " id="producto" required value={selectedProductos} onChange={e => setSelectedProductos(e.target.value)} onClick={agregarProducto} style={{ marginRight: 10 }}><i className="fa fa-add" /></button>
-                                    <button type="button" className="btn btn-dark" onClick={limpiarCampos}><i className="fa fa-broom" /></button>
-                                </div> */}
                             </div>
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -402,53 +437,69 @@ const EditarNegociacion = () => {
                                         {/* <th scope="col" style={{ textAlign: 'center' }}>Acciones</th> */}
                                     </tr>
                                 </thead>
-                                {/* <tbody>
+                                <tbody>
                                     {selectedProductos.map((producto, index) => (
                                         <tr key={index}>
                                             <td>{producto}</td>
                                             <td>
-                                                {Array.isArray(cantidad) ? cantidad[index] : cantidad}
+                                                <input
+                                                    type="text"
+                                                    className={`form-control ${cantidadError[index] ? 'is-invalid' : ''}`}
+                                                    placeholder="Cantidad"
+                                                    required
+                                                    maxLength={2}
+                                                    onKeyDown={(e) => validarNumericos(e, (isValid) => {
+                                                        const nuevosErrores = [...cantidadError];
+                                                        nuevosErrores[index] = !isValid || e.target.value.length === 0;
+                                                        setCantidadError(nuevosErrores);
+                                                    }, 1)}
+                                                    value={cantidad[index] || ''}
+                                                    onChange={(e) => {
+                                                        const nuevosValores = [...cantidad];
+                                                        nuevosValores[index] = e.target.value;
+                                                        setCantidad(nuevosValores);
+
+                                                        // Aquí aplicamos la validación para actualizar el estado de error
+                                                        const nuevosErrores = [...cantidadError];
+                                                        nuevosErrores[index] = e.target.value.length === 0 || parseFloat(e.target.value) <= 0;
+                                                        setCantidadError(nuevosErrores);
+                                                    }}
+                                                />
+                                                {cantidadError[index] && <div className="invalid-feedback">La cantidad debe ser mayor a 0.</div>}
                                             </td>
                                             <td>
-                                                {Array.isArray(precioBase) ? precioBase[index] : precioBase}
+                                                {Array.isArray(precioBase) ? (
+                                                    <div>
+                                                        $ {parseFloat(precioBase[index]).toLocaleString('es-CO')}
+                                                    </div>
+                                                ) : (
+                                                    <div>
+                                                        $ {parseFloat(precioBase).toLocaleString('es-CO')}
+                                                    </div>
+                                                )}
                                             </td>
                                             <td>
-                                                {Array.isArray(precioVenta) ? precioVenta[index] : precioVenta}
-                                            </td>
-                                             <td style={{ textAlign: 'center' }}>
-                                                <Link>
-                                                    <FaTimes
-                                                        size={35}
-                                                        style={{ color: 'black' }}
-                                                        onClick={() => eliminarProducto(index)}
+                                                <td>
+                                                    <input
+                                                        type="text"
+                                                        className={`form-control ${precioVentaError[index] ? 'is-invalid' : ''}`}
+                                                        placeholder="$"
+                                                        required
+                                                        maxLength={9}
+                                                        value={Array.isArray(precioVenta) ? precioVenta[index] : precioVenta}
+                                                        onChange={(e) => {
+                                                            const updatedPrecioVenta = [...precioVenta];
+                                                            updatedPrecioVenta[index] = e.target.value;
+                                                            setPrecioVenta(updatedPrecioVenta);
+
+                                                            const nuevosErrores = [...precioVentaError];
+                                                            nuevosErrores[index] = e.target.value.length < 8;
+                                                            setPrecioVentaError(nuevosErrores);
+                                                        }}
                                                     />
-                                                </Link>
-                                            </td> 
-                                        </tr>
-                                    ))}
-                                </tbody> */}
-                                 <tbody>
-                                    {selectedProductos.map((producto, index) => (
-                                        <tr key={index}>
-                                            <td>{producto}</td>
-                                            <td>
-                                                {Array.isArray(cantidad) ? cantidad[index] : cantidad}
+                                                    {precioVentaError[index] && <div className="invalid-feedback">El precio de venta debe tener al menos 8 caracteres.</div>}
+                                                </td>
                                             </td>
-                                            <td>
-                                                {Array.isArray(precioBase) ? precioBase[index] : precioBase}
-                                            </td>
-                                            <td>
-                                                {Array.isArray(precioVenta) ? precioVenta[index] : precioVenta}
-                                            </td>
-                                             {/* <td style={{ textAlign: 'center' }}>
-                                                <Link>
-                                                    <FaTimes
-                                                        size={35}
-                                                        style={{ color: 'black' }}
-                                                        onClick={() => eliminarProducto(index)}
-                                                    />
-                                                </Link>
-                                            </td>  */}
                                         </tr>
                                     ))}
                                 </tbody>
@@ -469,6 +520,9 @@ const EditarNegociacion = () => {
                     </form>
                 </main>
             </section>
+
+            <Pie></Pie>
+
         </>
     );
 };

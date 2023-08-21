@@ -40,7 +40,6 @@ const ListarProductos = () => {
             return (
                 producto.referencia.toLowerCase().includes(searchValue.toLowerCase()) ||
                 producto.nombre.toLowerCase().includes(searchValue.toLowerCase()) ||
-                producto.cantidad.toString().includes(searchValue) ||
                 producto.precioBase.toString().includes(searchValue)
             );
         });
