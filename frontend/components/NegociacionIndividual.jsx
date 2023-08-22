@@ -349,15 +349,17 @@ const NegociacionIndividual = ({ negociacion }) => {
 
   // Cálculo de las fechas y valores del Plan de pago
   const calcularPlanPago = () => {
-    const fechaGracia = new Date(negociacion.fechaGracia);
+    const fechaGracia = new Date(negociacion.fechaGracia)
     const numCuotas = parseInt(negociacion.numCuotas, 10);
     const valorCuota = parseFloat(negociacion.total) / numCuotas;
+    const hoy = new Date(); // Obtener la fecha actual
 
     // console.log(fechaGracia)
 
     const planDePago = [];
 
-    let fechaPago = new Date(fechaGracia); // Inicializar fechaPago con la fecha de gracia
+    let fechaPago = new Date(fechaGracia.getTime());
+    const cuatroDias = 4 * 24 * 60 * 60 * 1000;
 
     for (let i = 0; i < numCuotas; i++) {
       // Para la primera cuota, restar 5 días a la fecha de gracia
@@ -367,10 +369,25 @@ const NegociacionIndividual = ({ negociacion }) => {
         fechaPago.setDate(fechaPago.getDate() + 25); // Sumar 25 días a partir de la primera cuota
       }
 
+      // Determinar el estado de la cuota
+      let estadoCuota = '';
+      const hoy = new Date();
+
+      if (hoy < fechaPago) {
+        estadoCuota = 'Por pagar';
+      } else if (hoy <= new Date(fechaPago.getTime() - cuatroDias)) {
+        estadoCuota = 'Por pagar'; // Si aún no es tiempo de mostrar "Próxima a vencer"
+      } else if (hoy <= new Date(fechaPago.getTime() - 3 * 24 * 60 * 60 * 1000)) {
+        estadoCuota = 'Próxima a vencer';
+      } else {
+        estadoCuota = 'Vencida';
+      }
+
       planDePago.push({
         numCuota: i + 1, // Número de cuota
         fecha: format(fechaPago, 'dd/MM/yyyy'),
-        valor: valorCuota.toLocaleString('es-CO', { minimumFractionDigits: 0 })
+        valor: valorCuota.toLocaleString('es-CO', { minimumFractionDigits: 0 }),
+        estadoCuota: estadoCuota, // Estado de la cuota
       });
     }
 
@@ -547,7 +564,8 @@ const NegociacionIndividual = ({ negociacion }) => {
                   <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Cuota</th>
                   <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Fecha</th>
                   <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Valor</th>
-                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Cumplió</th>
+                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Estado</th>
+                  <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Cumplimiento</th>
                   <th scope="col" style={{ backgroundColor: "#032770", color: 'white' }}>Notificar</th>
                 </tr>
               </thead>
@@ -560,6 +578,7 @@ const NegociacionIndividual = ({ negociacion }) => {
                     <td style={{ color: '#032770' }}>{item.numCuota}</td>
                     <td style={{ color: '#032770' }}>{item.fecha}</td>
                     <td style={{ color: '#032770' }}>$ {item.valor}</td>
+                    <td style={{ color: '#032770' }}>{item.estadoCuota}</td>
                     <td key={item.numCuota} style={{ textAlign: 'center' }}>
                       <span>
                         {/* Marcar como pagada */}
