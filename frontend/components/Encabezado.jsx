@@ -96,7 +96,7 @@ const Encabezado = () => {
                                             <Link to="/admin/cambiar-password">
                                                 <button className="dropdown-item" type="button">
                                                     <i className="icono-margin fa-solid fa-key"></i>
-                                                    Modificar Password
+                                                    Modificar contraseña
                                                 </button>
                                             </Link>
 

@@ -265,7 +265,7 @@ const ClienteIndividual = ({ cliente }) => {
               <td style={{ color: '#032770' }}>{cliente.telefono}</td>
             </tr>
             <tr>
-              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Email</th>
+              <th scope="row" style={{ backgroundColor: "#032770", color: 'white' }}>Correo</th>
               <td style={{ color: '#032770' }}>{cliente.email}</td>
             </tr>
             <tr>

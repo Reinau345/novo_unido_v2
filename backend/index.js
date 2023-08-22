@@ -15,6 +15,7 @@ app.use(fileUpload({
 app.use(cors())
 //Importar la conexión
 const conexionbd = require('./config/db')
+// const PORT = process.env.PORT || 4000
 const PORT = process.env.PORT || 4000
 dotenv.config()
 

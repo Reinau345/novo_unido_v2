@@ -118,7 +118,7 @@ const ListarUsuarios = () => {
                                 <tr>
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Apellido</th>
-                                    <th scope="col">Email</th>
+                                    <th scope="col">Correo</th>
                                     <th scope="col">Estado</th>
                                     <th scope="col" style={{ textAlign: 'center' }}>Acciones</th>
                                 </tr>

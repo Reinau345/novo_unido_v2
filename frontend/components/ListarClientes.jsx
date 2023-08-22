@@ -118,7 +118,7 @@ const ListarClientes = () => {
                     <th scope="col">Cédula</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Tel</th>
-                    <th scope="col">Email</th>
+                    <th scope="col">Correo</th>
                     <th scope="col">Grupo</th>
                     <th scope="col" style={{ textAlign: 'center' }}>
                       Acciones

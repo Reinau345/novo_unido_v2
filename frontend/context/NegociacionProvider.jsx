@@ -8,7 +8,9 @@ const NegociacionProvider = ({ children }) => {
 
     useEffect(() => {
         const obtenerNegociacion = async () => {
-            fetch('http://localhost:4000/api/negociacion/obtenerNegociaciones')
+            const url = `negociacion/obtenerNegociaciones`;
+            // `${import.meta.env.VITE_BACKEND_URL}/api/${url}`
+            fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`)
                 .then((res) => {
                     if (!res.ok) {
                         throw new Error('Error al obtener los datos de la negociación');

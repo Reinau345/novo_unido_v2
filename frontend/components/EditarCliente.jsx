@@ -307,6 +307,7 @@ const EditarCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
+<<<<<<< HEAD
                   <label className="form-label fw-bold">Email</label>
                   <input
                     type="email"
@@ -319,6 +320,11 @@ const EditarCliente = () => {
                     onChange={handleEmailChange}
                   />
                   {emailError && <div className="invalid-feedback">Ingrese un correo válido.</div>}
+=======
+                  <label className="form-label fw-bold">Correo</label>
+                  <input type="text" className="form-control" placeholder="Correo" required maxLength={60}
+                    value={email} onChange={(e) => { setEmail(e.target.value) }} />
+>>>>>>> juan2
                 </div>
 
                 <div className="mb-3 w-100">

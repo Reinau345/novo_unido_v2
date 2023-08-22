@@ -176,13 +176,13 @@ const Registrar = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label htmlFor="email" className="form-label fw-bold">Email</label>
+                  <label htmlFor="email" className="form-label fw-bold">Correo</label>
                   <input
                     type="email"
                     className={`form-control ${emailError ? 'is-invalid' : ''}`}
                     id="email"
                     aria-describedby="emailHelp"
-                    placeholder="Email"
+                    placeholder="Correo"
                     required
                     value={email}
                     onChange={handleEmailChange}
@@ -191,12 +191,12 @@ const Registrar = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label htmlFor="descripcion" className="form-label fw-bold">Repetir Password</label>
+                  <label htmlFor="descripcion" className="form-label fw-bold">Repetir contraseña</label>
                   <input
                     type="password"
                     className={`form-control ${repetirPasswordError ? 'is-invalid' : ''}`}
                     id="descripcion"
-                    placeholder="Repetir Password"
+                    placeholder="Repetir contraseña"
                     required
                     maxLength={25}
                     value={repetirPassword}
@@ -230,7 +230,7 @@ const Registrar = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label htmlFor="password" className="form-label fw-bold">Password</label>
+                  <label htmlFor="password" className="form-label fw-bold">Contraseña</label>
                   <input
                     type="password"
                     className={`form-control ${passwordError ? 'is-invalid' : ''}`}

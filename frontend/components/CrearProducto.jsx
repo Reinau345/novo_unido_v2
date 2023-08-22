@@ -138,7 +138,7 @@ const CrearProducto = () => {
 
             if (response.ok) {
                 swal({
-                    title: "Producto Creado Correctamente",
+                    title: "Producto creado correctamente",
                     icon: "success",
                     buttons: {
                         accept: {

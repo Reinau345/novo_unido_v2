@@ -70,7 +70,7 @@ const CambiarPassword = () => {
 
       <main className="d-flex   flex-column border border-primary m-3 rounded" id='main'>
 
-        <h3 className="py-0  px-4 pt-3 my-0">EDITAR PASSWORD</h3>
+        <h3 className="py-0  px-4 pt-3 my-0">EDITAR CONTRASEÑA</h3>
         <br />
         {msg && <Alerta alerta={alerta}></Alerta>}
 
@@ -81,14 +81,14 @@ const CambiarPassword = () => {
           <div className="contenedores d-flex justify-content-center flex-lg-row flex-column  flex-sm-column mx-5 gap-5">
             <div className="contenedores__div1 d-flex flex-column align-items-center ms-sm-0 w-100 ">
               <div className="mb-3 w-100">
-                <label htmlFor="passwordActual" className="form-label fw-bold">Password Actual</label>
+                <label htmlFor="passwordActual" className="form-label fw-bold">Contraseña actual</label>
                 <input
                   type="password"
                   className="form-control"
                   id="passwordActual"
                   aria-describedby="emailHelp"
                   name='passwordActual'
-                  placeholder="Password Actual"
+                  placeholder="Contraseña actual"
                   required
                   onChange={e => setPassword({
                     ...password,
@@ -97,14 +97,14 @@ const CambiarPassword = () => {
                 />
               </div>
               <div className="mb-3 w-100">
-                <label htmlFor="passwordRepetir" className="form-label fw-bold">Repetir Password</label>
+                <label htmlFor="passwordRepetir" className="form-label fw-bold">Repetir contraseña</label>
                 <input
                   type="password"
                   className="form-control"
                   id="passwordRepetir"
                   aria-describedby="emailHelp"
                   name='passwordRepetir'
-                  placeholder="Repetir Password"
+                  placeholder="Repetir contraseña"
                   required
                   onChange={e => setPassword({
                     ...password,
@@ -116,14 +116,14 @@ const CambiarPassword = () => {
 
             <div className="contenedores__div2 d-flex flex-column align-items-center me-5 me-sm-0  w-100 ">
               <div className="mb-3 w-100">
-                <label htmlFor="passwordNuevo" className="form-label fw-bold">Password Nuevo</label>
+                <label htmlFor="passwordNuevo" className="form-label fw-bold">Contraseña nueva</label>
                 <input
                   type="password"
                   className="form-control"
                   id="passwordNuevo"
                   aria-describedby="emailHelp"
                   name='passwordNuevo'
-                  placeholder="Password Nuevo"
+                  placeholder="Contraseña nueva"
                   required
                   onChange={e => setPassword({
                     ...password,

@@ -175,6 +175,7 @@ const EditarUsuarios = () => {
                 </div>
 
                 <div className="mb-3 w-100">
+<<<<<<< HEAD
                   <label className="form-label fw-bold">Email</label>
                   <input
                     type="email"
@@ -182,6 +183,13 @@ const EditarUsuarios = () => {
                     id="email"
                     aria-describedby="emailHelp"
                     placeholder="Email"
+=======
+                  <label className="form-label fw-bold">Correo</label>
+                  <input type="email"
+                    className="form-control"
+                    id='email'
+                    placeholder="Correo"
+>>>>>>> juan2
                     required
                     value={email}
                     onChange={handleEmailChange}
