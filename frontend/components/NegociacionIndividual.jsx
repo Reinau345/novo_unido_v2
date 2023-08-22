@@ -23,8 +23,6 @@ const NegociacionIndividual = ({ negociacion }) => {
   const [cuotasPagadas, setCuotasPagadas] = useState({});
   const [dataclientes, setDataClientes] = useState([]);
 
-<<<<<<< HEAD
-=======
   // console.log(negociaciones)
 
   //Función para traer los datos del cliente y poder enviar la notificación
@@ -41,7 +39,6 @@ const NegociacionIndividual = ({ negociacion }) => {
       });
   }, []);
 
->>>>>>> juan2
   // Función para marcar una cuota como pagada
   const handleCuotaPagada = (numCuota) => {
     setCuotasPagadas((prevCuotas) => ({
