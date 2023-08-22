@@ -124,35 +124,35 @@ const CrearNegociacion = () => {
             return
         }
 
-        if (
-            numFacturaError ||
-            anticipoError ||
-            tasaError ||
-            interesesError ||
-            totalError ||
-            cantidadError ||
-            precioVentaError
-        ) {
-            swal({
-                title: "Longitudes incorrectas",
-                text: "Verifica los campos marcados en rojo",
-                icon: "error",
-                button: "Aceptar"
-            });
-            return;
-        }
+        // if (
+        //     numFacturaError ||
+        //     anticipoError ||
+        //     tasaError ||
+        //     interesesError ||
+        //     totalError ||
+        //     cantidadError ||
+        //     precioVentaError
+        // ) {
+        //     swal({
+        //         title: "Longitudes incorrectas",
+        //         text: "Verifica los campos marcados en rojo",
+        //         icon: "error",
+        //         button: "Aceptar"
+        //     });
+        //     return;
+        // }
 
-        for (let i = 0; i < selectedProductos.length; i++) {
-            if (!cantidad[i] || !precioVenta[i] || !productosSeleccionados[i]) {
-                swal({
-                    title: "Campos vacíos",
-                    text: "Todos los campos son obligatorios",
-                    icon: "warning",
-                    button: "Aceptar"
-                });
-                return;
-            }
-        }
+        // for (let i = 0; i < selectedProductos.length; i++) {
+        //     if (!cantidad[i] || !precioVenta[i] || !productosSeleccionados[i]) {
+        //         swal({
+        //             title: "Campos vacíos",
+        //             text: "Todos los campos son obligatorios",
+        //             icon: "warning",
+        //             button: "Aceptar"
+        //         });
+        //         return;
+        //     }
+        // }
 
         const tipoMaquinaArray = productosSeleccionados.map((producto) => producto.tipoMaquina);
         const cantidadArray = productosSeleccionados.map((producto) => Number(producto.cantidad));
@@ -378,31 +378,23 @@ const CrearNegociacion = () => {
                                     </select>
                                 </div>
                                 <div className="mb-3 w-100">
-                                    <label className="form-label fw-bold">Precio venta</label>
+                                     <label className="form-label fw-bold">Precio venta</label>
                                     {selectedProductos.length > 0 ? (
-                                        selectedProductos.map((index) => (
-                                            <div key={index}>
-                                                <input
-                                                    type="text"
-                                                    className={`form-control ${precioVentaError[index] ? 'is-invalid' : ''}`}
-                                                    placeholder="$"
-                                                    required
-                                                    maxLength={9}
-                                                    value={precioVenta[index] || ''}
-                                                    onChange={(e) => {
-
-                                                        const nuevosValores = [...precioVenta];
-                                                        const inputValue = parseFloat(e.target.value);
-                                                        nuevosValores[index] = isNaN(inputValue) ? '' : inputValue; // Evitar NaN
-                                                        setPrecioVenta(nuevosValores);
-
-                                                        const nuevosErrores = [...precioVentaError];
-                                                        nuevosErrores[index] = e.target.value.length < 8;
-                                                        setPrecioVentaError(nuevosErrores);
-                                                    }}
-                                                />
-                                                {precioVentaError[index] && <div className="invalid-feedback">El precio de venta debe tener al menos 8 caracteres.</div>}
-                                            </div>
+                                        selectedProductos.map((producto, index) => (
+                                            <input
+                                                key={index}
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="$"
+                                                required
+                                                onKeyDown={validarNumericos}
+                                                value={precioVenta[index] || ''}
+                                                onChange={(e) => {
+                                                    const nuevosValores = [...precioVenta];
+                                                    nuevosValores[index] = e.target.value;
+                                                    setPrecioVenta(nuevosValores);
+                                                }}
+                                            />
                                         ))
                                     ) : (
                                         <input
