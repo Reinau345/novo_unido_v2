@@ -139,13 +139,13 @@ const Registrar = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label htmlFor="email" className="form-label fw-bold">Email</label>
+                  <label htmlFor="email" className="form-label fw-bold">Correo</label>
                   <input
                     type="email"
                     className="form-control"
                     id="email"
                     aria-describedby="emailHelp"
-                    placeholder="Email"
+                    placeholder="Correo"
                     required
                     value={email}
                     onChange={e => setEmail(e.target.value)}
@@ -153,12 +153,12 @@ const Registrar = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label htmlFor="descripcion" className="form-label fw-bold">Repetir Password</label>
+                  <label htmlFor="descripcion" className="form-label fw-bold">Repetir contraseña</label>
                   <input
                     type="password"
                     className="form-control"
                     id="descripcion"
-                    placeholder="Repetir Password"
+                    placeholder="Repetir contraseña"
                     required
                     value={repetirPassword}
                     onChange={e => setRepetirPassword(e.target.value)}
@@ -190,12 +190,12 @@ const Registrar = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label htmlFor="password" className="form-label fw-bold">Password</label>
+                  <label htmlFor="password" className="form-label fw-bold">Contraseña</label>
                   <input
                     type="password"
                     className="form-control"
                     id="password"
-                    placeholder="Password"
+                    placeholder="Contraseña"
                     required
                     value={password}
                     onChange={e => setPassword(e.target.value)}

@@ -18,7 +18,7 @@ const registrarProducto = async (req, res) => {
 
       const extensionesValidas = ['png','jpg','jpeg'];
       if(!extensionesValidas.includes(extension)){
-        return res.status(400).json({ msg: `La exension ${extension} no es permitida, extensiones validas ${extensionesValidas}` })
+        return res.status(400).json({ msg: `La extensión ${extension} no es permitida, extensiones válidas ${extensionesValidas}` })
       }
 
       const nombreFinal = uuidv4() + '.' + extension
@@ -39,7 +39,7 @@ const registrarProducto = async (req, res) => {
     const existeReferencia = await Producto.findOne({referencia})
 
     if(existeReferencia){
-        const error = new Error("Referencia ya registrada..")
+        const error = new Error("Referencia ya registrada.")
         return res.status(400).json({msg: error.message})
     }
 

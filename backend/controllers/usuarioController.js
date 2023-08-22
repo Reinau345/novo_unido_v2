@@ -24,7 +24,7 @@ const registrar = async (req, res) =>{
     const existeUsuario = await Usuario.findOne({email})
 
     if(existeUsuario){
-        const error = new Error("Usuario ya registrado..")
+        const error = new Error("Usuario ya registrado.")
         return res.status(400).json({msg: error.message})
     }
 
@@ -60,6 +60,8 @@ const perfil = (req, res) => {
 const confirmar = async (req, res) =>{
     const {token} = req.params
     const usuarioConfirmar = await Usuario.findOne({token})
+
+    // console.log(usuarioConfirmar)
     
     if(!usuarioConfirmar){
         const error = new Error("Token no válido")
@@ -81,20 +83,22 @@ const autenticar = async (req, res) =>{
     const {password} = req.body
     let {email} =  req.body
     email = email.toLowerCase()
- 
-    const usuario = await Usuario.findOne({email})
-    usuario.email = usuario.email.toLowerCase()
 
+    const usuario = await Usuario.findOne({email})
+ 
     if(!usuario){
-     const error = new Error("El Usuario no existe");
+     const error = new Error("El usuario no existe");
      return res.status(404).json({msg: error.message});
     }
  
     // comprobar si un usaurio esta comprobado
     if(!usuario.confirmado){
-     const error = new Error("tu cuenta no ha sido confirmada");
+     const error = new Error("Tu cuenta no ha sido confirmada");
      return res.status(403).json({msg: error.message});
     }
+
+    
+    usuario.email = usuario.email.toLowerCase()
  
     // revisar el password
     if( await usuario.comprobarPassword(password)){
@@ -106,7 +110,7 @@ const autenticar = async (req, res) =>{
         }
 
         if(estadoActivo !== 'Activo'){
-            const error = new Error("Usuario Inactivo");
+            const error = new Error("Usuario inactivo");
             return res.status(403).json({msg: error.message});
         }
 
@@ -122,7 +126,7 @@ const autenticar = async (req, res) =>{
      
 
     }else{
-     const error = new Error("El password o email es incorrecto");
+     const error = new Error("La contraseña o correo son incorrectos");
      return res.status(403).json({msg: error.message});
     }
  }
@@ -135,7 +139,7 @@ const autenticar = async (req, res) =>{
     const existeUsuario = await Usuario.findOne({email})
 
     if(!existeUsuario){
-        const error = new Error("El Usuario no existe");
+        const error = new Error("El usuario no existe");
         return res.status(400).json({msg: error.message})
     }
 
@@ -153,7 +157,7 @@ const autenticar = async (req, res) =>{
 
         })
 
-        res.json({msg: "Hemos enviado un email con las instrucciones"})
+        res.json({msg: "Hemos enviado un correo con las instrucciones"})
     } catch (error) {
         console.log(error)
     }
@@ -166,9 +170,9 @@ const comprobarToken = async (req, res)=>{
 
     if(tokenValido){
         // el token es valido el usuario existe
-        res.json({msg: "Token valido y el usuario existe"})
+        res.json({msg: "Token válido y el usuario existe"})
     }else{
-        const error = new Error("Token no valido")
+        const error = new Error("Token no válido")
         return res.status(400).json({msg: error.message})
     }
 
@@ -189,7 +193,7 @@ const nuevoPassword = async (req, res)=>{
         usuario.token = null;
         usuario.password = password;
         await usuario.save();
-        res.json({msg: "Password modificado correctamente"})
+        res.json({msg: "Contraseña modificado correctamente"})
     } catch (error) {
         console.log(error)
     }
@@ -209,7 +213,7 @@ const actualizarPerfil = async (req, res) => {
     if(usuario.email.toLowerCase() !== req.body.email.toLowerCase()){
         const existeEmail = await Usuario.findOne({email})
         if(existeEmail){
-            const error = new Error('Ese email ya esta en uso')
+            const error = new Error('Correo ya esta en uso')
             return res.status(400).json({msg: error.message})
         }
     }
@@ -241,9 +245,9 @@ const actualizarPassword = async (req, res) => {
     if(await usuario.comprobarPassword(passwordActual)){
         usuario.password = passwordNuevo
         await usuario.save()
-        res.json({msg: 'Password Almacenado Correctamente'})
+        res.json({msg: 'Contraseña almacenada correctamente'})
     }else{
-        const error = new Error("El password actual es incorrecto")
+        const error = new Error("La contraseña actual es incorrecta")
         return res.status(400).json({msg: error.message});
     }
     //almacenar el nuevos pwd
@@ -256,7 +260,7 @@ const eliminarUsuario = async (req, res) => {
     const usuario = await Usuario.findById(id)
 
     if(!usuario){
-        return res.status(404).json({ msg: "No Encontrado", id})
+        return res.status(404).json({ msg: "No encontrado", id})
     }
 
     if(id.toString() !== usuario._id.toString()){
@@ -332,7 +336,7 @@ const editarUsuario = async (req, res) => {
         }
 
         await usuario.save()
-        res.json({msg: "Usuario Editado Correctamente...."})
+        res.json({msg: "Usuario editado Correctamente."})
 
     } catch (error) {
         console.log(error)

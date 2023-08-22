@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer')
 
-const enviarNoficacion = async (datos) => {
+const enviarAlertaEmailCliente = async (datos) => {
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -10,13 +10,15 @@ const enviarNoficacion = async (datos) => {
     },
   });
 
-//   const { email, nombre, apellido, fechaFormateada } = datos;
-  const { clio, fechaFormateada, fechaTexto } = datos;
+
+  const { negociacion, valorFormateado, fechaTexto, datosCliente } = datos;
+
+
 
   const info = await transporter.sendMail({
     from: "novotic.notificaciones@gmail.com",
-    to: clio.email,
-    subject: "Notificaión de Pago - Novotic",
+    to: datosCliente.email,
+    subject: "Se aproxima fecha de pago - Novotic",
     // html: `<p>Hola: ${clio.nombre} ${clio.apellido}, comprueba tu correo electrónico</p>
     //     <p>Se acerca tu fecha de pago, <b> ${fechaTexto} </b>
 
@@ -36,12 +38,9 @@ const enviarNoficacion = async (datos) => {
                     <tbody>
                         <tr style="padding:0">
                             <td align="left" class="m_7304439990103367481content" style="padding:30px 40px;word-break:break-word;border-collapse:collapse!important">
-                                <p style="font-size:14px bold">Hola <strong>${clio.nombre} ${clio.apellido}</strong>, <br>comprueba tu correo electrónico,  Se acerca tu fecha de pago, <b> ${fechaTexto} </p>
-                                <p style="font-size:14px"> target="_blank"> <div style="text-align: center; margin-top: 20px;">
-                                </div></a></p>
-  
-                                <p style="font-size: 14px; color: #999;">Si no eres quien ha creado la cuenta, ignora este mensaje.</p>
-  
+                                <p style="font-size:14px bold">Hola <strong>${datosCliente.nombre} ${datosCliente.apellido}</strong>,
+                                    <br>este correo es para recordar te que se acerca tu fecha de pago, <b> ${fechaTexto} </b> por un valor <b>$ ${valorFormateado}</b>
+                                </p>
                             </td>
                         </tr>
                         <tr style="padding:0">
@@ -101,4 +100,4 @@ const enviarNoficacion = async (datos) => {
       console.log("Mensaje enviado: %s", info.messageId)
 }
 
-module.exports = enviarNoficacion
+module.exports = enviarAlertaEmailCliente

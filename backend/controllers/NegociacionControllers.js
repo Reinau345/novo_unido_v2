@@ -3,6 +3,7 @@ const Negociacion = require('../models/NegociacionModels');
 const Cliente = require('../models/ClienteModels');
 const obtenerCliente = require('../helpers/obteneCliente')
 const enviarNoficacion = require('../helpers/enviarNoficacion')
+const enviarAlertaEmailCliente = require('../helpers/enviarAlertaEmailCliente')
 
 
 const registrarNegociacion = async (req, res) => {
@@ -204,6 +205,53 @@ const enviarNotificacion = async () => {
 // const notificacionJob = schedule.scheduleJob('minutos hora * * *', enviarNotificacion);
 const notificacionJob = schedule.scheduleJob('52 18 * * *', enviarNotificacion);
 
+
+const enviarAlertaEmail = async (req, res) => {
+    
+
+    const { negociacion, iteracion } = req.body
+    const datosNegociacion = [negociacion]
+
+    // console.log(negociacion.clienteData)
+
+    const datosCliente = await obtenerCliente(negociacion.clienteData)
+
+// console.log(datosCliente)
+
+    datosNegociacion.forEach(datosNego => {
+
+
+        const fecha = new Date(datosNego.detalleCuotas[iteracion].fecha)
+        const valor = datosNego.detalleCuotas[iteracion].valor
+        const valorFormateado = valor.toLocaleString('es-CO');
+
+        fecha.toDateString()
+
+        const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+        const fechaTexto = fecha.toLocaleDateString('es-ES', options)
+        console.log(fechaTexto)
+        
+        enviarAlertaEmailCliente({negociacion, valorFormateado, fechaTexto, datosCliente})
+
+    })
+
+
+    //   for (const key in info){
+    //     console.log(key)
+    //   }
+
+    // Object.keys(info).forEach((key) => {
+    //    console.log(key)
+    //   });
+
+
+    // Object.entries(info).forEach(([key, value]) => {
+    //     console.log(key, value)
+    //   });
+
+    // enviarAlertaEmailCliente({dato})
+}
+
 module.exports = {
     registrarNegociacion,
     obtenerNegociaciones,
@@ -212,5 +260,6 @@ module.exports = {
     eliminarNegociacion,
     actualizarEstadoNegociacion,
     actualizarCuota,
+    enviarAlertaEmail,
 
 }

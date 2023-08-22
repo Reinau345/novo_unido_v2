@@ -156,11 +156,11 @@ const EditarUsuarios = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Email</label>
+                  <label className="form-label fw-bold">Correo</label>
                   <input type="email"
                     className="form-control"
                     id='email'
-                    placeholder="Email"
+                    placeholder="Correo"
                     required
                     value={email}
                     onChange={(e) => { setEmail(e.target.value) }}

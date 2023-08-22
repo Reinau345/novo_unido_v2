@@ -5,10 +5,16 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 import { isValid, format, parseISO } from 'date-fns';
 import { FaToggleOn } from 'react-icons/fa';
 
+import useNegociacion from '../hooks/useNegociacion'
+
+
+
 const NegociacionIndividual = ({ negociacion }) => {
   const { _id } = negociacion; 
   const { id } = useParams();
   // const { auth } = useAuth()
+  const {negociaciones} = useNegociacion()
+
   const [isActivated, setIsActivated] = useState(false);
   const [estado, setEstado] = useState(negociacion.estado);
   const [mostrarDetalles, setMostrarDetalles] = useState(false);
@@ -16,6 +22,8 @@ const NegociacionIndividual = ({ negociacion }) => {
   const [showPlanPagoModal, setShowPlanPagoModal] = useState(false);
   const [cuotasPagadas, setCuotasPagadas] = useState({});
   const [dataclientes, setDataClientes] = useState([]);
+
+  // console.log(negociaciones)
 
   //Función para traer los datos del cliente y poder enviar la notificación
   useEffect(() => {
@@ -119,6 +127,76 @@ const NegociacionIndividual = ({ negociacion }) => {
 
   const subtotales = calcularSubtotales();
   const sumaSubtotales = subtotales.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+  let lastExecutionTime = 0;
+  const notificarPorEmail = ( iteracion) => {
+
+
+    const now = Date.now();
+    
+    if (now - lastExecutionTime > 50000) { // only execute once every 5 seconds
+      lastExecutionTime = now;
+
+      const objetoInfo = { negociacion, iteracion }
+      const encodedInfo = encodeURIComponent(JSON.stringify(objetoInfo));
+      
+          // mando datos al server
+    const url = `negociacion/enviar-alerta-email`
+    // fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}?info=${encodedInfo}`
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`
+    , 
+    { 
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ negociacion, iteracion })
+     }
+     )
+      .then(res => res.json() )
+      .then(data =>{
+        console.log(data, "Soy data");
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+    }
+
+  }
+
+  // let lastNotificationDate = null;
+
+  // const notificarPorEmail = (iteracion) => {
+  //   const today = new Date();
+  //   const todayDateString = today.toDateString();
+  
+  //   if (lastNotificationDate !== todayDateString) {
+  //     lastNotificationDate = todayDateString;
+  //     enviarNotificacionPorEmail(iteracion);
+  //   }
+  // };
+  
+  const enviarNotificacionPorEmail = (iteracion) => {
+    const objetoInfo = { negociacion, iteracion };
+    const encodedInfo = encodeURIComponent(JSON.stringify(objetoInfo));
+  
+    const url = `negociacion/enviar-alerta-email`;
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${url}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ negociacion, iteracion }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "Soy data");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
 
   const toggleDetalles = () => {
@@ -244,7 +322,7 @@ const NegociacionIndividual = ({ negociacion }) => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        // console.log(data);
         swal({
           title: "Estado modificado correctamente",
           icon: "success",
@@ -328,7 +406,7 @@ const NegociacionIndividual = ({ negociacion }) => {
 
   const negociacionPlanPagoData = calcularPlanPago();
 
-
+// console.log(negociacionPlanPagoData)
   return (
 
     <>
@@ -522,8 +600,21 @@ const NegociacionIndividual = ({ negociacion }) => {
                       </span>
                     </td>
                     <td style={{ textAlign: 'center' }}>
-                      <Link onClick={toggleDetalles} >
-                        <i className="fa fa-bell" title="Notificar" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
+                      {/* <Link onClick={toggleDetalles} > */}
+                      <Link onClick={(e)=> 
+                        { 
+                          const tagI = document.querySelectorAll('.fa-bell')
+                          tagI.forEach((identi, i) => {
+                            identi.setAttribute('id', `${i}`);
+                          })
+                          console.log(e.target.id)
+                          notificarPorEmail(e.target.id)
+                        }
+                      } 
+                      >
+                        <i className="fa fa-bell" 
+                        
+                        title="Notificar" style={{ marginRight: 10, color: '#212529', fontSize: 22 }} />
                       </Link>
                     </td>
                   </tr>

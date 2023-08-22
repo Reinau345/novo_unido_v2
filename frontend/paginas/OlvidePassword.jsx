@@ -47,7 +47,7 @@ const OlvidePassword = () => {
                 {/* <img className="logoLogin" src="https://www.novomatic.com/sites/default/files/2017-05/Logo_N-Shortbrand.png" alt="logo" /> */}
                 <img className="logoLogin" src="../public/img/Logo_9.png" alt="logo" />
             </div>
-           <p className="tituloLogin">Restablecer su contraseña</p>
+           <p className="tituloLogin">Restablecer contraseña</p>
 
            {msg && <Alerta
             alerta={alerta}

@@ -72,7 +72,7 @@ const Login = () => {
                     {/* <img className="logoLogin" src="../public/img/Logo_6_optimizada.png" alt="logo" /> */}
                     <img className="logoLogin" src={logo} alt="logo" />
                 </div>
-            <p className="tituloLogin">Iniciar Sesión</p>
+            <p className="tituloLogin">Iniciar sesión</p>
 
             {msg && <Alerta alerta={alerta} />}
 
@@ -85,7 +85,7 @@ const Login = () => {
                         <input  
                             className='formulario-Input-Text' 
                             type="text" id="correo" 
-                            placeholder="Email" 
+                            placeholder="Correo" 
                             required 
                             autoComplete = "username"
                             value={email}  
@@ -102,7 +102,7 @@ const Login = () => {
                             className='formulario-Input-password' 
                             type="password" 
                             id="password" 
-                            placeholder="Password" 
+                            placeholder="Contraseña" 
                             required 
                             autoComplete = "current-password"
                             value={password} 
@@ -117,10 +117,10 @@ const Login = () => {
                     <div className="contendorBotones">
                         {/* <input type="submit" value="Ingresar" />
                         <input type="reset" value="Cancelar" /> */}
-                        <input type='submit' value="Iniciar Sesión"/>
+                        <input type='submit' value="Iniciar sesión"/>
                     </div>
                     {/* <i className="icon-menu fa-solid fa-user-tie mx-4 " title="Clientes"></i> */}
-                    <Link className='olvide-pass-text' to="olvide-password">¿Has olvidado tu  Password?</Link>
+                    <Link className='olvide-pass-text' to="olvide-password">¿Has olvidado tu contraseña?</Link>
                     
                 </form>
 

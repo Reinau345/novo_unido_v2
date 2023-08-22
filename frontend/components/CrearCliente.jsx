@@ -263,8 +263,8 @@ const CrearCliente = () => {
                 </div>
 
                 <div className="mb-3 w-100">
-                  <label className="form-label fw-bold">Email</label>
-                  <input type="text" className="form-control" placeholder="Email" required maxLength={60}
+                  <label className="form-label fw-bold">Correo</label>
+                  <input type="text" className="form-control" placeholder="Correo" required maxLength={60}
                     value={email} onChange={(e) => { setEmail(e.target.value) }} />
                 </div>
 

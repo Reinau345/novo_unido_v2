@@ -74,14 +74,14 @@ const EditarPerfil = () => {
                             </div>
 
                             <div className="mb-3 w-100">
-                                <label htmlFor="email" className="form-label fw-bold">Email</label>
+                                <label htmlFor="email" className="form-label fw-bold">Correo</label>
                                 <input
                                     type="email"
                                     className="form-control"
                                     id="email"
                                     aria-describedby="emailHelp"
                                     name='email'
-                                    placeholder="Email"
+                                    placeholder="Correo"
                                     required
                                     value={perfil.email || ''}
                                     onChange={e => setPerfil({
