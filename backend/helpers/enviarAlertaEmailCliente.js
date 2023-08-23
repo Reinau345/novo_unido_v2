@@ -29,8 +29,19 @@ const enviarAlertaEmailCliente = async (datos) => {
     <tbody>
         <tr style="padding:0">
             <td style="display:none!important;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden"></td>
-            <td align="center" valign="top" style="padding:10px 10px 0;word-break:break-word;border-collapse:collapse!important"><a rel="noopener noreferrer" href="" style="color:#00b08c!important" target="_blank" data-saferedirecturl="https://www.google.com/url?q=http://Novotic.io&amp;source=gmail&amp;ust=1692494115601000&amp;usg=AOvVaw0bP-o8Gk6NgHs8iyNnBD_8"><img alt="Novotic" title="Novotic" src="https://www.novomatic.com/themes/novomatic/images/novomatic_n.svg" style="border:none;width:130px!important;max-width:100%;outline:none;text-decoration:none;vertical-align:middle;height:38px!important" class="CToWUd" data-bit="iit"></a></td>
+            <td align="center" valign="top" style="padding:10px 10px 0;word-break:break-word;border-collapse:collapse!important">
+            <!-- Replace the URL below with the actual URL of your image -->
+            <a rel="noopener noreferrer" href="" style="color:#00b08c!important" target="_blank">
+            <img alt="Novotic Logo" src="https://upload.wikimedia.org/wikipedia/commons/3/39/Novomatic_Logo_2014.png" width="130" height="38" style="border:none;max-width:100%;outline:none;text-decoration:none;vertical-align:middle;">
+
+            </a>
+        </td>
         </tr>
+
+
+
+
+
         <tr style="padding:0">
             <td align="center" valign="top" style="margin:0;padding:20px 10px 30px;word-break:break-word;border-collapse:collapse!important;width:100%!important;min-width:100%">
                 <table border="0" cellpadding="0" cellspacing="0" width="580" style="padding:0;table-layout:auto;border-spacing:0;border-collapse:collapse;border-radius:10px" bgcolor="#fff">
@@ -38,9 +49,24 @@ const enviarAlertaEmailCliente = async (datos) => {
                     <tbody>
                         <tr style="padding:0">
                             <td align="left" class="m_7304439990103367481content" style="padding:30px 40px;word-break:break-word;border-collapse:collapse!important">
-                                <p style="font-size:14px bold">Hola <strong>${datosCliente.nombre} ${datosCliente.apellido}</strong>,
-                                    <br>este correo es para recordar te que se acerca tu fecha de pago, <b> ${fechaTexto} </b> por un valor <b>$ ${valorFormateado}</b>
+                                <p style="font-size:14px bold">Hola, <strong>${datosCliente.nombre} ${datosCliente.apellido}</strong>.
+                                    <br>A continuación estamos enviando el extracto de su obligación correspondiente al mes actual</b>
                                 </p>
+                                <table border="1" cellpadding="0" cellspacing="0" width="580" style="padding:0;table-layout:auto;border-spacing:0;border-collapse:collapse;border-radius:10px" bgcolor="#fff">
+                                <tr style="padding:0; background-color: #dfdfdf;">
+                                  <th>Factura N°</th>
+                                  <th>Producto</th>
+                                  <th>Vencimiento</th>
+                                  <th>Vr cuota</th>
+                                </tr>
+                                <tr>
+                                  <td >${negociacion.numFactura}</td>
+                                  <td>${negociacion.tipoMaquina}</td>
+                                  <td ><span style="color: red;">${fechaTexto} </span></td>
+                                  <td>$ ${valorFormateado}</td>
+                                </tr>
+
+                              </table>
                             </td>
                         </tr>
                         <tr style="padding:0">
